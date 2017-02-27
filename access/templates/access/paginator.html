@@ -1,0 +1,13 @@
+{% if data.paginator %}
+    <ul class='pagination'>
+        {% if data.has_previous %}
+            <li><a href='#' ng-click='paginate({{ data.previous_page_number }})'><<</a></li>
+        {% endif %}
+        {% for page in data.paginator.page_range %}
+            <li {% if page == data.number %} class='active'{% endif %}><a href='#' ng-click='paginate({{ page }})'>{{ page }}</a></li>
+        {% endfor %}
+        {% if data.has_next %}
+            <li><a href='#' ng-click='paginate({{ data.next_page_number }})'>>></a></li>
+        {% endif %}
+    </ul>
+{% endif %}

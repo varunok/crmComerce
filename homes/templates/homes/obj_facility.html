@@ -1,0 +1,195 @@
+{% load static from staticfiles %}
+{% load sity_franshise %}
+{% load dead_line %}
+                    <div class="wrap-obj">
+                        <div class="col-md-12">
+                            <div class="col-md-12 object-card">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-md-3 object-img popup-gallery-{{ object_data.id }}">
+                                            {% for image in images %}
+                                                {% if object_data.id == image.album_id %}
+                                                        <a href="{{ MEDIA_URL }}{{ image.image }}">
+                                                            {% if image.cover %}
+                                                                <img src="{{ MEDIA_URL }}{{ image.image }}" alt=""></a>
+                                                            {% endif %}
+                                                    {% endif %}
+                                                <span class="label label-default img-count">{{ object_data.images_count }}</span>
+                                            {% empty %}
+                                                NO PHOTO
+                                            {% endfor %}
+                                        </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('.popup-gallery-{{ object_data.id }}').magnificPopup({
+                                                delegate: 'a',
+                                                type: 'image',
+                                                tLoading: 'Loading image #%curr%...',
+                                                mainClass: 'mfp-img-mobile',
+                                                gallery: {
+                                                    enabled: true,
+                                                    navigateByImgClick: true,
+                                                    preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+                                                },
+                                                image: {
+                                                    tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                        <div class="col-md-9 object-info">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h2 class="object-id">
+                                                        <a href="{% url "single_obj" object_data.id %}">ID {{ object_data.id }}</a> {# id object #}
+                                                        {% if object_data.public %} {# if object public show glob #}
+                                                            <i class="fa fa-globe"></i>
+                                                        {% endif %}
+                                                        {% if object_data.vip_owner %} {# if object vip show star#}
+                                                            <i class="fa fa-star"></i>
+                                                        {% endif %}
+                                                        <span class="object-price-buy"> {# object price #}
+                                                            {{ object_data.price_bay }}$
+                                                            {#{{ object_data.currency }}#}
+                                                        </span>
+                                                        <span class="object-price-arend">
+                                                            {{ object_data.price_month }} {# object price arend #}
+                                                            {{ nac_carrency }}
+                                                        </span>
+                                                    </h2>
+                                                    <p class="object-type">
+                                                        <span title="Тип объекта">
+                                                            {{ object_data.type_facilit }}
+                                                        </span>
+                                                        {% if object_data.repairs %}
+                                                            <span title="Ремонт">
+                                                                / {{ object_data.repairs }}
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if object_data.location %}
+                                                            <span title="Расположение">
+                                                                / {{ object_data.location }}
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if object_data.entrance %}
+                                                            <span title="Вход">
+                                                                / {{ object_data.entrance }}
+                                                            </span>
+                                                        {% endif %}
+                                                    </p>
+                                                    <p class="object-more-info">
+                                                        <i class="fa fa-building-o"></i>
+                                                        <span title="Этажность">
+                                                            {{ object_data.number_of_storeys|default:'--' }}
+                                                        </span>
+                                                        <!--<i class="fa fa-expand"></i>-->/
+                                                        <span title="Комнат">
+                                                            {{ object_data.rooms|default:'--' }}
+                                                        </span>
+                                                        <i class="fa fa-shopping-basket"></i>
+                                                        <span title="Метраж общий">
+                                                            {{ object_data.footage|default:'0' }} кв.
+                                                        </span>
+                                                        <span title="Торговый зал">
+                                                            {{ object_data.shopping_room|default:'0' }} кв.
+                                                        </span>
+                                                    </p>
+                                                    <p class="object-local">
+                                                        <i class="fa fa-map-marker"></i>
+                                                        {{ object_data.street_obj }},
+                                                        <span>
+                                                            г.{% sity_franshise %}
+                                                            {% if object_data.district_obj  %}
+                                                                ,{{ object_data.district_obj }} район
+                                                            {% endif %}
+                                                        </span>
+
+                                                    </p>
+                                                    <div class="object-comment-short">
+                                                        <div class="object-comment-long">
+                                                            <p >
+                                                                <strong>Комментарий:</strong>
+                                                                {{ object_data.comment }} {# коментарі до обєкту #}
+                                                            </p>
+                                                        </div>
+                                                        <p class="object-comment">
+                                                            <span>Комментарий:</span>
+                                                            {{ object_data.comment|truncatechars:200 }} {# коментарі до обєкту #}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-sm-6 prop" style="padding: 0;">
+                                                    <p class="object-prop">
+                                                        <i class="fa fa-user"></i>
+                                                        {{ object_data.name_owner }}
+                                                    </p>
+                                                    <p class="object-prop-phone">
+                                                        {{ object_data.phone_owner }}
+                                                    </p>
+                                                    <p class="object-data-call">
+                                                        Дата звонка<br>
+                                                        <i class="fa fa-calendar"></i>
+                                                        {{ object_data.call_date|date:'d E Y' }}
+                                                    </p>
+                                                    <p class="object-commission">
+                                                        Комиссия: <span>
+                                                        {% if object_data.commission %}
+                                                            {{ object_data.commission }}
+                                                            {{ object_data.currency }}
+                                                        {% endif %}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-2 col-sm-6 edit" style="padding-left: 0;">
+                                                    <p class="object-edit">
+                                                        {% if not object_data.trash %}
+                                                            <a href="{% url "databases" object_data.id %}" target="_blank"><i class="fa fa-link"></i> </a>
+                                                            <a href="{% url "edit_facility" object_data.id %}"><i class="fa fa-pencil"></i> </a>
+                                                            <a href="{% url "single_obj" object_data.id %}"><i class="fa fa-eye"></i> </a>
+                                                        {% else %}
+                                                            <a href=""><i id-obj="{{ object_data.id }}" class="fa fa-arrows-alt"></i></a>
+                                                        {% endif %}
+                                                        <a href="#"><i id-obj="{{ object_data.id }}" class="fa fa-times"></i> </a>
+                                                    </p>
+                                                    {% if object_data.actuality.id == 3 %} {# актуальність обєкту #}
+                                                        <p class="object-ut-data">
+                                                            <i class="fa fa-question-circle-o"></i>
+                                                            {{ object_data.actuality|upper }}
+                                                        </p>
+                                                    {% elif object_data.actuality.id == 1 %}
+                                                        <p class="object-stat">
+                                                            <i class="fa fa-check-circle-o"></i>
+                                                            {{ object_data.actuality|upper }}
+                                                        </p>
+                                                    {% elif object_data.actuality.id == 2 %}
+                                                        <p class="object-no-interes">
+                                                            <i class="fa fa-minus-circle"></i>
+                                                            {{ object_data.actuality|upper }}
+                                                        </p>
+                                                    {% endif %}
+{#                                                    {%   if object_data.review_date >= time %}#}
+                                                        <p class="object-data-view">
+                                                            Дата пересмотра<br>
+                                                            <i class="fa fa-calendar"></i>
+                                                            {% if object_data.review_date|dead_line %}
+                                                               <span class="f-clr-red">        
+                                                            {% endif %}  
+                                                        {{ object_data.review_date|timeuntil:time }}
+                                                    </p>
+{#                                                    {% endif %}#}
+                                                    <p class="object-data-update">
+                                                       Дата обновления<br>
+                                                        <i class="fa fa-calendar"></i>
+                                                        {{ object_data.date_of_renovation|date:'d E Y' }} 
+                                                    </p>
+                                                    {% if object_data.date_added|new_obj %}
+                                                        <div style="background-color:#40D3B7; color:#fff; position: absolute; padding: 5px; border-radius: 5px;margin-left: 75px; margin-top: 1px;">Новый</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>

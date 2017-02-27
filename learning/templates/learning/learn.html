@@ -1,0 +1,96 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Обучение</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% load video_tag %}
+
+{% block content %}
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><a href="{% url "homes" %}">Главная</a></li>
+                            <li><a href="{% url "setting" %}">Настройки</a></li>
+                            <li class="active">Обучение</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Обучение</h1>
+                    {% if  user.myuser.type_user.id == 2 %}
+                    <div class="col-md-4" style="float: right">
+                        <a href="{% url 'add_learning' %}" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4" style="height: 80px; font-size: 40px;">
+                                    <i class="fa fa-cog"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Добавить</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% for learn in learning %}
+                <div id="{{learn.id}}" class="row" style="border: 2px solid silver">
+                    <div class="col-md-12" style="text-align: center;">
+                        <h2 class="section-head" >{{learn.title}}</h2>
+                        <div class="" style="float: right">
+                            <a href="#">
+                                {% if user.is_superuser %}
+                                    <i class="fa fa-times fa-2x"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;">
+                        {% if 'iframe' in learn.youtube %}
+                                {{learn.youtube|safe}}
+                            {% else %}
+                                {{learn.youtube|youtube_code|safe}}
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+            {% endfor %}
+        </div>
+    </section>
+    <div class="messageServer"></div>
+
+{% endblock content %}
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.fa-times', function(event) {
+            event.preventDefault();
+            var id = $(this).parents('.row').attr('id');
+            var _this = $(this).parents('.row')
+            $.post('del_learn', {'id': id})
+            .success( function (data) {
+                _this.fadeOut('slow', function() {
+                    _this.remove();
+                });
+                $('.messageServer').css('backgroundColor', '#5bc0de');
+                $('.messageServer').text('Удалено').fadeIn(1000).delay(2000).fadeOut(500);
+            })
+            .error(function(data) {
+                $('.messageServer').css('backgroundColor', '#c9302c');
+                $('.messageServer').text(data.responseText).fadeIn(1000).delay(2000).fadeOut(500);
+            });
+        });
+    })
+</script>
+{% endblock extra_js %}

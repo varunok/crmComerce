@@ -1,0 +1,17 @@
+Django==1.8.6
+django-common-helpers==0.8.0
+django-cron==0.5.0
+django-dbbackup==3.0.3
+django-sendmail-backend==0.1.2
+django-storages==1.5.1
+flup==1.0.2
+lxml==3.6.4
+MySQL-python==1.2.5
+Pillow==3.4.2
+psycopg2==2.6.2
+pytz==2016.6.1
+requests==2.12.1
+selenium==3.0.1
+six==1.10.0
+suds==0.4
+xlwt==1.1.2

@@ -1,0 +1,1047 @@
+[
+{
+    "fields": {
+        "state": "\u0413\u043e\u0440\u044f\u0447\u0438\u0439"
+    },
+    "model": "arendator.typestate",
+    "pk": 1
+},
+{
+    "fields": {
+        "state": "\u0410\u043a\u0442\u0438\u0432\u043d\u0438\u0439"
+    },
+    "model": "arendator.typestate",
+    "pk": 2
+},
+{
+    "fields": {
+        "state": "\u041d\u0443\u0436\u043d\u043e \u0443\u0437\u043d\u0430\u0442\u044c"
+    },
+    "model": "arendator.typestate",
+    "pk": 3
+},
+{
+    "fields": {
+        "state": "\u0423\u0436\u0435 \u043d\u0430\u0448\u043b\u0438"
+    },
+    "model": "arendator.typestate",
+    "pk": 4
+},
+{
+    "fields": {
+        "client": "\u041f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u044b\u0439"
+    },
+    "model": "arendator.typeclient",
+    "pk": 1
+},
+{
+    "fields": {
+        "client": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439"
+    },
+    "model": "arendator.typeclient",
+    "pk": 2
+},
+{
+    "fields": {
+        "client": "\u0420\u0430\u0437\u043e\u0432\u044b\u0439"
+    },
+    "model": "arendator.typeclient",
+    "pk": 3
+},
+{
+    "fields": {
+        "stage": "\u041f\u043e\u0434\u0431\u043e\u0440 \u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432"
+    },
+    "model": "arendator.typestage",
+    "pk": 1
+},
+{
+    "fields": {
+        "stage": "\u041f\u043e\u043a\u0430\u0437\u044b"
+    },
+    "model": "arendator.typestage",
+    "pk": 2
+},
+{
+    "fields": {
+        "stage": "\u0416\u0434\u0435\u043c \u043d\u043e\u0432\u043e\u0433\u043e"
+    },
+    "model": "arendator.typestage",
+    "pk": 3
+},
+{
+    "fields": {
+        "stage": "\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0438\u0435 \u0441\u0434\u0435\u043b\u043a\u0438"
+    },
+    "model": "arendator.typestage",
+    "pk": 4
+},
+{
+    "fields": {
+        "comment": null,
+        "price_to": null,
+        "review_date": "2016-07-28",
+        "rooms_from": null,
+        "date_term": "2017-07-05",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": "\u0410\u043d\u0434\u0440\u0456\u0439 \u0412\u0430\u0440\u0443\u043d\u043e\u043a",
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": null,
+        "trash": true,
+        "email": null,
+        "rieltor": [
+            3
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": "2016-07-28T02:25:59.152",
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 1
+},
+{
+    "fields": {
+        "comment": null,
+        "price_to": null,
+        "review_date": "2016-07-26",
+        "rooms_from": null,
+        "date_term": "2014-07-09",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": "2016-06-08",
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": null,
+        "trash": false,
+        "email": null,
+        "rieltor": [
+            3
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 2
+},
+{
+    "fields": {
+        "comment": null,
+        "price_to": null,
+        "review_date": "2016-07-26",
+        "rooms_from": null,
+        "date_term": "2016-07-08",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": "2016-09-24",
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": null,
+        "trash": false,
+        "email": null,
+        "rieltor": [
+            2
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 3
+},
+{
+    "fields": {
+        "comment": null,
+        "price_to": null,
+        "review_date": null,
+        "rooms_from": null,
+        "date_term": "2016-07-28",
+        "type_client": 1,
+        "type_state": 2,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "432",
+        "trash": false,
+        "email": null,
+        "rieltor": [
+            2
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "DFCZ",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 7
+},
+{
+    "fields": {
+        "comment": null,
+        "price_to": null,
+        "review_date": null,
+        "rooms_from": null,
+        "date_term": "2016-07-30",
+        "type_client": 3,
+        "type_state": 2,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "233",
+        "trash": false,
+        "email": null,
+        "rieltor": [
+            2
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "dsadsdfsdfssdsf",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 8
+},
+{
+    "fields": {
+        "comment": null,
+        "price_to": null,
+        "review_date": null,
+        "rooms_from": null,
+        "date_term": "2016-07-11",
+        "type_client": 1,
+        "type_state": 2,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "122",
+        "trash": false,
+        "email": null,
+        "rieltor": [
+            2
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "wqeqwewwqe",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 9
+},
+{
+    "fields": {
+        "comment": "fbfgfgbgfggsfgbfgb",
+        "price_to": null,
+        "review_date": null,
+        "rooms_from": null,
+        "date_term": "2016-07-05",
+        "type_client": 3,
+        "type_state": 4,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "34",
+        "trash": false,
+        "email": "dfdfdfdf@fsdfdsf.sdfdf",
+        "rieltor": [
+            2
+        ],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "werwer",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 10
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": null,
+        "rooms_from": 2,
+        "date_term": "2016-07-25",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 11
+},
+{
+    "fields": {
+        "comment": "hujfjfjf",
+        "price_to": 9,
+        "review_date": "2016-07-28",
+        "rooms_from": 1,
+        "date_term": "2016-07-27",
+        "type_client": 2,
+        "type_state": 4,
+        "name_user_trash": "\u0410\u043d\u0434\u0440\u0456\u0439 \u0412\u0430\u0440\u0443\u043d\u043e\u043a",
+        "area_from": 6,
+        "repairs": [
+            2
+        ],
+        "call_date": null,
+        "area_to": 7,
+        "number_of_persons": null,
+        "commission": "567",
+        "trash": true,
+        "email": "efsf@sfsef.rgdr",
+        "rieltor": [
+            2
+        ],
+        "loyality": [],
+        "type_building_data": [
+            1
+        ],
+        "floors_from": 4,
+        "rooms_to": 2,
+        "district_obj": [
+            1
+        ],
+        "time_trash": "2016-07-28T02:44:45.844",
+        "floors_to": 5,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "fgdfgdfgdg",
+        "room": [
+            1
+        ],
+        "phone_second": 1,
+        "price_from": 8
+    },
+    "model": "arendator.arendator",
+    "pk": 12
+},
+{
+    "fields": {
+        "comment": "erwerwerwerweresrewrwerwerwer werwerwerwerwerwerwer werwerwerwerwerwer werwerwerwerwer werwerwrwerwe werwerwerwerwe werwerwerwerwe werwerwerwerwer werwerwerwer werwerwerwer werwerwerwer werwer wewe",
+        "price_to": 8,
+        "review_date": null,
+        "rooms_from": 1,
+        "date_term": "2016-07-31",
+        "type_client": 2,
+        "type_state": 1,
+        "name_user_trash": null,
+        "area_from": 5,
+        "repairs": [
+            2
+        ],
+        "call_date": null,
+        "area_to": 6,
+        "number_of_persons": 1,
+        "commission": "677",
+        "trash": false,
+        "email": "sdsd@dfd.ghg",
+        "rieltor": [
+            1
+        ],
+        "loyality": [],
+        "type_building_data": [
+            1,
+            2
+        ],
+        "floors_from": 3,
+        "rooms_to": 2,
+        "district_obj": [
+            1
+        ],
+        "time_trash": null,
+        "floors_to": 4,
+        "type_stage": 1,
+        "phone_first": 1,
+        "name": "\u0412\u0430\u0441\u044f",
+        "room": [
+            3
+        ],
+        "phone_second": 1,
+        "price_from": 7
+    },
+    "model": "arendator.arendator",
+    "pk": 13
+},
+{
+    "fields": {
+        "comment": "dgdfgdfgdfgdfg rdrdrfrdfgrd rtrtrdtr",
+        "price_to": 8,
+        "review_date": "2016-07-26",
+        "rooms_from": 1,
+        "date_term": "2016-07-31",
+        "type_client": 2,
+        "type_state": 2,
+        "name_user_trash": null,
+        "area_from": 5,
+        "repairs": [
+            2
+        ],
+        "call_date": "2016-07-24",
+        "area_to": 6,
+        "number_of_persons": 5,
+        "commission": "433",
+        "trash": false,
+        "email": "fds@dfdf.hjhj",
+        "rieltor": [
+            1
+        ],
+        "loyality": [],
+        "type_building_data": [
+            1
+        ],
+        "floors_from": 3,
+        "rooms_to": 2,
+        "district_obj": [
+            1
+        ],
+        "time_trash": null,
+        "floors_to": 4,
+        "type_stage": 4,
+        "phone_first": 1,
+        "name": "sadsadasd",
+        "room": [
+            1
+        ],
+        "phone_second": 1,
+        "price_from": 7
+    },
+    "model": "arendator.arendator",
+    "pk": 14
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-26",
+        "rooms_from": null,
+        "date_term": "2016-07-31",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": "2016-07-29",
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 15
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-26",
+        "rooms_from": null,
+        "date_term": "2016-07-07",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": "2016-08-14",
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 16
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-26",
+        "rooms_from": null,
+        "date_term": "2016-07-14",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [
+            1
+        ],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 17
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-26",
+        "rooms_from": null,
+        "date_term": "2016-07-25",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [
+            2
+        ],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 18
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": 67,
+        "review_date": "2016-07-27",
+        "rooms_from": null,
+        "date_term": "2016-07-28",
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": 23
+    },
+    "model": "arendator.arendator",
+    "pk": 19
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-27",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [
+            2
+        ],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 1,
+        "name": "",
+        "room": [],
+        "phone_second": 1,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 20
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-27",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 23,
+        "name": "",
+        "room": [],
+        "phone_second": 24,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 21
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-31",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": "2016-08-03",
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [
+            4
+        ],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": 2323,
+        "name": "",
+        "room": [],
+        "phone_second": 2323,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 22
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-28",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": null,
+        "name": "",
+        "room": [
+            3
+        ],
+        "phone_second": null,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 23
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-28",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": 3,
+        "phone_first": null,
+        "name": "",
+        "room": [],
+        "phone_second": null,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 24
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-28",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "ddd@rrr.ttt",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": null,
+        "name": "",
+        "room": [],
+        "phone_second": null,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 25
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-07-30",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": null,
+        "name": "\u0412\u0430\u0441\u044f",
+        "room": [],
+        "phone_second": null,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 26
+},
+{
+    "fields": {
+        "comment": "sdfsdfsf sdfdsfdsfd sdfdsfd sdfsdfd dfdsfdsf dfdsf dsf dfsdfsdf",
+        "price_to": 700,
+        "review_date": "2016-08-01",
+        "rooms_from": 1,
+        "date_term": "2016-08-07",
+        "type_client": 2,
+        "type_state": 1,
+        "name_user_trash": null,
+        "area_from": 45,
+        "repairs": [
+            2
+        ],
+        "call_date": "2016-08-01",
+        "area_to": 50,
+        "number_of_persons": 2,
+        "commission": "350",
+        "trash": false,
+        "email": "sdf@sdf.sdf",
+        "rieltor": [
+            1
+        ],
+        "loyality": [],
+        "type_building_data": [
+            2
+        ],
+        "floors_from": 1,
+        "rooms_to": 3,
+        "district_obj": [
+            1
+        ],
+        "time_trash": null,
+        "floors_to": 10,
+        "type_stage": 1,
+        "phone_first": 123123123,
+        "name": "SNOW",
+        "room": [
+            1
+        ],
+        "phone_second": 234234234,
+        "price_from": 300
+    },
+    "model": "arendator.arendator",
+    "pk": 27
+},
+{
+    "fields": {
+        "comment": "",
+        "price_to": null,
+        "review_date": "2016-08-01",
+        "rooms_from": null,
+        "date_term": null,
+        "type_client": null,
+        "type_state": null,
+        "name_user_trash": null,
+        "area_from": null,
+        "repairs": [
+            1,
+            2
+        ],
+        "call_date": null,
+        "area_to": null,
+        "number_of_persons": null,
+        "commission": "",
+        "trash": false,
+        "email": "",
+        "rieltor": [],
+        "loyality": [],
+        "type_building_data": [],
+        "floors_from": null,
+        "rooms_to": null,
+        "district_obj": [],
+        "time_trash": null,
+        "floors_to": null,
+        "type_stage": null,
+        "phone_first": null,
+        "name": "",
+        "room": [],
+        "phone_second": null,
+        "price_from": null
+    },
+    "model": "arendator.arendator",
+    "pk": 28
+}
+]

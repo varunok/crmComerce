@@ -1,0 +1,97 @@
+                                            {% load dead_line %}
+                                            {% for meeting in meeting_list %}
+                                                    <tr>
+                                                         <td class="f-clr-grey">
+                                                            {{ meeting.id }}
+                                                        </td>
+                                                        <td class="comment f-clr-grey">
+                                                            {% if meeting.meet_comment %}
+                                                                {{ meeting.meet_comment }}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="edit f-clr-grey">
+                                                           <select name="" id="">
+                                                                {% for status in status_list %}
+                                                                    <option
+                                                                        {% if meeting.meet_status.id == status.id %}
+                                                                            selected
+                                                                        {% endif %}
+                                                                        value="{{ status.id }}">{{ status }}
+                                                                    </option>
+                                                                {% endfor %}
+                                                           </select>
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            {% if meeting.meet_arendator %}
+                                                                <i class="fa fa-user"></i>
+                                                                {{ meeting.meet_arendator.name }}
+                                                                <br>
+                                                                <i class="fa fa-phone"></i>
+                                                                {% if meeting.meet_arendator.phone_first %}
+                                                                    {{ meeting.meet_arendator.phone_first }}
+                                                                {% elif meeting.meet_arendator.phone_second %}
+                                                                    {{ meeting.meet_arendator.phone_second }}
+                                                                {% else %}
+                                                                {% endif %}
+                                                                <br>
+                                                                <i class="fa fa-hashtag"></i>
+                                                                K{{ meeting.meet_arendator_id }}
+                                                            {% elif meeting.meet_buyer %}
+                                                                <i class="fa fa-user"></i>
+                                                                {{ meeting.meet_buyer.name}}
+                                                                <br>
+                                                                <i class="fa fa-phone"></i>
+                                                                {% if meeting.meet_buyer.phone_first %}
+                                                                    {{ meeting.meet_buyer.phone_first }}
+                                                                {% elif meeting.meet_buyer.phone_second %}
+                                                                    {{ meeting.meet_buyer.phone_second }}
+                                                                {% else %}
+                                                                {% endif %}
+                                                                <br>
+                                                                <i class="fa fa-hashtag"></i>
+                                                                K{{ meeting.meet_buyer_id }}
+                                                            {% else %}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            {% if meeting.rieltor %}
+                                                                <i class="fa fa-user"></i>
+                                                                {{ meeting.rieltor }}
+                                                            {% endif %}
+                                                            <br>
+                                                            <div class="date
+                                                             {% if meeting.meet_date|dead_line %}
+                                                                f-clr-red
+                                                             {% else %}
+                                                                f-clr-grey
+                                                             {% endif %}
+                                                             ">
+                                                                <i class="fa fa-clock-o"></i>
+                                                                {{ meeting.meet_date|date:'D d M H:i' }}
+                                                            </div>
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            <i class="fa fa-user"></i>
+                                                            {{ meeting.meet_facility.name_owner }}<br>
+                                                            <i class="fa fa-phone"></i>
+                                                            {{ meeting.meet_facility.phone_owner }}<br>
+                                                            <i class="fa fa-local"></i>
+                                                            {{ meeting.meet_facility.street_obj }}
+                                                            {% if meeting.meet_facility.number_home %}
+                                                                {{ meeting.meet_facility.number_home }}
+                                                            {% endif %}
+                                                            <br>
+                                                            <i class="fa fa-hashtag"></i>
+                                                            {% if meeting.meet_facility_id %}
+                                                                O{{ meeting.meet_facility_id }}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="edit f-clr-grey" id-meet="{{ meeting.id }}">
+                                                            {% if not meeting.meet_archiv %}
+                                                                <a href="#"> <i class="fa fa-play"></i></a>
+                                                            {% endif %}
+                                                            <a href="#"> <i class="fa fa-pencil"></i></a>
+                                                            <a href="#"><i class="fa fa-times"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}

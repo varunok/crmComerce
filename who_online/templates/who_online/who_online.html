@@ -1,0 +1,57 @@
+{% load who_online_tag %}
+<div class="head-dropmessage">КТО ОНЛАЙН</div>
+{% for user in list_user  %}
+    {% if user.user.is_active %}
+        <li>
+            <a href="#">
+                <img class="img-circle" src="{{ MEDIA_URL }}{{ user.image }}" alt="" height="40px;" width="40px;" style="padding-bottom: 0px; padding-right:0px;">
+                    <span style="margin-left:10px; padding-left:40px;" class="message-user-name">{{ user.user.first_name }} {{ user.user.last_name }}</span>
+                    <span style="margin-left:10px" class="message-user-date">{{ user.user.last_login|last_login }}</span>
+                    {% if user.user.last_login|last_login == 'online' %}
+                        <i class="fa fa-circle user-status"></i>
+                    {% endif %}
+                <a id-mes="{{ user.user.id }}" class="message-send" href="#messeg_id">написать</a>
+            </a>
+        </li>
+	    <li role="separator" class="divider"></li>
+    {% endif %}
+{% endfor %}
+<script>
+	 $(document).ready(function() {
+	 	    	$('.message-send').magnificPopup({
+			        // type: 'inline',
+					// preloader: false,
+					// focus: '#username',
+					modal: true,
+			        // removalDelay: 500, //delay removal by X to allow out-animation
+			        callbacks: {
+			            beforeOpen: function() {
+			               this.st.mainClass = this.st.el.attr('data-effect');
+			            }
+			        },
+			        midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+			    });
+	 	$('.message-send').on('click', function(event) {
+	 		event.preventDefault();
+	 		var id_mes = $(this).attr('id-mes');
+	 		$('#send_mes_ser').attr('id-mes', id_mes);
+	 	});
+    	$('#send_mes_ser_cencel').click(function(event) {
+    		$(this).off('click');
+    		event.preventDefault();
+    		$.magnificPopup.close();
+    	});
+    	$('#send_mes_ser').click(function(event) {
+    		event.preventDefault();
+    		var id_mes = $(this).attr('id-mes');
+    		var text_messege = $('textarea#text_messege_user').val()
+    		$.post('send_messege_user', {"id_user": id_mes, "text_messege": text_messege})
+            .success( function (data) {
+                $('.messageServer').animate({'backgroundColor': '#5bc0de'}, 2000);
+                $('.messageServer').text('Сообщение отправлено').fadeIn(1000).delay(2000).fadeOut(500);
+            })
+        		$.magnificPopup.close();
+    		$(this).off('click');
+    	});
+	 })
+</script>

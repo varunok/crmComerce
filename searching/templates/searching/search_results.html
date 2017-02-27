@@ -1,0 +1,157 @@
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li class="active">Результати поиска</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container object-edit">
+            <div class="row section-search">
+                <div class="col-md-12">
+                    <h1 class="section-head">Результати <span>поиска</span></h1>
+                </div>
+            </div>
+            {% if search_results_facility %}            
+            <div class="row search-object">
+                <div class="col-md-12">
+                    <h2 class="section-head">Найдено <span>Объектов</span></h2>
+                </div>
+            </div>
+            <div class="row search-object" style="font-size:1.3em;">
+                {% for result in search_results_facility %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_obj" result.id %}">ID {{ result.id }},
+                            {% if result.title %}
+                                {{result.title}},
+                            {% endif %}
+                            {{result.comment}},
+                            {{result.district_obj_id}},
+                            {{result.street_obj_id}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}<br><br>
+            </div>
+            {% endif %}
+            {% if search_results_arendator or search_phone_arendator %}            
+            <div class="row search-object">
+                <div class="col-md-12">
+                    <h2 class="section-head">Найдено <span>арендаторов</span></h2>
+                </div>
+            </div>
+            <div class="row search-object" style="font-size:1.3em;">
+                {% for result in search_results_arendator %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_arendator" result.id %}">ID {{ result.id }},
+                            {% if result.name %}
+                                {{result.name}},
+                            {% endif %}
+                            {{result.comment}},
+                            {{result.email}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for result in search_phone_arendator %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_arendator" result.id %}">ID {{ result.id }},
+                            {% if result.name %}
+                                {{result.name}},
+                            {% endif %}
+                            {{result.comment}},
+                            {{result.email}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}<br><br>
+            </div>
+            {% endif %}
+            {% if search_results_buyer or search_phone_buyer %}            
+            <div class="row search-object">
+                <div class="col-md-12">
+                    <h2 class="section-head">Найдено <span>покупателей</span></h2>
+                </div>
+            </div>
+            <div class="row search-object" style="font-size:1.3em;">
+                {% for result in search_results_buyer %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_obj" result.id %}">ID {{ result.id }},
+                            {% if result.name %}
+                                {{result.name}},
+                            {% endif %}
+                            {{result.comment}},
+                            {{result.email}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for result in search_phone_buyer %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_obj" result.id %}">ID {{ result.id }},
+                            {% if result.name %}
+                                {{result.name}},
+                            {% endif %}
+                            {{result.comment}},
+                            {{result.email}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}<br><br>
+            </div>
+            {% endif %}
+            {% if search_results_makler or search_phone_makler %}            
+            <div class="row search-object">
+                <div class="col-md-12">
+                    <h2 class="section-head">Найдено <span>маклеров</span></h2>
+                </div>
+            </div>
+            <div class="row search-object" style="font-size:1.3em;">
+                {% for result in search_results_makler %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_obj" result.id %}">ID {{ result.id }},
+                            {% if result.name %}
+                                {{result.name}},
+                            {% endif %}
+                            {{result.agency}},
+                            {{result.phone}},
+                            {{result.email}},
+                            {{result.site}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for result in search_phone_makler %}
+                    <div class="col-md-12">
+                        <div>{{forloop.counter}}
+                            <a href="{% url "single_obj" result.id %}">ID {{ result.id }},
+                            {% if result.name %}
+                                {{result.name}},
+                            {% endif %}
+                            {{result.agency}},
+                            {{result.phone}},
+                            {{result.email}},
+                            {{result.site}}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}<br><br>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>

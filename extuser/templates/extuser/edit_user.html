@@ -1,0 +1,90 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Редактирование пользователя</title>{% endblock title %}
+
+{% load static from staticfiles %}
+
+{% block extra_css %}
+<style type="text/css">
+    .edit-pass{
+        opacity: 0;
+        position: absolute;
+        /*width: 100%;*/
+        height: 80px;
+        z-index: 10000;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li class=""><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class=""><a href="{% url "setting_user" %}">Пользователи</a></li>
+                        <li class="active">Редактирование пользователя</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Редактирование  <span>пользователя</span></h1>
+                    <div class="messageServer"></div>
+                    <div class="col-md-4" style="float: right">
+                        {# <form name="edit_pass" action="{% url "save_edit_user" %}" enctype="multipart/form-data" method="post"> #}
+                            {# {% csrf_token %} #}
+                            {# <input type="submit" name="" class="edit-pass col-md-11"> #}
+                        {# </form> #}
+                        <a href="{% url "edit_pass" user_edit.user.id %}" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4" style="height: 80px; font-size: 40px;">
+                                    <i class="fa fa-key"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Сброс пароля</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <form name="edit_user" action="{% url "save_edit_user" %}" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                        <div class="col-md-4 col-md-offset-4">
+                            <label>Имя</label>
+                            <input type="text" name="first_name" id="id_first_name" value="{{ user_edit.user.first_name }}">
+                        </div>
+                        <div class="col-md-4 col-md-offset-4">
+                            <label>Фамилия</label>
+                            <input type="text" name="last_name" id="id_last_name" value="{{ user_edit.user.last_name }}">
+                        </div>
+                        <div class="col-md-4 col-md-offset-4">
+                            <label>Почта(логин)</label>
+                            <input type="text" name="email" id="id_email" value="{{ user_edit.user.email }}">
+                        </div>
+                        <div class="col-md-4 col-md-offset-4">
+                            <label>Аватар</label>
+                            <input type="file" name="photo">
+                        </div>
+                        <div class="col-md-4 col-md-offset-4"  style="text-align: right; margin-top: 20px;">
+                            <input type="hidden" name="id_user" id="id_user" value="{{ user_edit.user.id }}">
+                            <div style="display: inline-block;">
+                                <input class="btn btn-green" type="submit" name="" value="Сохранить">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock content %}

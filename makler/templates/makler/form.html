@@ -1,0 +1,110 @@
+ <div class="makler-form container">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="send_form" action="makler/add_makler" method="post">
+                {% csrf_token %}
+                    <h3 style="padding-left: 20px" class="section-head">Добавить маклера</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="name">Имя</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="name-agency">Название Агенства</label>
+                            {{ form.agency }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="white">Тип маклера</label>
+                            {% if form.white_black.errors %}
+                                <span style="color: #cc0000">{{ form.white_black.errors.as_text }}</span>
+                            {% endif %}
+                            {{ form.white_black }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone">Телефон
+                                {% if form.phone.errors %}
+                                    <span style="color: #cc0000"> {{ form.phone.errors.as_text }} </span>
+                                {% endif %}
+                                </label>
+                                {{ form.phone }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="phone">Телефон 2
+                                {% if form.phone_second.errors %}
+                                    <span style="color: #cc0000"> {{ form.phone_second.errors.as_text }} </span>
+                                {% endif %}
+                                </label>
+                                {{ form.phone_second }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone">Телефон 3
+                                {% if form.phone_third.errors %}
+                                    <span style="color: #cc0000"> {{ form.phone_third.errors.as_text }} </span>
+                                {% endif %}
+                                </label>
+                                {{ form.phone_third }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="site">Сайт</label>
+                            {% if form.site.errors.as_text %}
+                                    <span style="color: #cc0000"> {{ form.site.errors.as_text }} </span>
+                            {% endif %}
+                            {{ form.site }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email">Email
+                                {% if form.email.errors.as_text %}
+                                    <span style="color: #cc0000"> {{ form.email.errors.as_text }} </span>
+                                {% endif %}
+                            </label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="cooperation">Сотрудничество</label>
+                            {{ form.cooperation }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="rieltor">Риелтор</label>
+                            {{ form.email.rieltor.as_text }}
+                            {{ form.rieltor }}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    </form>
+                    <div class="row">
+                        <div class="col-md-6"><a id="send_form_makler" class="btn btn-green" href="">Добавить</a></div>
+{#                        <div class="col-md-6"><input class="btn btn-green" type="submit"></div>#}
+                            <div class="col-md-6" style="text-align: right;"><a id="cancel_add_makler" class="btn btn-red" href="">Отменить</a></div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $('#id_phone').change(function(event) {
+        if (this.value.match(/[^0-9\.\+]/g)) {
+            this.value = this.value.replace(/[^0-9\.\+]/g, '');
+        }
+    });
+    $('#id_phone_second').change(function(event) {
+        if (this.value.match(/[^0-9\.\+]/g)) {
+            this.value = this.value.replace(/[^0-9\.\+]/g, '');
+        }
+    });
+    $('#id_phone_third').change(function(event) {
+        if (this.value.match(/[^0-9\.\+]/g)) {
+            this.value = this.value.replace(/[^0-9\.\+]/g, '');
+        }
+    });
+</script>

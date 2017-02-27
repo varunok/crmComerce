@@ -1,0 +1,44 @@
+{% load dead_line %}
+<tr style="display: none">
+    <td>{{ tasking.id }}</td>
+    <td class="comment">
+        {{ tasking.task_text }}
+    </td>
+    <td>
+        <div class="rieltor">
+            <i class="fa fa-user"></i>
+            {{ tasking.rieltor }}
+        </div>
+        <div class="date
+            {% if tasking.dead_line|dead_line %}
+                f-clr-red
+            {% else %}
+                f-clr-grey
+            {% endif %}
+                ">
+            <i class="fa fa-clock-o"></i>
+            {{ tasking.dead_line }}
+        </div>
+    </td>
+    <td class="edit">
+        {% if tasking.type_complex %}
+            <span class="status-label
+        {% if tasking.type_complex.id == 2 %}
+            sl-grey
+        {% elif tasking.type_complex.id == 3 %}
+            sl-orange
+        {% elif tasking.type_complex.id == 1 %}
+            sl-red
+        {% endif %}">
+        {{ tasking.type_complex }}
+        </span>
+        {% endif %}
+    </td>
+    <td class="edit" id-task="{{ tasking.id }}">
+        {% if not tasking.task_archiv %}
+            <a href="#"> <i class="fa fa-play"></i></a>
+        {% endif %}
+        <a href="#"> <i class="fa fa-pencil"></i></a>
+        <a href="#"><i class="fa fa-times"></i></a>
+    </td>
+</tr>

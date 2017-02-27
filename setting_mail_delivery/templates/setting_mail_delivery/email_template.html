@@ -1,0 +1,118 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Шаблон рассылок EMAIL</title>{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .txt_tmp{
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #767676;
+    }
+</style>
+{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "setting_mail_delivery" %}">Рассылка</a></li>
+                        <li class="active">Шаблон рассылок EMAIL</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <h1 class="section-head">Шаблон <span>рассылок EMAIL</span></h1>
+                    <div class="messageServer"></div>
+                <div class="section-sort">
+                    <a href="#" class="extend-block">
+                        <i class=""></i>
+                    </a>
+                </div>
+                <form action="save_email_template_form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {# <div class="col-md-8 col-md-offset-2"> #}
+                        {# <img src="{{ MEDIA_URL }}{{ temp_email_form.logo }}" alt="" width="300"> #}
+                    {# </div> #}
+                    {# <div class="col-md-8 col-md-offset-2"> #}
+                        {# <div class="row"> #}
+                            {# <div class="col-md-4"> #}
+                                {# <label class="txt_tmp" for="">Логотип</label> #}
+                            {# </div> #}
+                            {# <div class="col-md-12"> #}
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                {# {{ form.logo }} #}
+                            {# </div> #}
+                            {#  #}
+                        {# </div> #}
+                    {# </div> #}
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="txt_tmp" for="">Заголовок</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                {{ form.title }}
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="txt_tmp" for="">Текст</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <textarea name="" id="" cols="30" rows="5"></textarea> #}
+                                {{ form.text }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="txt_tmp" for="">Подпись</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                {{ form.signature }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="txt_tmp" for="">Адресс отправителья</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                <i style="color: red;">{{ form.errors.sender_address.as_text }}</i>
+                                {{ form.sender_address }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-md-offset-2" style="margin-top: 40px;">
+                        <div class="row">
+                            <div class="col-md-4" style="float: right;">
+                                <input id="" type="submit" value="Сохранить" class="btn btn-green">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Настройка рассылок SMS</title>{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .txt_tmp{
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #767676;
+    }
+</style>
+{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "setting_mail_delivery" %}">Рассылка</a></li>
+                        <li class="active">Настройка рассылок SMS</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <h1 class="section-head">Настройка <span>рассылок SMS</span></h1>
+                    <div class="messageServer"></div>
+                <div class="section-sort">
+                    <a href="#" class="extend-block">
+                        <i class=""></i>
+                    </a>
+                </div>
+                <form action="save_sms_setting" method="post" enctype="">
+                    {% csrf_token %}
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="txt_tmp" for="">Номер телефона или подпись отправителя</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                {{ form.sender }}
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="section-head">Подключение к шлюзу</h2>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="txt_tmp" for="">Логин</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                {{ form.login }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="txt_tmp" for="">Пароль</label>
+                            </div>
+                            <div class="col-md-12">
+                                {# <input id="" type="text" value="" placeholder=""> #}
+                                {{ form.password }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-md-offset-2" style="margin-top: 40px;">
+                        <div class="row">
+                            <div class="col-md-4" style="float: right;">
+                                <input id="" type="submit" value="Сохранить" class="btn btn-green">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+
+{% endblock content %}

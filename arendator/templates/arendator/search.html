@@ -1,0 +1,63 @@
+                <div class="col-md-12">
+                    <h1 class="section-head">Ваши <span>Арендаторы </span> <i class="label label-default">{{ count_arendator }}</i></h1>
+                    <div class="section-sort">
+                        <a href="{% url "add_arendator" %}" class="btn btn-green">Добавить</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="tabs">
+                         <ul class="object-filter">
+                            {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+                                <li><a href="{% url request.path|cut:'/arendators/'|cut:'/' %}?order_by=id{% if order_by == 'id' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'id' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'id' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Артикул
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/arendators/'|cut:'/' %}?order_by=call_date{% if order_by == 'call_date' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'call_date' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'call_date' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата звонка
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/arendators/'|cut:'/' %}?order_by=review_date{% if order_by == 'review_date' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'review_date' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'review_date' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата обновления
+                                </a></li>
+                            {% endwith %}
+                        </ul>
+                    </div>
+
+                </div>
+                {% for arendator in arendator_list %}
+                    {% if arendator.trash == 0 %}
+                        {% if arendator.loyality.get.id == '' %}
+                            {% include 'homes/obj_arendator.html' %}
+                        {% elif arendator.loyality.get.id == user.id or user.is_superuser %}
+                            {% include 'homes/obj_arendator.html' %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if paginator.num_pages > 1 %}
+                    {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+                        <div class="col-md-12 section-pagination">
+                            <ul class="pagination">
+                                <li><a href="{% url request.path|cut:'/arendators/'|cut:'/' %}?page=1&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&laquo;</a></li>
+                                {% for p in paginator.page_range %}
+                                    <li 
+                                        {% if request.GET.page|first == p|floatformat %}
+                                            class="active"
+                                        {% endif %}>
+                                        <a href="{% url request.path|cut:'/arendators/'|cut:'/' %}?page={{ p }}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">{{ p }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li><a href="{% url request.path|cut:'/arendators/'|cut:'/' %}?page={{ paginator.num_pages}}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    {% endwith %}
+                {% endif %}

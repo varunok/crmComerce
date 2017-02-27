@@ -1,0 +1,28 @@
+{% load static from staticfiles %}
+<div class="comments-item
+    {% if forloop.last %}
+	    last-comments
+	{% endif %}">
+	<div class="col-md-1">
+	    <div class="comments-avatar">
+	        {% if data_comment.image != '0' %}
+	            <img src="/media/{{ data_comment.image }}" alt="" width=50px;>
+            {% else %}
+	            <img src= {% static "images/logo-user-message.jpg" %} alt="" >
+            {% endif %}
+        </div>
+    </div>
+	<div class="col-md-11">
+	    <h4 class="comments-name">{{ data_comment.author_comment }}</h4>
+	        <p class="comments-text">
+	            {{ data_comment.comment }}
+            </p>
+        <div class="comments-edit">
+	        <a class="a" id="del_comment_{{ data_comment.id }}" href="#"><i class="fa fa-times"></i></a>
+        </div>
+        <div class="comments-time">
+	        <i class="fa fa-clock-o"></i>
+            {{ data_comment.date_comment }}
+        </div>
+    </div>
+</div>

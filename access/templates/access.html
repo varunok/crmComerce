@@ -1,0 +1,248 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Доступы</title>{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .badge {
+        display: inline-block;
+        min-width: 37px;
+        padding: 3px 7px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1;
+        color: #767676;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 1px solid #767676;
+    }
+    .badge:empty {
+      display: none;
+    }
+    .btn .badge {
+      position: relative;
+      top: -1px;
+    }
+    .btn-xs .badge,
+    .btn-group-xs > .btn .badge {
+      top: 0;
+      padding: 1px 5px;
+    }
+    a.badge:hover,
+    a.badge:focus {
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .list-group-item.active > .badge,
+    .nav-pills > .active > a > .badge {
+      color: #337ab7;
+      background-color: #fff;
+    }
+    .list-group-item > .badge {
+      float: right;
+    }
+    .list-group-item > .badge + .badge {
+      margin-right: 5px;
+    }
+    .nav-pills > li > a > .badge {
+      margin-left: 3px;
+    }
+
+    .badgebox
+    {
+        opacity: 0;
+    }
+
+    .badgebox + .badge
+    {
+        /* Move the check mark away when unchecked */
+        text-indent: -999999px;
+        /* Makes the badge's width stay the same checked and unchecked */
+        width: 27px;
+    }
+
+    .badgebox:focus + .badge
+    {
+        /* Set something to make the badge looks focused */
+        /* This really depends on the application, in my case it was: */
+
+        /* Adding a light border */
+        box-shadow: inset 0px 0px 5px;
+        /* Taking the difference out of the padding */
+    }
+
+    .badgebox:checked + .badge
+    {
+        /* Move the check mark back when checked */
+        text-indent: 0;
+    }
+    /* Tooltip container */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+{#        border-bottom: 1px dotted black; /* If you want dots under the hoverable text */#}
+    }
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 450px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -220px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 1s;
+    }
+
+    /* Tooltip arrow */
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+{% endblock extra_css %}
+
+{% load static %}
+
+{% block content %}
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><a href="{% url "homes" %}">Главная</a></li>
+                            <li><a href="{% url "setting_globall" %}">Настройки</a></li>
+                            <li class="active">Доступы</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content" ng-app="accessApp" ng-controller="AccessController">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                            <h1 class="section-head">Доступы</h1>
+                    </div>
+                </div>
+                {% verbatim %}
+                    <div class="row">
+                        <div class="col-md-2" style="float: right">
+                            <span style="color:red" ng-show="validSearch">Неверное значение</span>
+                            <input type="text"  placeholder="Поиск..." ng-model="search" ng-change="searchObj(search)">
+                        </div>
+                        <div class="tooltip" style="float: right">
+                            <i class="fa fa-question fa-2x" aria-hidden="true"></i>
+                            <span class="tooltiptext">
+                                Способы поиска: <br>
+                                1. Поиск по ID объекта через запятую, пример: 2,5,77. <br>
+                                2. Поиск в диапазоне ID объектов через тире, пример 23-34 <br>
+                                3. поиск по срезу количества, поиск происходит по общему <br>
+                                количеству объектов и ИД объекта не учитывается. Возможные <br>
+                                значения | число (от): число (до) | число (от): <br>
+                                | : число (до) |. Примеры: 10:20 , 45: , :90
+                            </span>
+                        </div>
+                        <div class="col-md-2" style="">
+                            <select name="" id="" ng-change="getItems()"
+                            ng-options="option.name for option in itemsPage.availableOptions track by option.id"
+                            ng-model="itemsPage.selectedOption">
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1 col-sm-1">
+                            <table class="table">
+                                <thead>
+                                    <th style="height: 51px;">OBJECT</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="obj in facilitys" ng-if="obj.pk">
+                                        <td style="height: 51px;">ID {{ obj.pk }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive col-md-11 col-sm-11">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th ng-repeat="user in users" ng-if="!user.fields.is_superuser">
+                                        {{ user.fields.first_name }} {{ user.fields.last_name }}
+                                        <label  class="btn" >
+                                            <input type="checkbox"
+                                                   class="badgebox"
+                                                   ng-model="selectedAll"
+                                                   ng-click="changeAll(user.pk, selectedAll)"
+                                                   ng-disabled="desableCheck"
+                                            >
+                                            <span class="badge">&check;</span>
+                                        </label>
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="obj in facilitys" ng-if="obj.pk">
+                                        <td ng-repeat="user in users" ng-if="!user.fields.is_superuser">
+                                                <label  style="width: 100%;" for="default{{user.pk}}{{obj.pk}}" class="btn" >
+                                                    <input ng-checked="obj.fields.loyality.includes(user.pk)"
+                                                           type="checkbox" id="default{{user.pk}}{{obj.pk}}"
+                                                           class="badgebox"
+                                                           ng-click="change(user.pk, obj.pk, selected)"
+                                                           ng-model="selected"
+                                                           ng-disabled="desableCheck">
+                                                    <span class="badge">&check;</span>
+                                                </label>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <span style="color:red" ng-show="validReg">Ничего не найдено</span>
+                            <input ng-show="validReg" type="button" ng-model="cancel" value="Сбросить" class="btn btn-red" ng-click="cancelSearch()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div id="paginator" style="float: right;"></div>
+                        </div>
+                    </div>
+                {% endverbatim %}
+            </div>
+        </section>
+{% endblock content %}
+{% block extra_js %}
+     <script>
+     $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        });
+     </script>
+    {% include 'homes/angular_include.html' %}
+    <script src="{% static "app/access_obj.js" %}"></script>
+{% endblock extra_js %}

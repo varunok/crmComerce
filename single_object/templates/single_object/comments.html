@@ -1,0 +1,19 @@
+
+                    <div type-tabs="comments" class="comments">
+                        <h3 class="comments-head">Комментарии</h3>
+                        <div class="row comment_add">
+                            {% for data_comment in single_obj_comments %}
+                                {% if data_comment.type_tabs == 'comments' %}
+                                    {% include 'single_object/single_comment/single_comment.html' %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                            <div class="comments-area">
+                                <div class="col-md-12">
+                                    <textarea name="" id="text_comment"></textarea>
+                                    <div class="comments-add">
+                                        <a id="send_comment" href="#" class="btn btn-green">Добавить</a>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>

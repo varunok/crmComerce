@@ -1,0 +1,91 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Корзина</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class="active">Корзина</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                        <h1 class="section-head">Корзина</h1>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url "objects_trash" %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-university"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Объекты</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url "arendator_trash" %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Арендатори</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                 <div class="col-md-6">
+                    <a href="{% url "buyer_trash" %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-male"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Покупатели</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url "archiv_email" %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-envelope"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Архив писем</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        $(document).ready(function() {
+        })
+    </script>
+{% endblock extra_js %}

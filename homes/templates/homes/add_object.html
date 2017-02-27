@@ -1,0 +1,686 @@
+{% extends "homes/base.html" %}
+
+{% block extra_css %}
+    <style>
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 450px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -220px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 1s;
+    }
+
+    /* Tooltip arrow */
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    </style>
+{% endblock extra_css %}
+
+{% block title %}<title>
+{% if edit %}
+    Редактирование объекта  ID {{id_obj}}
+{% else %}
+   Добавление объекта
+{% endif %}
+</title>{% endblock title %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "objects" %}">Объекты</a></li>
+                        {% if edit %}
+                            <li class="active">Редактирование ID {{id_obj}}</li>
+                        {% else %}
+                            <li class="active">Добавление</li>
+                        {% endif %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <form action="add_facility" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row section-search">
+                    <div class="col-md-12">
+                        <h1 class="section-head">Адрес <span>объекта</span></h1>
+                        {% if edit %}
+                            <input type="hidden" name="edit" id="edit" value="{{ id_obj }}">
+                        {% endif %}
+                        <div class="section-sort">
+                            <input name="add_facility" type="submit" class="btn btn-green" value=
+                            {% if edit %}
+                                "Сохранить"
+                            {% else %}
+                                "Добавить"
+                            {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12 substrate">
+                            <div class="row">
+                                {{ form.non_field_errors }}
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Тип объекта
+                                            {% if  form.type_facilit.value == '' %}
+                                                <i style="color:#f1300a">&bull; &nbsp;{{ form.type_facilit.errors }}</i>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.type_facilit }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Район</label>
+                                        {{ form.district_obj }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="actual">Улица  &ensp;
+                                            {% if form.street_obj.value == '' %}
+                                                <i style="color:#f1300a">&bull; &nbsp;{{ form.street_obj.errors }}</i>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.street_obj }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Номер</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{ form.number_home }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{ form.number_apartment }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat" class="f-clr-red">Цена(выкуп)</label>
+                                        {{ form.price_bay }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat" class="f-clr-green">Цена(месяц)</label>
+                                        {{ form.price_month }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Тип операции
+                                            {% if form.list_operations.data %}
+                                            {% else %}
+                                                <i style="color:#f1300a">&nbsp;{{ form.list_operations.errors }}</i>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.list_operations }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Станция метро</label>
+                                        {{ form.subway_obj }}
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Ориентир</label>
+                                        {{ form.landmark }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h1 class="section-head">Контакты <span>владельца</span></h1>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12 substrate">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Тип</label>
+                                        <div class="row">
+                                                {% for radio in form.contact_owner %}
+                                                    {% if forloop.counter0 %}
+                                                        <div class="col-md-6">
+                                                            {{ radio }}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Агенство</label>
+                                        {{ form.agency }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="phone">Пересмотр <i class="fa fa-calendar"></i>&ensp;
+{#                                            {% if form.review_date.value == '' %}#}
+{#                                                <i style="color:#f1300a">&bull; &nbsp;{{ form.review_date.errors }}</i>#}
+{#                                            {% endif %}#}
+                                        </label>
+                                        {{ form.review_date }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Имя</label>
+                                        {{ form.name_owner }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Телефон
+                                        {% if form.phone_owner.value == '' %}
+                                            <i style="color:#f1300a">&bull; &nbsp;{{ form.phone_owner.errors }}</i>
+                                        {% endif %}
+                                        </label>
+                                        {{ form.phone_owner }}
+                                        <div class="owner_respon" id="id_owner_respon"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="phone">Дата звонка <i class="fa fa-calendar"></i>&ensp;
+{#                                            {% if form.review_date.value == '' %}#}
+{#                                                <i style="color:#f1300a">&bull; &nbsp;{{ form.review_date.errors }}</i>#}
+{#                                            {% endif %}#}
+                                        </label>
+                                        {{ form.call_date }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="idobj">E-mail
+{#                                        {% if form.email_owner %}#}
+                                                <i style="color:#f1300a"></i>
+{#                                            {% endif %}#}
+                                        </label>
+
+                                        {{ form.email_owner }}
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Доп. телефон</label>
+                                        {{ form.phone_owner_plus }}
+                                        <div class="owner_respon" id="id_owner_respon_plus"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="idobj"><i class="fa fa-star"></i> VIP</label>
+                                        {{ form.vip_owner }}
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h1 class="section-head">Описание <span>объекта</span></h1>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12 substrate">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Расположение</label>
+                                        {{ form.location }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Метраж общий, m2</label>
+                                        {{ form.footage }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Торговый зал</label>
+                                        {{ form.shopping_room }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Ремонт</label>
+                                        {{ form.repairs }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Этажность</label>
+                                        {{ form.number_of_storeys }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat">Вход</label>
+                                        {{ form.entrance }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Платежи</label>
+                                        {{ form.payments }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Комнат</label>
+                                        {{ form.rooms }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="phone">
+                                            <span>Документы</span>
+                                            {{ form.documentation }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="search-item">
+                                        <label for="price">Комментарий
+                                        {% if form.comment.value == '' %}
+                                            <i style="color:#f1300a">&bull; &nbsp;{{ form.comment.errors }}</i>
+                                        {% endif %}
+                                        </label>
+                                        {{ form.comment }}
+                                    </div>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h1 class="section-head">Состояние <span>объекта</span></h1>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-12 substrate">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="typeobj">Риелтор</label>
+                                    {{ form.rieltor }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Лояльность</label>
+                                    {{ form.loyality }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="actual">Актуальность</label>
+                                    {{ form.actuality }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="tarea">Состояние</label>
+                                    {{ form.condition }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Комиссия</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                           {{ form.commission }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ form.currency|default:'$'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h1 class="section-head">Реклама <span>объекта</span></h1>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-12 substrate">
+                        <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for=" ">Заголовок</label>
+                                        {{ form.title }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="search-item">
+                                                <label for=" ">YouTube</label>
+                                                {{ form.youtube }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="search-item">
+                                            <label for=" " class="tooltip">Панорама
+                                                <i class="fa fa-question fa-2x" aria-hidden="true"></i>
+                                                <span class="tooltiptext">
+                                                    Вставлять только "Вставить на сайт". <br>
+                                                    НЕ "Поделиться ссылкой:"!!!
+                                                </span>
+                                            </label>
+                                                {{ form.panorama }}
+                                            </div>
+                                            <br>
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="search-item">
+                                        <label for=" ">Изображение</label>
+                                        <div class="btn btn-green grn_upload_file">
+                                            {{ form.image }}
+                                            <i class="fa fa-cloud-download"></i>
+                                            Загрузить изображение
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row load-img-wrap">
+                                                <div class="add_imges_row">
+                                                    {% if edit %}
+                                                        {% for image in images %}
+                                                            <div class="col-md-2 load-img" style="margin-top:5px;"><img src="{{MEDIA_URL}}{{image.image}}" alt="{{image.id}}" width="100px" height="100px"><a href="#"><i class="fa fa-times load-img-del"></i></a></div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h1 class="section-head">Дополнительные <span>параметры</span></h1>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-12 substrate">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="typeobj">Отопление</label>
+                                    {{ form.heating }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Под что</label>
+                                    {{ form.under_that }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="actual">Наличие</label>
+                                    {{ form.availability }}
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center; margin: 15px 0">
+                            <input name="add_facility" type="submit" class="btn btn-green" value=
+                            {% if edit %}
+                                "Сохранить"
+                            {% else %}
+                                "Добавить"
+                            {% endif %}>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#typeobj").selectmenu();
+        $(".tarea-multiple").select2();
+        $("#idobj").selectmenu();
+        $("#actual").selectmenu();
+        $("#stat").selectmenu();
+        $("#street").selectmenu();
+        $("#typebuild").selectmenu();
+        $("#id_review_date").datepicker({
+             monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+            'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+            'Октябрь', 'Ноябрь', 'Декабрь'],
+             dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+             firstDay: 1,
+             defaultDate: '+6m'}).datepicker();
+        $("#id_call_date").datepicker({
+             monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+            'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+            'Октябрь', 'Ноябрь', 'Декабрь'],
+             dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+             firstDay: 1}).datepicker();
+        $(".multiple").select2();
+        $(".extend-block").click(function() {
+            var x = $(".extended-search").css('height');
+            if (x == '0px') {
+                $(".extended-search").css('height', '');
+            } else {
+                $(".extended-search").css('height', '0px');
+            }
+
+        });
+
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('.popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+            }
+        });
+        $(".js-example-basic-single").select2();
+        $.fn.select2.defaults.set("theme", "classic");
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+
+        $('#id_phone_owner').change(function(event) {
+            if (this.value.match(/[^0-9\.\+]/g)) {
+                this.value = this.value.replace(/[^0-9\.\+]/g, '');
+            }
+        });
+
+        $('#id_phone_owner_plus').change(function(event) {
+            if (this.value.match(/[^0-9\.\+]/g)) {
+                this.value = this.value.replace(/[^0-9\.\+]/g, '');
+            }
+        });
+
+        $('#id_phone_owner').on('keyup', function () {
+            if ($(this).val()){
+                $.get('check_phone', {'check': $(this).val()}, function (data) {
+                    var data = jQuery.parseJSON(data);
+                    $('#id_owner_respon').html('');
+                    for (i in data){
+                        $('#id_owner_respon').append('<p style="margin:0px;">'+'ID '+i+' ----- тел.: '+data[i]+'</p>');
+                    }
+                    if ($('#id_owner_respon').text()){
+                        $('#id_owner_respon').css('display', 'block');
+                    }
+                    $('#id_phone_owner').on('focusout', function () {
+                        $('#id_owner_respon').css('display', 'none');
+                    })
+                })
+            }
+        });
+        $(document).on('focus', '#id_phone_owner_plus', function () {
+            if ($('#id_owner_respon_plus').children('p').html()){
+                $('#id_owner_respon_plus').css('display', 'block');
+            }
+        });
+
+                $('#id_phone_owner_plus').on('keyup', function () {
+            if ($(this).val()){
+                $.get('check_phone', {'check': $(this).val()}, function (data) {
+                    var data = jQuery.parseJSON(data);
+                    $('#id_owner_respon_plus').html('');
+                    for (i in data){
+                        $('#id_owner_respon_plus').append('<p style="margin:0px;">'+'ID '+i+' ----- тел.: '+data[i]+'</p>');
+                    }
+                    if ($('#id_owner_respon_plus').text()){
+                        $('#id_owner_respon_plus').css('display', 'block');
+                    }
+                    $('#id_phone_owner_plus').on('focusout', function () {
+                        $('#id_owner_respon_plus').css('display', 'none');
+                    })
+                })
+            }
+        });
+        $(document).on('focus', '#id_phone_owner', function () {
+            if ($('#id_owner_respon').children('p').html()){
+                $('#id_owner_respon').css('display', 'block');
+            }
+        });
+
+        var files;
+        $('input[type=file]').change(function(){
+            files = this.files;
+            var data = new FormData();
+            $.each( files, function( key, value ){
+                data.append( key, value );
+            });
+            $.ajax({
+                url: 'add_img',
+                type: 'POST',
+                data: data,
+                cache: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    for (img in data){
+                        $('.add_imges_row').append('<div class="col-md-2 load-img" style="margin-top:5px;"><img src="'+data[img]+'" alt="" width="100px" height="100px"><a href="#"><i class="fa fa-times load-img-del"></i></a></div>')
+                    }
+                }
+            })
+        });
+        $('.add_imges_row').on('click', '.load-img-del', function (event) {
+            event.preventDefault();
+            var img = $(this).parents('.load-img').children('img').attr('src');
+            var img_id = $(this).parents('.load-img').children('img').attr('alt');
+            var obj_id = $('#edit').val();
+            var data = {
+                'img': img,
+                'img_id': img_id,
+                'obj_id': obj_id
+            }
+            $(this).parents('.load-img').fadeOut()
+            $.post('del_img', data, deleteImg);
+            function deleteImg() {
+                $(this).parents('.load-img').hide()
+            }
+        })
+    });
+    </script>
+{% endblock extra_js %}

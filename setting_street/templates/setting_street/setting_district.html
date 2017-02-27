@@ -1,0 +1,98 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Настройки Районы</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "setting_list_street" %}">Улицы и районы</a></li>
+                        <li class="active">Районы</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Настройки <span>районы</span></h1>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" id="name_district">
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#" class="btn btn-green" id="add_district">Добавить</a>
+                        </div>
+                    </div>
+                    <div class="massage" style="display: none; color: #f1300a"></div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="col-md-6">
+                    <table class="table table-bordered list_district">
+                        {% for district in list_district reversed %}
+                            <tr>
+                                <td>{{ district.district}}</td>
+                                <td class="col-md-1"><i value = "{{district.id}}" class="fa fa-times fa-2x setting_street"></i></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        $(document).ready(function() {
+            $('#name_district').on('keyup', function() {
+                var re = /^[ ]+/;
+                if (this.value.match(re)) {
+                this.value = this.value.replace(re, '');
+            }
+            });
+            $('#add_district').on('click', function(event) {
+                event.preventDefault();
+                var name_district = $('#name_district').val();
+                if (name_district) {
+                    $('#name_district').val('');
+                    $.get('add_district', {"name_district": name_district}, function(data) {
+                        if (data==="Значение присутствует") {
+                            $('.massage').text(data);
+                            $('.massage').css('display', 'block');
+{#                            $('.massage').hide(10000);#}
+                        }
+                        else {
+                            $('.massage').text('');
+                        }
+                        var data = jQuery.parseJSON(data);
+                        $('.list_district').prepend('<tr><td>' + data.name_district + '</td><td class="col-md-1"><i class="fa fa-times fa-2x setting_street"></i></td></tr>')
+
+                    });
+                }
+            });
+            $('.list_district').on('click', '.setting_street', function() {
+                $(this).parents('tr').toggle('slow');
+                var id_district = $(this).attr('value');
+                $.get('delete_district',{"id_district": $(this).attr('value')}, function(data) {});
+            });
+        })
+    </script>
+{% endblock extra_js %}

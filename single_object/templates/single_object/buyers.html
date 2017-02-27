@@ -1,0 +1,111 @@
+                    <div type-tabs="buyers" class="object-arendator">
+                        <h3 class="arendator-head">Покупатели</h3>
+                        <div class="row">
+                            <div class="col-md-12 arendator-sort">
+                                <input id="id_buyer" type="text" placeholder="ID">
+                                <a id="add_buyer_id" href="#" class="btn btn-green">Добавить по ID</a>
+{#                                <select class="tarea-multiple"   name="" id="avtomat_add_arendator">#}
+{#                                    <option value="">пункт 1</option>#}
+{#                                    <option value="">пункт 2</option>#}
+{#                                    <option value="">пункт 3</option>#}
+{#                                </select>#}
+{#                                <a href="#" class="btn btn-green">Подобрать параметри</a>#}
+                                <a id="avtomat_add_buyer" href="#" class="btn btn-green">автоматически</a>
+                                <div id="modal_avto" style="width: 300px; height: 200px; background-color: #f5f5f5; border-radius: 5px; box-shadow: 1px 1px 5px 1px #0b0b0b; position: fixed; z-index: 10000; left: 40%; top: 40%; display: none; padding: 10px;">
+                                    <h3 style="margin-bottom: 0;">Критерии:</h3>
+                                    <div style="padding: 20px;">
+                                        <div class="row">
+                                            <label for="">Цена</label>
+                                            <input type="checkbox" name="" id="price_automat" style="margin-left: 47px">
+                                            <label style="margin-left: 40px" for="">Площадь </label>
+                                            <input type="checkbox" name="" id="area_automat">
+                                        </div>
+                                        <div class="row">
+                                            <label for="">Кол. комнат </label>
+                                            <input type="checkbox" name="" id="rooms_automat">
+                                            <label style="margin-left: 40px" for="">Ремонт</label>
+                                            <input type="checkbox" name="" id="repairs_automat" style="margin-left: 14px;">
+                                        </div>
+                                        <div class="row">
+                                            <label for="">Тип обекта</label>
+                                            <input type="checkbox" name="" id="type_obj_automat" style="margin-left: 6px">
+                                            <label style="margin-left: 40px" for="">Район</label>
+                                            <input type="checkbox" name="" id="district_automat" style="margin-left: 21px;">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <a id="ok_automat_btn_buyer" href="#" class="btn btn-green">OK</a>
+                                        <a id="cencel_automat_btn" href="#" class="btn btn-red">Отменить</a>
+                                    </div>
+                                </div>
+                                <a href="#" id="clear_all_buyer" class="btn btn-red">Очистить</a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 delivery">
+                            <div class="delivery-head">
+                                <h3>Рассылка</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input id="plus_email" type="text" placeholder="E-mail">
+                                        <a href="#" id="delivery_email_buyer" class="btn btn-green">рассылка</a>
+                                        <input id="plus_phone" type="text" placeholder="Телефон">
+                                        <a id="delivery_sms_buyer" href="#" class="btn btn-green">рассылка</a>
+                                        <div class="delivery-pre">
+                                        {# <a href="#test-popup" data-effect="mfp-zoom-in"><i class="fa fa-question-circle-o"></i> Препросмотр</a> #}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table  class="table table table-striped table-bordered table-hover default">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Cтатус</th>
+                                                <th>Показы</th>
+                                                <th>Имя</th>
+                                                <th>Телефон</th>
+                                                <th>Цена</th>
+                                                <th>Метраж</th>
+                                                <th> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="add_tr">
+                                            {% if ties %}
+                                                {% for tie in ties %}
+                                                    {% if tie.tie_cont_owner|floatformat == singl_obj.id|floatformat %}
+                                                        {% for buyer in tie.tie_buye.all %}
+                                                            {% include 'single_object/return_table/single_table_buyer.html' %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="comments">
+                        <h3 class="comments-head">Комментарии</h3>
+                        <div class="row comment_add">
+                            {% for data_comment in single_obj_comments %}
+                                {% if data_comment.type_tabs == 'buyers' %}
+                                    {% include 'single_object/single_comment/single_comment.html' %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                            <div class="comments-area">
+                                <div class="col-md-12">
+                                    <textarea name="" id="text_comment"></textarea>
+                                    <div class="comments-add">
+                                        <a id="send_comment" href="#" class="btn btn-green">Добавить</a>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                        </div>
+                    </div>

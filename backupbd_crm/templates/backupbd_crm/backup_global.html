@@ -1,0 +1,116 @@
+{% extends "homes/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block title %}<title>Глобальний бекап</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><a href="{% url "homes" %}">Главная</a></li>
+                            <li><a href="{% url "setting" %}">Настройки</a></li>
+                            <li><a href="{% url "list_backup" %}">Backup</a></li>
+                            <li class="active">Глобальний бекап</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="section-head">Глобальний бекап</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="backup_global" href="#" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-database"></i>
+                                </div>
+                                <div class="setting-text col-md-4">
+                                    <h3>Backup Global</h3>
+                                    <p>Нажмите для создания</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-1" style="display:none">
+                        <a id="backup_global_link" href="" class="setting-link" download="">
+                            <div class="setting-section">
+                            <div class="setting-icon2 col-md-">
+                                    <i class="fa fa-download"></i>
+                                </div>
+                                <div class="setting-text2 col-md-">
+                                    <h4>Скачать</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="backup_dropbox" href="#" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-cloud-upload"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Вигрузить в облако</h3>
+                                    <p>Нажмите для создания и вигрузки</p>
+                                </div>
+                            </div>
+                            <input id="object_xls_val" value="create" type="hidden" name="">
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a id="" href="#" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-cog"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Список автосохранения</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                            <input id="object_xls_val" value="create" type="hidden" name="">
+                        </a>
+                    </div>
+                    <div class="col-md-5">
+                        <a id="restore_databases" href="#" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-cog"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Восстановить</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                            <input id="object_xls_val" value="create" type="hidden" name="">
+                        </a>
+                    </div>
+                    <div class="col-md-1" style="">
+                        <div id="not_click" href="" class="setting-link">
+                            <div class="setting-section">
+                            <div class="setting-icon2 col-md-">
+                                    <i class="fa fa-download" style="z-index:5"></i>
+                                    <input id="" class="upload_file2" accept="plain/txt" multiple="false" name="image" type="file">
+                                </div>
+                                <div class="setting-text2 col-md-">
+                                    <h4>Загрузить</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock content %}
+{% block extra_js %}
+    <script src="{% static "js/backup.js" %}"></script>
+{% endblock extra_js %}

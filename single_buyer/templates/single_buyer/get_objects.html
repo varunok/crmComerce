@@ -1,0 +1,228 @@
+ <!-- Арендаторы -->
+
+                    <div type-tabs="buyers" class="object-arendator">
+                        <h3 class="arendator-head">Подобрать объект</h3>
+                        <div class="row">
+                            <div class="col-md-12 arendator-sort">
+                                <form id="cont_form" name="cont_form" style="width:10%; float: left;" >
+                                    <input id="id_cont_owner" name="id_cont_owner" type="text" placeholder="ID">
+                                    <input style="position: fixed;" type="hidden" name="id_buyer" id="id_buyer" value="{{id_buyer}}">
+                                </form>
+                                    <a href="#" id="add_id_cont_owner" name="add_id_cont_owner" class="btn btn-green">Добавить по ID</a>
+                                {# <select name="" id=""> #}
+                                    {# <option value="">пункт 1</option> #}
+                                    {# <option value="">пункт 2</option> #}
+                                    {# <option value="">пункт 3</option> #}
+                                {# </select> #}
+                                <a href="#" id="avtomat_add_buyer" class="btn btn-green">автоматически</a>
+                                <div id="modal_avto" style="width: 300px; height: 200px; background-color: #f5f5f5; border-radius: 5px; box-shadow: 1px 1px 5px 1px #0b0b0b; position: fixed; z-index: 10000; left: 40%; top: 40%; display: none; padding: 10px;">
+                                <form id="avtomat_form" name="avtomat_form">
+                                    <h3 style="margin-bottom: 0;">Критерии:</h3>
+                                    <div style="padding: 20px;">
+                                        <div class="row">
+                                            <label for="">Цена</label>
+                                            <input type="checkbox" name="price_automat" id="price_automat" style="margin-left: 47px">
+                                            <label style="margin-left: 40px" for="">Площадь </label>
+                                            <input type="checkbox" name="area_automat" id="area_automat">
+                                        </div>
+                                        <div class="row">
+                                            <label for="">Кол. комнат </label>
+                                            <input type="checkbox" name="rooms_automat" id="rooms_automat">
+                                            <label style="margin-left: 40px" for="">Ремонт</label>
+                                            <input type="checkbox" name="repairs_automat" id="repairs_automat" style="margin-left: 14px;">
+                                        </div>
+                                        <div class="row">
+                                            <label for="">Тип обекта</label>
+                                            <input type="checkbox" name="type_obj_automat" id="type_obj_automat" style="margin-left: 6px">
+                                            <label style="margin-left: 40px" for="">Район</label>
+                                            <input type="checkbox" name="district_automat" id="district_automat" style="margin-left: 21px;">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <input type="hidden" name="id_buyer" id="id_buyer" value="{{id_buyer}}">
+                                        <a id="ok_automat_btn" href="#" class="btn btn-green">OK</a>
+                                        <a id="cencel_automat_btn" href="#" class="btn btn-red">Отменить</a>
+                                    </div>
+                                    </form>
+                                </div>
+                                <form id="clear_form" name="clear_form" style="width:10%; float: left;">
+                                    <input type="hidden" name="id_buyer" id="id_buyer" value="{{id_buyer}}">
+                                </form>
+                                <a id="clear_cont_owner" href="#" class="btn btn-red">Очистить</a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 delivery">
+                            <div class="delivery-head">
+                                <h3>Рассылка</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input id="plus_email" type="text" placeholder="E-mail">
+                                        <a id="delivery_email_buyer_single" href="#" class="btn btn-green">рассылка</a>
+                                        <input id="plus_phone" type="text" placeholder="Телефон">
+                                        <a id="delivery_sms_buyer_single" href="#" class="btn btn-green">рассылка</a>
+                                        <div class="delivery-pre">
+                                        {# <a href="#test-popup" data-effect="mfp-zoom-in"><i class="fa fa-question-circle-o"></i> Препросмотр</a> #}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table table-striped table-bordered table-hover default">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Адрес</th>
+                                                <th>Показ</th>
+                                                <th>Контактное лицо</th>
+                                                <th>Викуп</th>
+                                                <th>Комнат</th>
+                                                <th>Тип</th>
+                                                <th>Состояние</th>
+                                                <th> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for tie in ties %}
+                                            {% for buyer in tie.tie_buye.all %}
+                                                {% if id_buyer|floatformat == buyer|floatformat %}
+                                                    <tr class="color">
+                                                    {% for show in shows %}
+                                                        {% for sh in id_show.all %}
+                                                            {% if sh.array_cont_ower.id == tie.tie_cont_owner.id %}
+                                                                {% if sh.type_shows_buyer.id == show.id %}
+                                                                    {% if show.id|floatformat == '1' %}
+                                                                        <tr class="info color">
+                                                                    {% elif show.id|floatformat == '2' %}
+                                                                        <tr class="warning color">
+                                                                    {% elif show.id|floatformat == '3' %}
+                                                                        <tr class="danger color">
+                                                                    {% elif show.id|floatformat == '4' %}
+                                                                        <tr class="success color">
+                                                                    {% endif %}    
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endfor %}
+                                                        <td>{{tie.tie_cont_owner.id}}</td>
+                                                        <td class="f-clr-grey">
+                                                            {{tie.tie_cont_owner.district_obj}}<br>
+                                                            {{tie.tie_cont_owner.street_obj}}
+                                                            {% if tie.tie_cont_owner.number_home %}
+                                                                {{tie.tie_cont_owner.number_home}}
+                                                             {% endif %} 
+                                                            {% if tie.tie_cont_owner.number_apartment %}
+                                                                / {{tie.tie_cont_owner.number_apartment}}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="f-clr-grey edit">
+                                                            <input type="hidden" class="id_buyer" value="{{id_buyer}}">
+                                                            
+                                                            <select name="" class="show_cont_owner">
+                                                                {% for show in shows %}
+                                                                    <option
+                                                                    {% for sh in id_show.all %}
+                                                                        {% if sh.array_cont_ower.id == tie.tie_cont_owner.id %}
+                                                                            {{sh.type_shows_buyer}}
+                                                                            {% if sh.type_shows_buyer.id == show.id %}
+                                                                                selected="selected"    
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                    value="{{show.id}}">{{show}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <input type="hidden" class="id_cont_owner" value="{{tie.tie_cont_owner.id}}">
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            {{ tie.tie_cont_owner.name_owner }}<br>
+                                                            {{ tie.tie_cont_owner.phone_owner }}
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            {{ tie.tie_cont_owner.price_bay }}
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                        {% if tie.tie_cont_owner.rooms %}
+                                                            {{ tie.tie_cont_owner.rooms }}
+                                                            {% else %}
+                                                            неуказано
+                                                        {% endif %}
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            {{tie.tie_cont_owner.type_facilit}}
+                                                        </td>
+                                                        <td class="f-clr-grey">
+                                                            {% if tie.tie_cont_owner.condition %}
+                                                                {{tie.tie_cont_owner.condition}}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="edit">
+                                                            <input value="{{ tie.tie_cont_owner.id }}" type="checkbox">
+                                                            {# <a href="{% url "edit_facility" tie.tie_cont_owner.id %}"> <i class="fa fa-pencil"></i></a>  #}
+                                                            <input type="hidden" class="id_buyer" value="{{id_buyer}}">
+                                                            <a id="del_cont_owner" href="#"><i class="fa fa-times"></i></a>
+                                                            <input type="hidden" class="id_cont_owner" value="{{tie.tie_cont_owner.id}}">
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="comments">
+                                <h3 class="comments-head">Комментарии</h3>
+                                <div class="row comment_add">
+                                    {% for data_comment in single_obj_comments %}
+                                        {% if data_comment.type_tabs == 'buyers' %}
+                                            {% include 'single_object/single_comment/single_comment.html' %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="comments-area">
+                                    <div class="col-md-12">
+                                        <textarea name="" id="text_comment"></textarea>
+                                        <div class="comments-add">
+                                            <a id="send_comment" href="#" class="btn btn-green">Добавить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $('.popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1]
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+            }
+        });
+
+        $('.delivery-pre').magnificPopup({
+  delegate: 'a',
+  removalDelay: 500, //delay removal by X to allow out-animation
+  callbacks: {
+    beforeOpen: function() {
+       this.st.mainClass = this.st.el.attr('data-effect');
+    }
+  },
+  midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+});
+    });
+    </script>
+{% endblock extra_js %}

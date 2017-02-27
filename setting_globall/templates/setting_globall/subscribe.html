@@ -1,0 +1,62 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Данние для подписи</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class="active">Данние для подписи</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+        <section>
+        <div class="container">
+            <div class="row">
+                <h1 class="section-head">Глобальние <span>настройки</span></h1>
+                    <div class="messageServer"></div>
+                <div class="section-sort">
+                    <a href="#" class="extend-block">
+                        <i class=""></i>
+                    </a>
+                </div>
+            </div>
+            <form action="save_subscribe_form" method="POST">
+            {% csrf_token %}
+            <div class="col-md-4 col-md-offset-4">
+                    <div class="row">
+                        <div class="col-md-9">
+                            {# <input id="" type="text" value="{{ name }}" placeholder="Имя"> #}
+                            {{form.name}}
+                        </div>
+                        <div class="col-md-9">
+                            {# <input id="" type="text" value="{{ phone }}" placeholder="Телефон"> #}
+                            {{form.phone}}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-5" style="margin-left:15%;">
+                        <input id="" type="submit" value="Сохранить" class="btn btn-green">
+                    </div>
+            </div>
+            </form>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </section>
+{% endblock content %}

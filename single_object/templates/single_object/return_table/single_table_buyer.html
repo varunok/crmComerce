@@ -1,0 +1,89 @@
+                                    {% if error %}
+                                        <tr id="show_tr-{{ buyer.id }}" class="show_tr color
+                                                    {% for show in type_shows %}
+                                                    {% for sh in shows_buyer %}
+                                                        {% if singl_obj.id|floatformat == sh.array_cont_ower|floatformat %}
+                                                            {% if buyer.id|floatformat == sh.array_buyer|floatformat %}
+                                                                {% if show == sh.type_shows_buyer %}
+                                                                    {% if show.id|floatformat == '1' %}
+                                                                        info
+                                                                    {% elif show.id|floatformat == '2' %}
+                                                                       warning
+                                                                    {% elif show.id|floatformat == '3' %}
+                                                                        danger
+                                                                    {% elif show.id|floatformat == '4' %}
+                                                                       success
+                                                                    {% endif %} 
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                    "
+                                            {% if display %}
+                                                style="">
+                                            {% else %}
+                                                style="display: none">
+                                            {% endif %}
+                                            <td>{{ buyer.id }}</td>
+                                            <td class="f-clr-green">
+                                                {% if buyer.type_state %}
+                                                    <i class="fa fa-check-circle-o"></i>
+                                                    {{ buyer.type_state }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey edit">
+                                                <select name="" class="id_shows_buyer" id-buyer-sin="{{ buyer.id }}">
+                                                    {% for show in type_shows %}
+                                                        <option
+                                                    {% for sh in shows_buyer %}
+                                                        {% if singl_obj.id|floatformat == sh.array_cont_ower|floatformat %}
+                                                            {% if buyer.id|floatformat == sh.array_buyer|floatformat %}
+                                                                {% if show == sh.type_shows_buyer %}
+                                                                    selected="selected"
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    value="{{ show.id }}">{{ show }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                <i class="fa fa-user"></i>
+                                                {{ buyer.name }}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                            {% if buyer.phone_first %}
+                                                {{ buyer.phone_first }}
+                                            {% elif buyer.phone_second %}
+                                                {{ buyer.phone_second }}
+                                             {% else %}
+                                                нет телефона
+                                            {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                {% if buyer.price_from %}
+                                                    {{ buyer.price_from }}$
+                                                {% endif %}
+                                                {% if buyer.price_to %}
+                                                    - {{ buyer.price_to }}$
+                                                {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                {% if buyer.area_from %}
+                                                    {{ buyer.area_from }}
+                                                {% endif %}
+                                                {% if buyer.area_to %}
+                                                    - {{ buyer.area_to }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="edit">
+                                                <input value="{{ buyer.id }}" type="checkbox">
+                                                <a href="{% url "edit_buyer" buyer.id %}"> <i class="fa fa-pencil"></i>
+                                                </a> <a href="#"><i del-buyer-id="{{ buyer.id }}" class="fa delete_buyer_tr fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                    {{ count_buyer }}
+                                    {% endif %}

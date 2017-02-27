@@ -1,0 +1,99 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Всегда на связи</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "list_setting_superadmin" %}">Настройки для суперадминистратора</a></li>
+                        <li class="active">Всегда на связи</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Всегда  <span>на связи</span></h1>
+                </div>
+            </div>
+            <form id="send_form_call"  action="save_call" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row" style="margin-bottom:40px;">
+                    <div class="col-md-3">
+                        <label for="">Телефон</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="">Email</label>
+                        {{ form.email.errors.as_text }}
+                        {{ form.email }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="">Skype</label>
+                        {{ form.skype }}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="">Група Вконтакте</label>
+                        {{ form.group_vk }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {# <label for="">Фото</label> #}
+                        <div class="btn btn-green grn_upload_file">
+                            <input id="id_image" class="upload_file" name="image" type="file">
+                            <i class="fa fa-cloud-download"></i>
+                            Загрузить изображение 
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-4">
+                    <label for="">Аватар сейчас</label>
+                        <div>
+                            <img src="{{ MEDIA_URL }}{{post.image}}" width="150px">
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row">
+{#                    <div class="col-md-offset-9 col-md-3"><a id="save_all_to_call" href="" class="btn btn-green">Сохранить</a></div>#}
+                    <div class="col-md-offset-9 col-md-3"><input name="save_all_to_call" class="btn btn-green" type="submit" value="Сохранить"></div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+
+
+
+
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        $(document).ready(function() {
+            $('#save_all_to_call').on('click', function (evene) {
+                evene.preventDefault();
+                var msg = $('#send_form_call').serialize();
+                $.post('save_call', msg)
+            })
+        });
+    </script>
+{% endblock extra_js %}

@@ -1,0 +1,54 @@
+<tr>
+    <td class="f-clr-grey">
+        {{ makler.id }}
+    </td>
+    <td class="f-clr-grey">
+        {% if makler.cooperation %}
+            {{ makler.cooperation }} 
+        {% endif %}
+        <span class="makler-type makler-white">
+        {% if makler.white_black.id == 1 %}
+            <span class="makler-type makler-white">
+        {% elif makler.white_black.id == 2 %}
+        <span class="makler-type makler-black">
+        {% else %}
+        {% endif %}
+        {{ makler.white_black }}
+        </span>
+    </td>
+    <td class="f-clr-grey">
+        <i class="fa fa-user"></i>
+        {{ makler.name }}
+    </td>
+    <td class="f-clr-grey">
+        #1
+        <i class="fa fa-phone"></i>
+        {{ makler.phone }}
+        {% if makler.phone_second %}
+            <br>
+            #2
+            <i class="fa fa-phone"></i>
+            {{ makler.phone_second }}
+        {% endif %}
+        {% if makler.phone_third %}
+            <br>
+            #3
+            <i class="fa fa-phone"></i>
+            {{ makler.phone_third }}
+        {% endif %}
+    </td>
+    <td class="f-clr-grey">
+        {{ makler.agency }}
+    </td>
+    <td class="f-clr-grey">
+        {{ makler.email }}
+    </td>
+        <td class="edit f-clr-grey">
+            <a id-makler="{{ makler.id }}" href="#">
+                <i class="fa fa-pencil"></i>
+            </a>
+            <a href="#">
+                <i class="fa fa-times"></i>
+            </a>
+    </td>
+    </tr>

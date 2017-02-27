@@ -1,0 +1,6 @@
+settings.py
+*.pyc
+.idea/
+*/migrations/
+#setting_street/migrations/
+media/

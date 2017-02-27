@@ -1,0 +1,86 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Пользователи</title>{% endblock title %}
+
+{% load static from staticfiles %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li class=""><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class="active">Пользователи</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head"><span>Пользователи </span> <i class="count_user label label-default">{{exuser|length}}</i></h1>
+                    <div class="section-sort" style="float:right;">
+                        {% if user.is_superuser or user.myuser.type_user.id == 1 %}
+                            <a href="{% url "register" %}" class="btn btn-green">Добавить</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                             <tr>
+                                 <th>#</th>
+                                 <th>Фото</th>
+                                 <th>Имя</th>
+                                 <th>Почта(логин)</th>
+                                 <th>дата регистрации</th>
+                                 <th></th>
+                             </tr>
+                        </thead>
+                        <tbody>
+                            {% for exu in exuser %}
+                                {% if exu.is_active %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td><img class="img-circle" src="{{exu.myuser.image.url}}" alt="" width="50px" height="50px"></td>
+                                        <td>{{exu.first_name}} {{exu.last_name}}</td>
+                                        <td>{{exu.email}}({{exu.username}})</td>
+                                        <td>{{exu.date_joined}}</td>
+                                        {% if user.is_superuser or user.myuser.type_user.id == 1 %}
+                                            <td class="col-md-1 up_div">
+                                                <a href="{% url "edit_user" exu.id %}"><i class="fa fa-pencil fa-2x"></i></a>
+                                                <i id="del_user" value="{{ exu.id }}" class="fa fa-times fa-2x setting_street"></i>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        {% if user.is_superuser %}
+            $('.up_div').on('click', '#del_user', function () {
+                $(this).parents('tr').toggle('slow');
+                var id_user = $(this).attr('value');
+                $.get('setting_user/delete_user', {"id_user":id_user}, function (data) {
+                    var data = jQuery.parseJSON(data);
+                    $('.count_user').text(data.count_user)
+                })
+            });
+        {% endif %}
+    });
+    </script>
+{% endblock extra_js %}

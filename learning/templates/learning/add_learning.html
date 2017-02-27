@@ -1,0 +1,56 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Добавить обучающие видео</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><a href="{% url "homes" %}">Главная</a></li>
+                            <li><a href="{% url "setting" %}">Настройки</a></li>
+                            <li><a href="{% url "get_learn_list" %}">Обучение</a></li>
+                            <li class="active">Добавить обучающие видео</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Добавить обучающие видео</h1>
+                </div>
+            </div>
+            <form action="add_learn_form" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="section-head">Заголовок</h2>
+                    {{form.title}}
+                </div>
+                <div class="col-md-12">
+                    <h2 class="section-head">Код видео</h2>
+                    {# <textarea></textarea> #}
+                    {{form.youtube}}
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="col-md-12">
+                <input id="" type="submit" value="Сохранить" class="btn btn-green" style="float: right">
+            </div>
+            </form>
+            <br>
+            <br>
+            <br>
+        </div>
+    </section>
+
+{% endblock content %}

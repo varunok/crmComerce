@@ -1,0 +1,218 @@
+{% load all_to_call %}
+{# {% load photo_futer %} #}
+{% load franshise %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}{% endblock title %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{#  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> #}
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static "css/main.css" %}">
+    <link rel="stylesheet" href="{% static "css/jquery-ui.structure.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/jquery-ui.theme.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/select2.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/magnific-popup.css" %}">
+    {% block extra_css %}{% endblock extra_css %}
+
+    {# // <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> #}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static "js/jquery-2.2.4.min.js" %}"></script>
+    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/select2.min.js" %}"></script>
+    <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+    <script src="{% static "js/masonry.min.js" %}"></script>
+    <script src="{% static "js/jquery.cookie.js" %}"></script>
+    <script src="{% static "js/base.js" %}"></script>
+    <script src="{% static "js/clipboard.min.js" %}"></script>
+    <script type="text/javascript">
+            function showTime() {
+                var dat = new Date();
+                var H = '' + dat.getHours();
+                H = H.length<2 ? '0' + H:H;
+                var M = '' + dat.getMinutes();
+                M = M.length<2 ? '0' + M:M;
+                var S = '' + dat.getSeconds();
+                S =S.length<2 ? '0' + S:S;
+                var clock = H + ':' + M + ':' + S;
+                document.getElementById('time_div').innerHTML=clock;
+                setTimeout(showTime,1000);};  // перерисовать 1 раз в сек.
+    </script>
+</head>
+
+
+<body>
+    <section class="header">
+        <div class="main-panel">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12">
+                        <div class="logo">
+                            {% if franshise|length > 13 %}
+                                <a href="#" style="font-size: 24px;"><span>{% franshise_first %}</span>.{% franshise_second %}</a>
+                            {% else %}
+                                <a href="#"><span>{% franshise_first %}</span>.{% franshise_second %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="main-panel_search">
+                            <input id="searching" type="text" placeholder="найти..."><a href=""><i class="fa fa-search"></i></a>
+                        </div>
+                        <div class="nav-panel_date">
+                            <div class="calendar">
+                                <div class="day">{% now "d" %}</div>
+                                <div class="month">{% now "b" %}</div>
+                            </div>
+                            <div class="time" id="time_div"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-8">
+                        <ul class="nav-panel_notification">
+                            <li class="btn-group">
+                                <a id="show_message" href="#" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-envelope"></i> <span class="notifi notifi-red count_message">0</span></a>
+                                <ul class="dropdown-menu dropmessage" id="new_message" style="max-height: 400px; overflow: auto;">
+                                </ul>
+                            </li>
+                            <li class="btn-group">
+                                <a id="get_who_online" href="#" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> <span class="notifi notifi-green len_online"></span></a>
+                                <ul class="dropdown-menu dropmessage" id="who_online">
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="nav-panel_user">
+                            <div class="logo-user">
+                                {% if user.myuser.image %}
+                                    <img class="img-circle" src= {{ user.myuser.image.url }} alt="" width="50px" height="50px">
+                                {% else %}
+                                    <img src= {% static "images/logo-user-message.jpg" %} alt="" >
+                                {% endif %}
+                            </div>
+                            <div class="user-name">{{user.first_name}} {{user.last_name}}</div>
+                            <div class="user-logout"><a     id="logout" href="{% url "login" %}">выйти <i class="fa fa-sign-out"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-menu">
+            <div class="container">
+                <div class="row">
+                    <ul>
+                        <li><a href="{% url "homes" %}"><i class="fa fa-home"></i><p>Главная</p></a></li>
+                        <li><a href="{% url "objects" %}"><i class="fa fa-university"></i><p>Объекты</p></a></li>
+                        <li><a href="{% url "arendators" %}"><i class="fa fa-user"></i><p>Арендаторы</p></a></li>
+                        <li><a href="{% url "buyers" %}"><i class="fa fa-male"></i><p>Покупатели</p></a></li>
+                        <li><a href="{% url "maklers" %}"><i class="fa fa-briefcase"></i><p>Маклера</p></a></li>
+                        <li><a href="{% url "services" %}"><i class="fa fa-repeat"></i><p>Сервисы</p></a></li>
+                        <li><a href="{% url "tasking" %}"><i class="fa fa-list-alt"></i><p>Задачи</p></a></li>
+                        <li><a href="{% url "meeting" %}"><i class="fa fa-eye"></i><p>Показы</p></a></li>
+                        <li><a href="{% url "setting" %}"><i class="fa fa-cogs"></i><p>Настройки</p></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+<div id="search_results">
+{% block content %}{% endblock content %}
+</div>
+    <section class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="logo">
+                        <a href="#"><span>{% franshise_first %}</span>.{% franshise_second %}</a>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="callback-message">
+                                <span>Написать сообщение</span>
+                                <textarea name="" id="write_email" cols="30" rows="10"></textarea>
+                                <a href="#" id="send_email" class="btn btn-green">Отправить</a>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="admin-photo">
+                                <img src="{{ MEDIA_URL }}{% photo_futer %}" alt="">
+                            </div>
+                            <div class="admin-name">
+                                Вячеслав Рекечинский
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="admin-contact">
+                                <span>Всегда на связи</span>
+                                <ul>
+                                    <li><i class="fa fa-mobile"></i> {% all_to_call 'phone' %}</li>
+                                    <li><i class="fa fa-envelope-o"></i> {% all_to_call 'email' %}</li>
+                                    <li><i class="fa fa-skype"></i> {% all_to_call 'skype' %}</li>
+                                    <li><i class="fa fa-vk"></i> {% all_to_call 'group_vk' %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="copyright">© RIELTORY.BIZ CRM 2016</span>
+                </div>
+            </div>
+        </div>
+    <div id="messeg_id" class="white-popup mfp-with-anim mfp-hide add_id">
+        <h3>НАПИСАТЬ СООБЩЕНИЕ</h3>
+        <p><textarea name="" id="text_messege_user" cols="30" rows="4"></textarea></p>
+        <p>
+            <a class="btn btn-green" id-mes="" id="send_mes_ser" href="#">Отослать</a>
+            <a class="btn btn-red" style="float:right;" id="send_mes_ser_cencel" href="#">Отменить</a>
+        </p>
+    </div>
+    <div id="single_messeg" class="white-popup mfp-with-anim mfp-hide add_id">
+        <h3>СООБЩЕНИЕ</h3>
+        <h4 style="margin-top:5px;">От кого: <span id="name_sender"></span></h4>
+        <h4 style="margin-top:5px;">Время: <span id="time_send"></span> </h4>
+        <h4 style="margin-top:5px;">Текст:</h4><p id="text_new_message"></p>
+        <p>
+            <a id-message="" class="btn btn-red" style="float:right;" class="reading" id="reading" href="#">Прочитано</a>
+        </p>
+    </div>
+    <div class="messageServer" style="top: 90%; width:100%"></div>
+    </section>
+ {% block extra_js %}{% endblock extra_js %}
+   <script type="text/javascript">
+    $(document).ready(function() {
+        $('#logout').on('click', function() {
+            $.get('accounts/logout/', function(data) {});
+        });
+        var csrftoken = $.cookie('csrftoken');
+        function csrfSafeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        function sameOrigin(url) {
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') || (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') || !(/^(\/\/|http:|https:).*/.test(url));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    })
+    </script>
+ <script type="text/javascript">  showTime();</script>
+ <script src="{% static "js/emailer.js" %}"></script>
+ <script src="{% static "js/search.js" %}"></script>
+</body>
+
+</html>

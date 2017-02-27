@@ -1,0 +1,87 @@
+                           {% load dead_line %}
+                            <div class="meeting">
+                                <div class="row">
+                                    <h1 class="section-head">Встречи</h1>
+                                    <div class="section-sort">
+                                        <a id="add_task_form_meet" href="#" class="btn btn-green">Добавить</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="tabs">
+                                                <ul class="main-tabs">
+                                                    <li class="{% if tabs_active_all == 1 %}tabs-active{% endif %}">
+                                                        <a id="meets_all" href="#">Все <span class="label label-default">{{ count_meet_all }}</span></a>
+                                                    </li>
+                                                    <li class="{% if tabs_active_active == 1 %}tabs-active{% endif %}">
+                                                        <a id="meets_active" href="#">Активные <span class="label label-default">{{ count_meet_active }}</span></a>
+                                                    </li>
+                                                    <li class="{% if tabs_active_archive == 1 %}tabs-active{% endif %}">
+                                                        <a id="meets_archive" href="#">Архив <span class="label label-default">{{ count_meet_archive }}</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table table-striped table-bordered table-hover meet">
+                                        <thead>
+                                            <tr>
+                                                <th>Комментарий</th>
+                                                <th>Дата</th>
+                                                <th>ID Клиента</th>
+                                                <th>ID Объекта</th>
+                                                <th> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="add_single_meet">
+                                            {% for meeting in meeting_list %}
+                                                <tr>
+                                                    <td class="comment">
+                                                        {{ meeting.meet_comment }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="rieltor">
+                                                            <i class="fa fa-user"></i> {{ meeting.rieltor }}
+                                                        </div>
+                                                        <div class="date
+                                                         {% if meeting.meet_date|dead_line %}
+                                                            f-clr-red
+                                                         {% else %}
+                                                            f-clr-grey
+                                                         {% endif %}
+                                                         ">
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ meeting.meet_date }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                    {% if meeting.meet_arendator %}
+                                                        A{{ meeting.meet_arendator }}
+                                                    {% endif %}
+                                                    {% if meeting.meet_buyer %}
+                                                        П{{ meeting.meet_buyer }}
+                                                    {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if meeting.meet_facility %}
+                                                            O{{ meeting.meet_facility }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="edit" id-meet="{{ meeting.id }}">
+                                                        {% if not meeting.meet_archiv %}
+                                                            <a href="#"> <i class="fa fa-play"></i></a>
+                                                        {% endif %}
+                                                        <a href="#"> <i class="fa fa-pencil met"></i></a> <a href="#"><i class="fa fa-times"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div  id="add_form_m"></div>

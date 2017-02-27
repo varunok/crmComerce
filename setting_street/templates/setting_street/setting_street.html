@@ -1,0 +1,107 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Настройки Улицы</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "setting_list_street" %}">Улицы и районы</a></li>
+                        <li class="active">Улицы</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Настройки <span>Улицы</span></h1>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2 search-item">
+                            <select class="form-control street_sett">
+                                {% for short_street in type_street %}
+                                    <option value="{{short_street.id}}">{{ short_street}} ({{ short_street.type_street }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="name_street">
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#" class="btn btn-green" id="add_street">Добавить</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="col-md-6">
+                    <table class="table table-bordered list_street">
+                        {% for street in list_street reversed %}
+                            <tr>
+                                <td class="col-md-1">{{ street.type_street_group.short_name}}</td>
+                                <td>{{ street.street}}</td>
+                                <td class="col-md-1"><i value = "{{street.id}}" class="fa fa-times fa-2x setting_street"></i></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+<div class="messageServer"></div>
+{% endblock content %}
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        $('#name_street').on('keyup', function() {
+            var re = /^[ ]+/;
+            if (this.value.match(re)) {
+            this.value = this.value.replace(re, '');
+        }
+        });
+        $('#add_street').on('click', function(event) {
+            event.preventDefault();
+            var short_street = $(".street_sett option:selected").val();
+            var name_street = $('#name_street').val();
+            if (name_street) {
+                $('#name_street').val('');
+                $.get('add_street', {"id_short": short_street, "name_street": name_street})
+                .success( function (data) {
+                    $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                    $('.messageServer').text('Добавлено').fadeIn(1000).delay(2000).fadeOut(500);
+                    var data = jQuery.parseJSON(data);
+                    $('.list_street').prepend('<tr><td class="col-md-1">'+data.type_street+'</td><td>'+data.name_street+'</td><td class="col-md-1"><i class="fa fa-times fa-2x setting_street"></i></td></tr>')
+                })
+                .error(function(data) {
+                    var data = jQuery.parseJSON(data.responseText);
+                    // console.log(data)
+                    $('.messageServer').css('backgroundColor', '#c9302c');
+                    $('.messageServer').text(data.error).fadeIn(1000).delay(2000).fadeOut(500);
+                })
+                    
+                
+            }
+        });
+        $('.list_street').on('click', '.setting_street', function() {
+            $(this).parents('tr').toggle('slow');
+            var id_street = $(this).attr('value');
+            $.get('delete_street',{"id_street": $(this).attr('value')}, function(data) {});
+        });
+    })
+</script>
+{% endblock extra_js %}

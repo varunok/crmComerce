@@ -1,0 +1,616 @@
+{% extends "homes/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block title %}<title>Объекты</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li class="active">Объекты</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row section-search">
+                <div class="col-md-12">
+                    <h1 class="section-head">Поиск <span>объектов</span></h1>
+                    <div class="section-sort">
+                        <a href="#" class="extend-block">
+                            <i class="fa fa-filter"></i> Расширеный поиск
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                <form id="search_form" action="" method="GET">
+                    <div class="col-md-12 substrate">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="typeobj">Тип объекта</label>
+                                    <select id="type_facility" name="type_facility" class="multiple" multiple="multiple" placeholder="-----">
+                                        {% for facility in type_facility %}
+                                            <option value="{{ facility }}">{{ facility.type_facility }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Цена</label>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input id="price_on" name="price_on" type="text" placeholder="От">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input id="price_for" name="price_for" type="text" placeholder="До">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select name="currency" id="currency" style="min-width: 100%">
+                                                {% for carrency in list_carrency %}
+                                                    <option value="{{ carrency.id }}">{{ carrency.currency }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="actual">Актуальность</label>
+                                    <select id="actuality" name="actuality">
+                                        <option value="" selected="selected">-----</option>
+                                        {% for actuality in type_actuality %}
+                                            <option value="{{ actuality.id }}">{{ actuality.type_actuality }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="tarea">Район</label>
+                                    <select class="tarea-multiple" multiple="multiple" placeholder="-----" id="district" name="district">
+                                        {% for district in list_district %}
+                                            <option value="{{ district }}">{{ district.district }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Метраж общий, m2</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input id="area_for" name="area_for" type="number" placeholder="От" min="0" style="padding-left: 10px">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="area_to" name="area_to" type="number" placeholder="До" min="0" style="padding-left: 10px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="stat">Состояние</label>
+                                    <select id="condition" name="condition">
+                                        <option value="" selected="selected">-----</option>
+                                        {% for condition in list_conditions %}
+                                            <option value="{{ condition.id }}">{{ condition }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="idobj">ID Объекта</label>
+                                    <input type="text" placeholder="-----" id="id_obj" name="id_obj">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="phone">Телефон</label>
+                                    <input class="allownumericwithoutdecimal" type="text" placeholder="-----" id="phone_obj" name="phone_obj">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="phone">Пересмотр <i class="fa fa-calendar"></i></label>
+                                    <input id="peresmotr" name="peresmotr" type="text" placeholder="-----" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="rieltor">Риелтор</label>
+                                    <select id="rieltor" name="rieltor" class="multiple" multiple="multiple">
+                                        {% for user in users  %}
+                                            <option value="{{ user.id }}">{{ user }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="list_subway">Метро</label>
+                                    <select id="list_subway" name="list_subway" class="multiple" multiple="multiple">
+                                        {% for subway in list_subway  %}
+                                            <option value="{{ subway }}">{{ subway }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Ориентир</label>
+                                    <input type="text" name="landmark" id="landmark">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extended-search" style="height: 0px">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Расположение</label>
+                                        <select id="location" name="location">
+                                            <option value="" selected="selected">-----</option>
+                                            {% for location in list_location  %}
+                                                <option value="{{ location }}">{{ location }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Комнат</label>
+                                        <input type="text" id="id_rooms" name="rooms">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="street">Улица</label>
+                                        <select id="street_obj" name="street_obj" class="js-example-basic-single tarea-multiple">
+                                            <option value="" selected="selected">-----</option>
+                                            {% for street in list_street %}
+                                                <option value="{{ street }}">{{ street }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="">Торговый зал</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input id="shopping_room_for" name="shopping_room_for" type="number" placeholder="От" min="0" style="padding-left: 10px">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input id="shopping_room_to" name="shopping_room_to" type="number" placeholder="До" min="0" style="padding-left: 10px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="">Ремонт</label>
+                                        <select id="repairs" name="repairs">
+                                            <option value="" selected="selected">-----</option>
+                                            {% for repairs in list_repairs  %}
+                                                <option value="{{ repairs }}">{{ repairs }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat">Этажность</label>
+                                        <select id="number_of_storeys" name="number_of_storeys">
+                                            <option value="" selected="selected">-----</option>
+                                            {% for storeys in list_storeys  %}
+                                                <option value="{{ storeys }}">{{ storeys }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="">Контактное лицо</label>
+                                        <input id="name_owner" name="name_owner" type="text" placeholder="-----">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="phone">Вход</label>
+                                        <select id="entrance" name="entrance">
+                                            <option value="" selected="selected">-----</option>
+                                            {% for entrance in list_entrance  %}
+                                                <option value="{{ entrance }}">{{ entrance }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="">Документы</label>
+                                        <select id="documentation" name="documentation">
+                                            <option value="" selected="selected">-----</option>
+                                            {% for documentation in list_documentation %}
+                                                <option value="{{documentation}}">{{ documentation }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="">Комментарий</label>
+                                        <input id="comments" name="comments" type="text" placeholder="-----">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="search-item">
+                                                <label for="price">
+                                                    VIP 
+                                                    <i class="fa fa-star"></i>
+                                                </label>
+                                                <input id="vip_status" name="vip_status" type="checkbox">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="search-item">
+                                                <label for="public_status">На сайте <i class="fa fa-globe"></i></label>
+                                                <input id="public_status" name="public_status" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="">Платежи(комунальные)</label>
+                                        <input id="payments" name="payments" type="text" placeholder="-----">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extended-search" style="height: 0px">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat">Отопление</label>
+                                        <select id="type_heating" name="type_heating" placeholder="-----">
+                                            <option value="">-----</option>
+                                            {% for heating in type_heating %}
+                                                <option value="{{ heating.id }}">{{ heating.type_heating }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="number">Под что</label>
+                                        <select class="tarea-multiple" multiple="multiple" placeholder="-----" id="under_that" name="under_that">
+                                            {% for under_that in list_under_that %}
+                                                <option value="{{ under_that.id }}">{{ under_that }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="type_windows">Наличие</label>
+                                        <select class="tarea-multiple" multiple="multiple" placeholder="-----" id="availability" name="availability">
+                                            {% for availability in list_availability %}
+                                                <option value="{{ availability.id }}">{{ availability }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 btn-search">
+                                <a id="" href="{% url 'objects' %}" class="btn btn-red">Очистить</a>
+                                <a id="search_obj" href="#" class="btn btn-blue">Применить</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+            <div class="row search-object">
+                <div class="col-md-12">
+                    <h1 class="section-head">Ваши <span>объекты </span> <i class="label label-default">{{ all_contact_owner|length }}</i></h1>
+                    <div class="section-sort">
+                        <a href="{% url "add_object" %}" class="btn btn-green">Добавить</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="tabs">
+                        <ul class="main-tabs">
+                            <li {% if '/objects' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'objects' %}">Все <span class="label label-default">{{ all_contact_owner|length }}</span></a></li>
+                            <li {% if '/selling' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'selling' %}">Продам <span class="label label-default">{{ all_contact_owner_se|length }}</span></a></li>
+                            <li {% if '/arend' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'arend' %}">Сдам <span class="label label-default">{{ all_contact_owner_ad|length }}</span></a></li>
+                        </ul>
+                        <ul class="object-filter">
+                            {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=id{% if order_by == 'id' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'id' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'id' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Артикул
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=price_bay{% if order_by == 'price_bay' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'price_bay' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'price_bay' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Цена продажи
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=price_month{% if order_by == 'price_month' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'price_month' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'price_month' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Цена аренди
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=total_area{% if order_by == 'total_area' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'total_area' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'total_area' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Метраж
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=date_of_renovation{% if order_by == 'date_of_renovation' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'date_of_renovation' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'date_of_renovation' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата обновления
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=review_date{% if order_by == 'review_date' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'review_date' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'review_date' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата пересмотра
+                                </a></li>
+                            {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+                {% for object_data in contact_owner %}
+                    {% if object_data.trash == 0 %}
+                        {% if object_data.loyality.get.id == '' %}
+                            {% include 'homes/obj_facility.html' %}
+                        {% elif user.is_superuser or user.myuser.type_user.id == 1 %}
+                            {% include 'homes/obj_facility.html' %}
+                        {% elif object_data.loyality.all %}
+                            {% for name in object_data.loyality.all %}
+                                {% if name.id ==  user.id %}
+                                    {% include 'homes/obj_facility.html' %}
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if  is_paginated %}
+                    <div class="col-md-12 section-pagination">
+                        <ul class="pagination">
+                        <li><a href="?page=1">&laquo;&laquo;</a></li>
+                            <!--Если есть предыдущая страница - то делаю ссылку "назад"-->
+                    {% if  page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+                            {% for p in paginator.page_range %}
+                                <li
+                                    {% if page_obj.number == p %}
+                                        class="active"
+                                    {% endif %}>
+                                    <a href="{% url request.path|cut:'/' %}?page={{ p }}">{{ p }}</a>
+                                </li>
+                            {% endfor %}
+                    {% if  page_obj.has_next %}
+                              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% endif %}
+                        <li><a href="?page={{ paginator.num_pages}}">&raquo;&raquo;</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <div class="messageServer"></div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#typeobj").selectmenu();
+        $(".tarea-multiple").select2();
+        $("#idobj").selectmenu();
+        $("#actual").selectmenu();
+        $("#stat").selectmenu();
+        $("#stat").selectmenu();
+        $("#street").selectmenu();
+        $("#typebuild").selectmenu();
+        $("#peresmotr").datepicker({monthNames: ['Январь', 'Февраль', 'Март', 'Апрель','Май', 'Июнь', 'Июль', 'Август', 'Сентябрь','Октябрь', 'Ноябрь', 'Декабрь'], dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], firstDay: 1}).datepicker();
+        $(".multiple").select2();
+        $(".extend-block").click(function() {
+            var x = $(".extended-search").css('height');
+            console.log(x);
+            if (x == '0px') {
+                $(".extended-search").css('height', '');
+            } else {
+                $(".extended-search").css('height', '0px');
+            }
+
+        });
+
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.popup-gallery').magnificPopup({
+                delegate: 'a',
+                type: 'image',
+                tLoading: 'Loading image #%curr%...',
+                mainClass: 'mfp-img-mobile',
+                gallery: {
+                    enabled: true,
+                    navigateByImgClick: true,
+                    preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+                },
+                image: {
+                    tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+                }
+            });
+            $('#search_obj').on('click', function (event) {
+                event.preventDefault();
+                var msg   = $('#search_form').serialize();
+                // var type_facility = $('#type_facility').val();
+                // var price_on = $('#price_on').val();
+                // var price_for = $('#price_for').val();
+                // var currency = $('#currency').val();
+                // var actuality = $('#actuality').val();
+                // var district = $('#district').val();
+                // var area_for = $('#area_for').val();
+                // var area_to = $('#area_to').val();
+                // var condition = $('#condition').val();
+                // var id_obj = $('#id_obj').val();
+                // var phone_obj = $('#phone_obj').val();
+                // var peresmotr = $('#peresmotr').val();
+                // var floor_for = $('#floor_for').val();
+                // var floor_to = $('#floor_to').val();
+                // var list_rooms = $('#list_rooms').val();
+                // var street_obj = $('#street_obj').val();
+                // var floor_ot = $('#floor_ot').val();
+                // var floor_do = $('#floor_do').val();
+                // var rooms_ot = $('#rooms_ot').val();
+                // var rooms_do = $('#rooms_do').val();
+                // var number_home = $('#number_home').val();
+                // var name_owner = $('#name_owner').val();
+                // var kitchen_ot = $('#kitchen_ot').val();
+                // var kitchen_do = $('#kitchen_do').val();
+                // var type_building = $('#type_building').val();
+                // var comments = $('#comments').val();
+                // var vip_status = $('#vip_status').prop("checked");
+                // var public_status = $('#public_status').prop("checked");
+                // var list_data = {
+                //     "search": true,
+                //     "type_facility": type_facility,
+                //     "price_on": price_on,
+                //     "price_for": price_for,
+                //     "carrency": currency,
+                //     "actuality": actuality,
+                //     "district": district,
+                //     "area_for": area_for,
+                //     "area_to": area_to,
+                //     "condition": condition,
+                //     "id_obj": id_obj,
+                //     "phone_obj": phone_obj,
+                //     "peresmotr": peresmotr,
+                //     "floor_for": floor_for,
+                //     "floor_to" : floor_to,
+                //     "list_rooms": list_rooms,
+                //     "street_obj": street_obj,
+                //     "floor_ot": floor_ot,
+                //     "floor_do": floor_do,
+                //     "rooms_ot": rooms_ot,
+                //     "rooms_do": rooms_do,
+                //     "number_home":number_home,
+                //     "name_owner": name_owner,
+                //     "kitchen_ot": kitchen_ot,
+                //     "kitchen_do": kitchen_do,
+                //     "type_building": type_building,
+                //     "comments": comments,
+                //     "vip_status": vip_status,
+                //     "public_status": public_status
+                // };
+                $.get('search_obj', msg, function (data) {
+                    $('.search-object').html(data)
+                })
+                .success( function (data) {
+                        $('.search-object').html(data)
+                        $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                        $('.messageServer').text('Поиск завершен').fadeIn(1000).delay(2000).fadeOut(500);
+
+                })
+                .error(function(data) {
+                    $('.messageServer').css('backgroundColor', '#c9302c');
+                    $('.messageServer').text('Ошибка').fadeIn(1000).delay(2000).fadeOut(500);
+                });
+            });
+
+            $(".allownumericwithoutdecimal").on('keyup', function () {
+             $(this).val($.trim($(this).val()));
+             if ($.isNumeric($(this).val())){
+
+             }else{
+                 var numbs = $(this).val();
+                 numbs = numbs.slice(0, numbs.length-1);
+                 $(this).val(numbs)
+
+             }
+            });
+
+            $('#clean_list').on('click', function (event) {
+                event.preventDefault();
+                $.get('', {'back_res':true}, function (data) {
+                    $('.search-object').html(data).fadeIn()
+                })
+            })
+            $('.object-edit').on('click', '.fa-times', function(event) {
+                event.preventDefault();
+                var idobj_trash = $(this).attr('id-obj');
+                $(this).parents('.wrap-obj').fadeOut('slow');
+                $.post('trash_obj', {"trash": idobj_trash, "iduser":{{ user.id }}}, messageServer);
+            });
+
+
+            function messageServer(data) {
+                if (data==='Ошибка'){
+                    $('.messageServer').css('backgroundColor', '#c9302c');
+                }else {
+                    $('.messageServer').css('backgroundColor', '#5bc0de');
+                }
+                $('.messageServer').text(data).fadeIn(1000).delay(2000).fadeOut(500);
+            }
+
+            // $(document).on('mouseenter', '.object-comment',function() {
+            //     $(this).prev().css('display', 'block');
+            // });
+            // $(document).on('mouseleave', '.object-comment-long',function() {
+            //     $(this).css('display', 'none');
+            // });
+
+        });
+    </script>
+{% endblock extra_js %}
+
+

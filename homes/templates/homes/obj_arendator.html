@@ -1,0 +1,158 @@
+{% load static from staticfiles %}
+{% load sity_franshise %}
+{% load dead_line %}
+                <div class="wrap-buyers">
+                    <div class="col-md-12">
+                        <div class="col-md-12 buyers-card">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-12 buyers-info">
+                                            <div class="col-md-8">
+                                                <h2 class="buyers-id">
+                                                    <a href="{% url "single_arendator" arendator.id %}">{{ arendator.id }}</a>
+                                                    {% if arendator.price_from or arendator.price_to %}
+                                                        <span class="buyers-price-arend">
+                                                            {% if arendator.price_from %}
+                                                                от {{ arendator.price_from }}
+                                                                {{ nac_carrency }}
+                                                            {% endif %}
+                                                            {% if arendator.price_to %}
+                                                                до {{ arendator.price_to }}
+                                                                {{ nac_carrency }}
+                                                            {% endif %}
+                                                         </span>
+                                                    {% endif %}
+                                                </h2>
+                                                <p class="buyers-more-info">
+                                                    {% if arendator.rooms_from or arendator.rooms_to %}
+                                                        <i class="fa fa-building"></i>
+                                                        {% if arendator.rooms_from %}
+                                                            от {{ arendator.rooms_from }}
+                                                        {% endif %}
+                                                        {% if arendator.rooms_to %}
+                                                            до {{ arendator.rooms_to }}
+                                                        {% endif %}
+
+
+                                                    {% endif %}
+                                                    {% if arendator.floors_from or arendator.floors_to %}
+                                                        <i class="fa fa-building-o"></i>
+                                                        {% if arendator.floors_from %}
+                                                            {{ arendator.floors_from }}
+                                                        {% endif %}
+                                                        {% if arendator.floors_to %}
+                                                            / {{ arendator.floors_to }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if arendator.number_of_persons %}
+                                                        <i class="fa fa-male"></i>
+                                                        {{ arendator.number_of_persons }}
+                                                    {% endif %}
+                                                    {% if arendator.type_client %}
+                                                        <i class="fa fa-universal-access"></i>
+                                                        {{ arendator.type_client }}
+                                                    {% endif %}
+                                                </p>
+                                                <p class="buyers-local">
+                                                    <i class="fa fa-map-marker"></i>
+                                                    {# пер. Красногвардейский,  #}
+                                                    <span>г. {% sity_franshise %},
+                                                        {% for district in arendator.district_obj.all %}
+                                                            {{ district }} район
+                                                        {% endfor %}
+                                                    </span>
+
+                                                </p>
+                                                <p class="buyers-comment">
+                                                    {% if arendator.email %}
+                                                        <span>E-mail:</span>
+                                                        {{ arendator.email }}<br>
+                                                    {% endif %}
+                                                    {% if arendator.type_stage %}
+                                                        <span>Этап:</span> {{arendator.type_stage}}
+                                                    {% endif %}
+                                                    <div class="object-comment-short" style="margin-top:-2.4%;">
+                                                        <div class="object-comment-long">
+                                                            <p >
+                                                                <strong>Комментарий:</strong>
+                                                                {{ arendator.comment }} {# коментарі до обєкту #}
+                                                            </p>
+                                                        </div>
+                                                    {% if arendator.comment %}
+                                                        <span style="font-weight: bold; font-size: 14px;">Комментарий:</span>
+                                                        {{ arendator.comment|truncatechars:200 }}
+                                                    {% endif %}
+                                                    </div>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 col-sm-6 prop">
+                                                <p class="buyers-prop">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ arendator.name }}
+                                                </p>
+                                                <p class="buyers-prop-phone">
+                                                    {{ arendator.phone_first }}
+                                                </p>
+                                                <p class="buyers-data-call">
+                                                    Дата звонка<br>
+
+                                                    <input class="call_date" id="peresmotr-{{ arendator.id }}" value="{{ arendator.call_date }}" type="text" placeholder="">
+                                                    <script>
+                                                        $("#peresmotr-{{ arendator.id }}").datepicker({monthNames: ['Январь', 'Февраль', 'Март', 'Апрель','Май', 'Июнь', 'Июль', 'Август', 'Сентябрь','Октябрь', 'Ноябрь', 'Декабрь'], dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], firstDay: 1}).datepicker();
+                                                    </script>
+                                                </p>
+                                                <p class="buyers-commission">
+                                                    <i class="fa fa-user"></i>
+                                                    {% for ri in arendator.rieltor.all %}
+                                                        {{ ri }}
+                                                    {% endfor %}
+                                                    <br>
+                                                    Комиссия: <span>
+                                                    {% if arendator.commission %}
+                                                        {{ arendator.commission }} {{ nac_carrency }}
+                                                    {% endif %}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 col-sm-6 edit">
+                                                <p class="buyers-edit">
+                                                {% if not arendator.trash %}
+                                                    <a href="{% url "edit_arendator" arendator.id %}"><i class="fa fa-pencil"></i> </a>
+                                                    <a href="{% url "single_arendator" arendator.id %}"><i class="fa fa-eye"></i> </a>
+                                                {% else %}
+                                                    <a href=""><i id-obj="{{ arendator.id }}" class="fa fa-arrows-alt"></i></a>
+                                                {% endif %}
+                                                    <a href="#"><i id-obj="{{ arendator.id }}" class="fa fa-times"></i> </a>
+                                                </p>
+                                                <p class="buyers-stat">
+                                                   <i class="fa fa-check-circle-o"></i>
+                                                   {% if arendator.type_state %}
+                                                       {{ arendator.type_state }}
+                                                   {% endif %}
+                                                </p>
+                                                <p class="buyers-data-view">
+                                                   Сроки<br>
+                                                    <i class="fa fa-calendar"></i>
+                                                    {% if arendator.date_term|dead_line %}
+                                                       <span class="f-clr-red">
+                                                    {% endif %}
+                                                    {% if arendator.date_term %}
+                                                        {{ arendator.date_term }}
+                                                    {% else %}
+                                                        <span class="f-clr-red">
+                                                        неуказано
+                                                    {% endif %}
+                                                    </span>
+                                                </p>
+                                                <p class="buyers-data-update">
+                                                   Дата обновления<br>
+                                                    <i class="fa fa-calendar"></i>
+                                                    {{ arendator.review_date }}
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

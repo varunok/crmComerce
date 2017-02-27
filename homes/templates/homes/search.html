@@ -1,0 +1,213 @@
+
+                <div class="col-md-12">
+                    <h1 class="section-head">Ваши <span>объекты </span> <i class="label label-default">{{ all_contact_owner|length }}</i></h1>
+                    <div class="section-sort">
+                        <a href="{% url "add_object" %}" class="btn btn-green">Добавить</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="tabs">
+                        <ul class="main-tabs">
+                            <li {% if '/objects' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'objects' %}">Все <span class="label label-default">{{ all_contact_owner|length }}</span></a></li>
+                            <li {% if '/selling' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'selling' %}">Продам <span class="label label-default">{{ all_contact_owner_se|length }}</span></a></li>
+                            <li {% if '/arend' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'arend' %}">Сдам <span class="label label-default">{{ all_contact_owner_ad|length }}</span></a></li>
+                        </ul>
+                        <ul class="object-filter">
+                            {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+                                <li><a href="{% url request.path|cut:'/search_obj/'|cut:'/' %}?order_by=id{% if order_by == 'id' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'id' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'id' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Артикул
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/search_obj/'|cut:'/' %}?order_by=price_bay{% if order_by == 'price_bay' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'price_bay' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'price_bay' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Цена продажи
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/search_obj/'|cut:'/' %}?order_by=price_month{% if order_by == 'price_month' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'price_month' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'price_month' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Цена аренди
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/search_obj/'|cut:'/' %}?order_by=total_area{% if order_by == 'total_area' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'total_area' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'total_area' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Метраж
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/search_obj/'|cut:'/' %}?order_by=date_of_renovation{% if order_by == 'date_of_renovation' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'date_of_renovation' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'date_of_renovation' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата обновления
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/search_obj/'|cut:'/' %}?order_by=review_date{% if order_by == 'review_date' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'review_date' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'review_date' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата пересмотра
+                                </a></li>
+                            {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+
+                {% for object_data in contact_owner %}
+                    {% if object_data.trash == 0 %}
+                        {% if object_data.loyality.get.id == '' %}
+                            {% include 'homes/obj_facility.html' %}
+                        {% elif user.is_superuser or user.myuser.type_user.id == 1 %}
+                            {% include 'homes/obj_facility.html' %}
+                        {% elif object_data.loyality.all %}
+                            {% for name in object_data.loyality.all %}
+                                {% if name.id ==  user.id %}
+                                    {% include 'homes/obj_facility.html' %}
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+
+                {% if  is_paginated %}
+                    <div class="col-md-12 section-pagination">
+                        <ul class="pagination">
+                        <li><a id="page_one" href="#">&laquo;&laquo;</a></li>
+                            <!--Если есть предыдущая страница - то делаю ссылку "назад"-->
+                    {% if  page_obj.has_previous %}
+                            {# <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li> #}
+                    {% endif %}
+                            {% for p in paginator.page_range %}
+                                <li
+                                    {% if page_obj.number == p %}
+                                        class="active"
+                                    {% endif %}>
+                                    <a class="pages" href="">{{ p }}</a>
+                                </li>
+                            {% endfor %}
+                    {% if  page_obj.has_next %}
+                              {# <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li> #}
+                    {% endif %}
+                        <li><a id="page_last" href="#">&raquo;&raquo;</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+
+<script>
+    $(document).ready(function() {
+            $('.search-object').on('click', '#page_one', function (event) {
+                event.preventDefault();
+                var type_facility = $('#type_facility').val();
+                var price_on = $('#price_on').val();
+                var price_for = $('#price_for').val();
+                var currency = $('#currency').val();
+                var actuality = $('#actuality').val();
+                var district = $('#district').val();
+                var area_for = $('#area_for').val();
+                var area_to = $('#area_to').val();
+                var condition = $('#condition').val();
+                var id_obj = $('#id_obj').val();
+                var phone_obj = $('#phone_obj').val();
+                var peresmotr = $('#peresmotr').val();
+                data = {
+                    "search":true,
+                    "page": 1,
+                    "type_facility": type_facility,
+                    "price_on": price_on,
+                    "price_for": price_for,
+                    "carrency": currency,
+                    "actuality": actuality,
+                    "district": district,
+                    "area_for": area_for,
+                    "area_to": area_to,
+                    "condition": condition,
+                    "id_obj": id_obj,
+                    "phone_obj": phone_obj,
+                    "peresmotr": peresmotr
+                };
+                $.get('search_obj', data, function (data) {
+                    $('.search-object').html(data)
+                })
+            });
+            $('.search-object').on('click', '#page_last', function (event) {
+                event.preventDefault();
+                var type_facility = $('#type_facility').val();
+                var price_on = $('#price_on').val();
+                var price_for = $('#price_for').val();
+                var currency = $('#currency').val();
+                var actuality = $('#actuality').val();
+                var district = $('#district').val();
+                var area_for = $('#area_for').val();
+                var area_to = $('#area_to').val();
+                var condition = $('#condition').val();
+                var id_obj = $('#id_obj').val();
+                var phone_obj = $('#phone_obj').val();
+                var peresmotr = $('#peresmotr').val();
+                data = {
+                    "search":true,
+                    "page": {{ paginator.num_pages}},
+                    "type_facility": type_facility,
+                    "price_on": price_on,
+                    "price_for": price_for,
+                    "carrency": currency,
+                    "actuality": actuality,
+                    "district": district,
+                    "area_for": area_for,
+                    "area_to": area_to,
+                    "condition": condition,
+                    "id_obj": id_obj,
+                    "phone_obj": phone_obj,
+                    "peresmotr": peresmotr
+                };
+                $.get('search_obj', data, function (data) {
+                    $('.search-object').html(data)
+                })
+            });
+            $('.search-object').on('click', '.pages', function (event) {
+                event.preventDefault();
+                var page = $(this).text();
+                var type_facility = $('#type_facility').val();
+                var price_on = $('#price_on').val();
+                var price_for = $('#price_for').val();
+                var currency = $('#currency').val();
+                var actuality = $('#actuality').val();
+                var district = $('#district').val();
+                var area_for = $('#area_for').val();
+                var area_to = $('#area_to').val();
+                var condition = $('#condition').val();
+                var id_obj = $('#id_obj').val();
+                var phone_obj = $('#phone_obj').val();
+                var peresmotr = $('#peresmotr').val();
+                data = {
+                    "search":true,
+                    "page": page,
+                    "type_facility": type_facility,
+                    "price_on": price_on,
+                    "price_for": price_for,
+                    "carrency": currency,
+                    "actuality": actuality,
+                    "district": district,
+                    "area_for": area_for,
+                    "area_to": area_to,
+                    "condition": condition,
+                    "id_obj": id_obj,
+                    "phone_obj": phone_obj,
+                    "peresmotr": peresmotr
+                };
+                $.get('search_obj', data, function (data) {
+                    $('.search-object').html(data)
+                })
+            });
+    })
+</script>
+

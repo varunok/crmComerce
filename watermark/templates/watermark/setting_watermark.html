@@ -1,0 +1,111 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Водяной знак</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class="active">Водяной знак</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <h1 class="section-head">Водяной <span>знак</span></h1>
+                    <div class="messageServer"></div>
+                    <br>
+                    <a id="on_off_watermark" href="#" class="btn 
+                    {% if wm.on_off %}
+                        btn-green">Включено
+                    {% else %}
+                        btn-red">Виключено
+                    {% endif %}
+                    </a>
+                    <input type="hidden" value="{% if wm.on_off %}0{% else %}1{% endif %}" id="valu" name="">
+                <div class="section-sort">
+                    <a href="#" class="extend-block">
+                        <i class=""></i>
+                    </a>
+                </div>
+                <div class="col-md-5 col-md-offset-5">
+                    <div class="row">
+                    	<div class="col-md-6">
+                    		<input type="text" id="text_wm" value="{{ wm.text }}">
+                    	</div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="col-md-5 col-md-offset-5">
+                    <div class="row">
+                    	<div class="col-md-6" style="margin-left: 50px;">
+                    		<a href="#" id="send_wm" class="btn btn-green">Создать</a>
+                    	</div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <div class="col-md-5 col-md-offset-5">
+                    <div class="row">
+                    	<div class="col-md-6" style="">
+                    		<div class="refresh"><img src="{{ wm.watermark_img.url }}" alt=""> </div>
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+    </section>
+{% endblock content %}
+{% block extra_js %}
+	<script>
+        $(document).ready(function() {
+        	$('#send_wm').on('click', function() {
+        		// event.preventDefault();
+        		$('.refresh').html('<i style="margin-left:60px;" class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>');
+        		var text_wm = $('#text_wm').val()
+        		$.post('create_watermark', {'wm': text_wm})
+        			.success( function (data) {
+        				// var data = jQuery.parseJSON(data);
+        				$('.refresh').html('<img src="'+data+'?id='+Math.random()+'" alt="">')
+        			})
+        			.error(function(data) {
+
+        			})
+        	});			
+            $('#on_off_watermark').on('click', function(event) {
+                event.preventDefault();
+                var valu = $('#valu').val();
+                $.get('on_off_watermark', {'val': valu}, function(data) {
+                    var valu = $('#valu').val();
+                    if (valu === '0') {
+                        $('#on_off_watermark').removeClass('btn-green');
+                        $('#on_off_watermark').addClass('btn-red');
+                        $('#on_off_watermark').text('Виключено');
+                        $('#valu').val('1');
+                    }
+                    else{
+                        $('#on_off_watermark').removeClass('btn-red');
+                        $('#on_off_watermark').addClass('btn-green');
+                        $('#on_off_watermark').text('Включено');
+                        $('#valu').val('0');
+                    }
+                });
+            });
+        })
+    </script>
+{% endblock extra_js %}

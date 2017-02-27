@@ -1,0 +1,118 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Корзина Покупателей</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "list_trash" %}">Корзина</a></li>
+                        <li class="active">Корзина Покупателей</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                <h1 class="section-head">Покупатели <span>в корзине</span></h1>
+                    {% for buyer in buyer_list %}
+                        <div class="row label-id-{{ buyer.id }}">
+                            <div class="col-md-3 col-md-offset-1 label-trash">
+                                {{ buyer.name_user_trash }}
+                            </div>
+                            <div class="col-md-3 label-trash">
+                                {{ buyer.time_trash }}
+                            </div>
+                        </div>
+                        {% include 'homes/obj_buyer.html' %}
+                    {% endfor %}
+                    {% include 'trash_object/paginator_trash.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+    <div id="messege_warning" style="">
+        <p>Ви уверени что хотите удалить обьект?</p>
+        <a class="btn btn-green yesbtn" href="">Да</a>
+        <a class="btn btn-red nobtn" href="">Нет</a>
+    </div>
+    <div id="back-module" style="display:none;"></div>
+    <div class="messageServer"></div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        $(document).ready(function() {
+            $('.buyers-edit').on('click', '.fa-times', function(event) {
+                event.preventDefault();
+                var idobj_del = $(this).attr('id-obj');
+                var th = $(this);
+                $('#messege_warning').fadeIn('slow');
+                bm();
+                $('div').on('click', '.yesbtn', function(event) {
+                    event.preventDefault();
+                    $('#messege_warning').fadeOut('slow');
+                    $('#back-module').fadeOut('slow');
+                    foo(th, idobj_del);
+                    $.post('del_buyer', {"del": idobj_del}, messageServer );
+                    $('div').off('click');
+                });
+            });
+            function foo(data, data2){
+                    data.parents('.wrap-buyers').fadeOut('slow');
+                    $('.label-id-'+ data2).fadeOut('slow');
+                }
+            $('.nobtn').on('click', function(event) {
+                event.preventDefault();
+                $('#messege_warning').fadeOut('slow');
+                $('#back-module').fadeOut('slow');
+                $('div').off('click');
+            });
+            var bm = function(data){
+                            $('#back-module').css({
+                            backgroundColor: '#5B6362',
+                            zIndex: '1000',
+                            width: $(window).width(),
+                            height: $(window).height(),
+                            position: 'fixed',
+                            left: '0px',
+                            top: '0px',
+                            opacity: '0.6'
+                        }).fadeIn('slow');
+                    }
+            function messageServer(data) {
+                if (data==='Ошибка'){
+                    $('.messageServer').css('backgroundColor', '#c9302c');
+                }else {
+                    $('.messageServer').css('backgroundColor', '#5bc0de');
+                }
+                $('.messageServer').text(data).fadeIn(1000).delay(2000).fadeOut(500);
+            }
+
+            $(document).on('click', '.fa-arrows-alt', function(event) {
+                event.preventDefault();
+                var idobj_res = $(this).attr('id-obj');
+                var th = $(this);
+                $.post('buyers/restore_buyers', {"id_obj": idobj_res})
+                .success( function (data) {
+                    $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                    $('.messageServer').text('Объект востановлен').fadeIn(1000).delay(2000).fadeOut(500);
+                    foo(th, idobj_res);
+
+                })
+                
+            });
+        })
+    </script>
+{% endblock extra_js %}

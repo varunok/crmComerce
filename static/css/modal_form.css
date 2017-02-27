@@ -1,0 +1,14 @@
+.task-form {
+    width: 50%;
+    height: 500px;
+    background-color: #EDF1F2;
+    border-radius: 5px;
+    border: 2px solid #E3E3E3;
+    box-shadow: 1px 1px 10px 3px #000000;
+    color: #333333;
+    position: fixed;
+    left: 30%;
+    top: -700px;
+    z-index:1;
+    padding: 15px;
+}

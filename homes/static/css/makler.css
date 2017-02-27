@@ -1,0 +1,13 @@
+.makler-form {
+    width: 600px;
+    height: 445px;
+    background-color: #6DC1ED;
+    border-radius: 5px;
+    border: 1px solid #29A4E5;
+    box-shadow: 1px 1px 10px 3px #000000;
+    color: white;
+    position: fixed;
+    left: 30%;
+    top: -860px;
+    z-index:10000;
+}

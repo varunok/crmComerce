@@ -1,0 +1,79 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Архив писем</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li><a href="{% url "list_trash" %}">Корзина</a></li>
+                        <li class="active">Архив писем</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Архив <span>писем</span></h1>
+                </div>
+                <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>От:</th>
+                                    <th>Текст</th>
+                                    <th>Дата</th>
+                                    <th></th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                {% for message in messages %}
+                                    {% if message.user_message_id == user.id %}
+                                        <tr>
+                                            <td><img src="{{ MEDIA_URL }}{{ message.from_user.image }}"  alt="" width="50px;" height="50px;"></td>
+                                            <td>{{ message.from_user.user.first_name }} {{ message.from_user.user.last_name }}</td>
+                                            <td>{{ message.message }}</td>
+                                            <td>{{ message.time_message }}</td>
+                                            <td><a id-message="{{ message.id }}" href=""><i class="fa fa-times"></i></a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        $(document).ready(function() {
+            $('table').on('click', '.fa-times', function (event) {
+                event.preventDefault();
+                var id_message = $(this).parent('a').attr('id-message');
+                var message = $(this).parents('tr');
+                $.post('delete_message', {"id": id_message})
+                .success( function (data) {
+                    message.fadeOut('slow', function () {
+                      message.remove();
+                    });
+                })
+                .error(function(data) {
+
+                })
+            })
+        })
+    </script>
+{% endblock extra_js %}

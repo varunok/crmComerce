@@ -1,0 +1,160 @@
+{% load static from staticfiles %}
+{% load sity_franshise %}
+{% load dead_line %}
+                <div class="wrap-buyers">
+                    <div class="col-md-12">
+                        <div class="col-md-12 buyers-card">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-12 buyers-info">
+                                            <div class="col-md-8">
+                                                <h2 class="buyers-id">
+                                                    <a href="{% url "single_buyer" buyer.id %}">{{ buyer.id }}</a>
+                                                    {% if buyer.price_from or buyer.price_to %}
+                                                        <span class="buyers-price-buy">
+                                                            {% if buyer.price_from %}
+                                                                от {{ buyer.price_from }}$
+
+                                                            {% endif %}
+                                                            {% if buyer.price_to %}
+                                                                до {{ buyer.price_to }}$
+
+                                                            {% endif %}
+                                                         </span>
+                                                    {% endif %}
+                                                </h2>
+                                                <p class="buyers-more-info">
+                                                    {% if buyer.rooms_from or buyer.rooms_to %}
+                                                        <i class="fa fa-building"></i>
+                                                        {% if buyer.rooms_from %}
+                                                            от {{ buyer.rooms_from }}
+                                                        {% endif %}
+                                                        {% if buyer.rooms_to %}
+                                                            до {{ buyer.rooms_to }}
+                                                        {% endif %}
+
+
+                                                    {% endif %}
+                                                    {% if buyer.floors_from or buyer.floors_to %}
+                                                        <i class="fa fa-building-o"></i>
+                                                        {% if buyer.floors_from %}
+                                                            {{ buyer.floors_from }}
+                                                        {% endif %}
+                                                        {% if buyer.floors_to %}
+                                                            / {{ buyer.floors_to }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if buyer.number_of_persons %}
+                                                        <i class="fa fa-male"></i>
+                                                        {{ buyer.number_of_persons }}
+                                                    {% endif %}
+                                                    {% if buyer.type_client %}
+                                                        <i class="fa fa-universal-access"></i>
+                                                        {{ buyer.type_client }}
+                                                    {% endif %}
+
+                                                </p>
+                                                <p class="buyers-local">
+                                                    <i class="fa fa-map-marker"></i>
+                                                    {# пер. Красногвардейский,  #}
+                                                    <span>г. {% sity_franshise %},
+                                                        {% for district in buyer.district_obj.all %}
+                                                            {{ district }} район
+                                                        {% endfor %}
+                                                    </span>
+
+                                                </p>
+                                                <p class="buyers-comment">
+                                                    {% if buyer.email %}
+                                                        <span>E-mail:</span>
+                                                        {{ buyer.email }}<br>
+                                                    {% endif %}
+                                                    {% if buyer.type_stage %}
+                                                        <span>Этап:</span> {{buyer.type_stage}}
+                                                    {% endif %}
+                                                    <div class="object-comment-short" style="margin-top:-2.4%;">
+                                                        <div class="object-comment-long">
+                                                            <p >
+                                                                <strong>Комментарий:</strong>
+                                                                {{ buyer.comment }} {# коментарі до обєкту #}
+                                                            </p>
+                                                        </div>
+                                                    {% if buyer.comment %}
+                                                        <span style="font-weight: bold; font-size: 14px;">Комментарий:</span>
+                                                        {{ buyer.comment|truncatechars:200 }}
+                                                    {% endif %}
+                                                    </div>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 col-sm-6 prop">
+                                                <p class="buyers-prop">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ buyer.name }}
+                                                </p>
+                                                <p class="buyers-prop-phone">
+                                                    {{ buyer.phone_first }}
+                                                </p>
+                                                <p class="buyers-data-call">
+                                                    Дата звонка<br>
+
+                                                    <input class="call_date" id="peresmotr-{{ buyer.id }}" value="{{ buyer.call_date }}" type="text" placeholder="">
+                                                    <script>
+                                                        $("#peresmotr-{{ buyer.id }}").datepicker({monthNames: ['Январь', 'Февраль', 'Март', 'Апрель','Май', 'Июнь', 'Июль', 'Август', 'Сентябрь','Октябрь', 'Ноябрь', 'Декабрь'], dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], firstDay: 1}).datepicker();
+                                                    </script>
+                                                </p>
+                                                <p class="buyers-commission">
+                                                    <i class="fa fa-user"></i>
+                                                    {% for ri in buyer.rieltor.all %}
+                                                        {{ ri }}
+                                                    {% endfor %}
+                                                    <br>
+                                                    Комиссия: <span>
+                                                    {% if buyer.commission %}
+                                                        {{ buyer.commission }}$
+                                                    {% endif %}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 col-sm-6 edit">
+                                                <p class="buyers-edit">
+                                                {% if not buyer.trash %}
+                                                    <a href="{% url "edit_buyer" buyer.id %}"><i class="fa fa-pencil"></i> </a>
+                                                    <a href="{% url "single_buyer" buyer.id %}"><i class="fa fa-eye"></i> </a>
+                                                {% else %}
+                                                    <a href=""><i id-obj="{{ buyer.id }}" class="fa fa-arrows-alt"></i></a>
+                                                {% endif %}
+
+                                                    <a href="#"><i id-obj="{{ buyer.id }}" class="fa fa-times"></i> </a>
+                                                </p>
+                                                <p class="buyers-stat">
+                                                   <i class="fa fa-check-circle-o"></i>
+                                                   {% if buyer.type_state %}
+                                                       {{ buyer.type_state }}
+                                                   {% endif %}
+                                                </p>
+                                                <p class="buyers-data-view">
+                                                   Сроки<br>
+                                                    <i class="fa fa-calendar"></i>
+                                                    {% if buyer.date_term|dead_line %}
+                                                       <span class="f-clr-red">        
+                                                    {% endif %}    
+                                                    {% if buyer.date_term %}
+                                                        {{ buyer.date_term }}
+                                                    {% else %}
+                                                        <span class="f-clr-red"> 
+                                                        неуказано
+                                                    {% endif %}
+                                                    </span>
+                                                </p>
+                                                <p class="buyers-data-update">
+                                                   Дата обновления<br>
+                                                    <i class="fa fa-calendar"></i>
+                                                    {{ buyer.review_date }}
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

@@ -1,0 +1,337 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>
+{% if edit %}
+   Редактирование арендатора ID {{id_arendator}}
+{% else %}
+    Добавление арендатора
+{% endif %}
+</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "arendators" %}">Арендаторы</a></li>
+                        {% if edit %}
+                            <li class="active">Редактирование ID {{id_arendator}}</li>
+                        {% else %}
+                            <li class="active">Добавление</li>
+                        {% endif %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+        {% if edit %}
+            <form action="save_edit_arendator" method="post" enctype="multipart/form-data">
+        {% else %}
+            <form action="add_arendator_obj" method="post" enctype="multipart/form-data">
+        {% endif %}
+                {% csrf_token %}
+                <div class="row section-search">
+                    <div class="col-md-12">
+                        <h1 class="section-head">Информация <span>о Арендаторе</span></h1>
+                        {% if edit %}
+                            <input type="hidden" name="edit" id="edit" value="{{ id_arendator }}">
+                        {% endif %} 
+                        <div class="section-sort">
+                            <input name="add_arendator_obj" type="submit" class="btn btn-green" value=
+                            {% if edit %}
+                                "Сохранить"
+                            {% else %}
+                                "Добавить"
+                            {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12 substrate">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Риэлтор</label>
+                                        {{ form.rieltor }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Доступ</label>
+                                        {{ form.loyality }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Комиссия</label>
+                                        {{ form.commission }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Имя<i style="color:#f1300a">
+                                        {{ form.name.errors.as_text }}</i>
+                                        </label>
+                                        {{ form.name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Состояние</label>
+                                        {{ form.type_state }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat">Тип клиента</label>
+                                        {{ form.type_client }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Телефон 1<i style="color:#f1300a">
+                                            {{ form.phone_first.errors.as_text }}</i>
+                                        </label>
+                                        {{ form.phone_first }}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="search-item">
+                                                <label for="price">Телефон 2<i style="color:#f1300a">
+                                                    {{ form.phone_second.errors.as_text }}</i>
+                                                </label>
+                                                {{ form.phone_second }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="search-item">
+                                            <label for="price">E-mail</label>
+                                            {{ form.email }}
+                                            </div>
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="search-item">
+                                        <label for="price">Комментарий</label>
+                                        {{ form.comment }}
+                                    </div>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <h1 class="section-head">Дополнительные <span>параметры</span></h1>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-12 substrate">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="tarea">Район</label>
+                                        {{ form.district_obj }}
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Ремонт</label>
+                                        {{ form.repairs }}
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="typeobj">Тип объекта</label>
+                                        {{ form.type_building_data }}
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="tarea">Под что?
+                                    <i style="color:#f1300a">
+                                        {{ form.room.errors.as_text }}</i>
+                                    </label>
+                                    {{ form.under_that }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Комнат<i style="color:#f1300a">
+                                        {{ form.rooms_from.errors }}
+                                        {{ form.rooms_to.errors }}</i>
+                                        </label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{ form.rooms_from }}
+                                            </div>
+                                            <div class="col-md-6">
+                                               {{ form.rooms_to }}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Торговый зал</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{ form.shopping_room_from }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{ form.shopping_room_to }}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Площадь</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{ form.area_from }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{ form.area_to }}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Цена</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {{ form.price_from }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{ form.price_to }}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="phone">Сроки <i class="fa fa-calendar"></i></label>
+                                        {{ form.date_term }}
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Этажность</label>
+                                        {{ form.number_of_storeys }}
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Этап</label>
+                                        {{ form.type_stage }}
+                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                        <label for="price">Вход</label>
+                                        {{ form.entrance }}
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="search-item">
+                                    <label for="price">Расположение</label>
+                                    {{ form.location }}
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center; margin: 15px 0">
+                             <input name="add_arendator_obj" type="submit" class="btn btn-green" value=
+                            {% if edit %}
+                                "Сохранить"
+                            {% else %}
+                                "Добавить"
+                            {% endif %}>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#typeobj").selectmenu();
+        $(".tarea-multiple").select2();
+        $("#idobj").selectmenu();
+        $("#actual").selectmenu();
+        $("#stat").selectmenu();
+        $("#stat").selectmenu();
+        $("#street").selectmenu();
+        $("#typebuild").selectmenu();
+        $("#peresmotr").datepicker();
+        $(".multiple").select2();
+        $(".extend-block").click(function() {
+            var x = $(".extended-search").css('height');
+            console.log(x);
+            if (x == '0px') {
+                $(".extended-search").css('height', '');
+            } else {
+                $(".extended-search").css('height', '0px');
+            }
+
+        });
+
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('.popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+            }
+        });
+        $("#id_date_term").datepicker({
+             monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+            'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+            'Октябрь', 'Ноябрь', 'Декабрь'],
+             dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+             firstDay: 1}).datepicker();
+    });
+    </script>
+{% endblock extra_js %}

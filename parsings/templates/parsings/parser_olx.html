@@ -1,0 +1,121 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Сервисы/Парсер OLX </title>{% endblock title %}
+
+{% load static from staticfiles %}
+{% load get_value %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "services" %}">Сервисы</a></li>
+                        <li class="active">Парсер OLX</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Парсер OLX</h1>
+                    {% if  user.myuser.type_user.id == 2 %}
+                    <div class="col-md-4" style="float: right">
+                        <a href="{% url 'setting_olx' %}" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4" style="height: 80px; font-size: 40px;">
+                                    <i class="fa fa-cog"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Настройки</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <form id="parse_form" action="" method="post">
+                    <div class="col-md-3">
+                        <label class="col-md-6" for="">Раздел</label>
+                        <select name="id_categories" id="id_categories">
+                            {% for categories in list_categories_text  %}
+                                <option value="{{ categories }}">{{ list_categories_text|get_value:categories }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-md-6" for="">Исключать</label>
+                        <select name="id_except" id="id_except">
+                            <option value="1">Маклера</option>
+                            <option value="2">Обекты</option>
+                            <option value="3">Все</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-md-6" for="">Период</label>
+                        <select name="id_term" id="id_term">
+                            <option value="1">1 день</option>
+                            <option value="7">7 дней</option>
+                            <option value="30">30 дней</option>
+                            <option value="500">Все</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-md-6" for="">Город</label>
+                        <select name="id_sity" id="id_sity">
+                            <option value=""></option>
+                            <option value="{{ sity.SITY }}">{{ sity.SITY }}</option>
+                        </select>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div>
+                        <input type="hidden" value="1" name="id_page" id="numb_page">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <a id="parse" href="" class="btn btn-green" style="float: right">OK</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table table-striped table-bordered table-hover task">
+                        <thead>
+                            <tr>
+                                <th class="col-md-2">Город</th>
+                                <th>Заголовок</th>
+                                <th>Телефон</th>
+                                <th class="col-md-1">Ссилка</th>
+                                <th>Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody id="include_parse_text">
+                        </tbody>
+                    </table>
+                    <div class="col-md-offset-5" id="wait_icon"></div>
+                    <div class="col-md-offset-5" id="more_icon"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+{% endblock content %}
+{% block extra_js %}
+    <script src="{% static "js/parser_olx.js" %}"></script>
+{% endblock extra_js %}

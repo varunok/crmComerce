@@ -1,0 +1,188 @@
+{% extends "homes/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block title %}<title>Задачи</title>{% endblock title %}
+
+{% load dead_line %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "css/modal_form.css" %}">
+    <link rel="stylesheet" href="{% static "css/jquery-ui-timepicker-addon.css" %}">
+{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li class="active">Задачи</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row section-search">
+                <div class="col-md-12">
+                    <div class="col-md-12 substrate">
+                        <form id="search_form" action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Риэлтор</label>
+                                        <select class="multiple" multiple="multiple" name="search_task_rieltor">
+                                            {% for rieltor in rieltor_list %}
+                                                <option value="{{ rieltor.id }}">{{ rieltor }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Период</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input id="meet-data-to" name="data_to" type="text" placeholder="От">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input id="meet-data-from" name="data_from" type="text" placeholder="До">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="actual">Статус</label>
+                                        <select name="complexity">
+                                            <option selected="selected">-----</option>
+                                            {% for complex in complexity_list %}
+                                                <option value="{{ complex.id }}">{{ complex }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 btn-search">
+                                    <a id="search_task" href="#" class="btn btn-blue">Поиск</a>
+                                    <a href="{% url 'tasking' %}" class="btn btn-red">Очистить</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-md-12" id="include_search">
+                            <div class="col-md-12">
+                                <div class="meeting">
+                                    <div class="row">
+                                        <h1 class="section-head">Задачи</h1>
+                                        <div class="section-sort">
+                                            <a id="add_task_form" href="#" class="btn btn-green">Добавить</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="tabs">
+                                                    <ul class="main-tabs">
+                                                        <li {% if '/tasking' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'tasking' %}">Активные <span class="label label-default count_active_task">{{ count_active_task }}</span></a></li>
+                                                        <li {% if '/archive' in request.path %} class="tabs-active" {% endif %}><a href="{% url 'archive' %}">Архив <span class="label label-default count_archive_task">{{ count_archive_task }}</span></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table table-striped table-bordered table-hover task">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Комментарий</th>
+                                                <th>Сроки</th>
+                                                <th>Сложность</th>
+                                                <th> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="add_single_task">
+                                        {% for tasking in tasking_list %}
+                                            {% if tasking.access.get.id == '' or user.is_superuser or user.myuser.type_user.id == 1%}
+                                                {% include 'tasking/single_task.html' %}
+                                            {% elif tasking.access.all %}
+                                                {% for name in tasking.access.all %}
+                                                    {% if name.id ==  user.id %}
+                                                        {% include 'tasking/single_task.html' %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
+                    {% if paginator.num_pages > 1 %}
+                        {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+                            <div class="col-md-12 section-pagination">
+                                <ul class="pagination">
+                                    <li><a href="{% url request.path|cut:'/' %}?page=1">&laquo;</a></li>
+                                    {% for p in paginator.page_range %}
+                                        <li
+                                            {% if request.GET.page|first == p|floatformat %}
+                                                class="active"
+                                            {% endif %}>
+                                            <a href="{% url request.path|cut:'/' %}?page={{ p }}">{{ p }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    <li><a href="{% url request.path|cut:'/' %}?page={{ paginator.num_pages}}">&raquo;</a></li>
+                                </ul>
+                            </div>
+                        {% endwith %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="add_form"></div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#typeobj").selectmenu();
+        $(".tarea-multiple").select2();
+        $("#idobj").selectmenu();
+        $("#actual").selectmenu();
+        $("#stat").selectmenu();
+        $("#speed").selectmenu();
+        $("#street").selectmenu();
+        $("#typebuild").selectmenu();
+        $("#peresmotr").datepicker();
+        $("#call-phone").datepicker();
+        $("#meet-data-from").datepicker();
+        $("#meet-data-to").datepicker();
+        $(".multiple").select2();
+        $(".extend-block").click(function() {
+            var x = $(".extended-search").css('height');
+            console.log(x);
+            if (x == '0px') {
+                $(".extended-search").css('height', '');
+            } else {
+                $(".extended-search").css('height', '0px');
+            }
+
+        });
+
+    });
+    </script>
+    <script src="{% static "js/jquery-ui-timepicker-addon.js" %}"></script>
+    <script src="{% static "js/tasking.js" %}"></script>
+{% endblock extra_js %}

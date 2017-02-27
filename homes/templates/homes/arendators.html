@@ -1,0 +1,434 @@
+{% extends "homes/base.html" %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block title %}<title>Арендаторы</title>{% endblock title %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li class="active">Арендаторы</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container object-edit">
+            <div class="row section-search">
+                <div class="col-md-12">
+                    <h1 class="section-head">Поиск <span>Арендаторов</span></h1>
+                    <div class="section-sort">
+                        <a href="#" class="extend-block">
+                            <i class="fa fa-filter"></i> Расширеный поиск
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <form id="search_form" action="" method="GET">
+                        <div class="col-md-12 substrate">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="typeobj">Риэлтор</label>
+                                        <select id="user_id" name="user" class="tarea-multiple" multiple="multiple" placeholder="-----">
+                                            <option>-----</option>
+                                            {% for user in user_list.all %}
+                                                <option value="{{ user.user.id }}">{{ user.user.get_full_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Цена</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input class="allownumericwithoutdecimal" id="price_from" name="price_from" type="text" placeholder="От">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="allownumericwithoutdecimal" id="price_to" name="price_to" type="text" placeholder="До">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="actual">Сроки</label>
+                                        <input id="terms" name="terms" type="text" placeholder="-----">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="tarea">Район</label>
+                                        <select class="tarea-multiple" multiple="multiple" placeholder="-----" id="district_name" name="district_name">
+                                            {% for district in list_district %}
+                                                <option value="{{ district.id }}">{{ district.district }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="price">Площадь</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input class="allownumericwithoutdecimal" id="area_from" name="area_from" type="text" placeholder="От">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="allownumericwithoutdecimal" id="area_to" name="area_to" type="text" placeholder="До">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="stat">Состояние</label>
+                                        <select id="state" name="state" class="tarea-multiple" multiple="multiple">
+                                            {% for state in list_state %}
+                                                <option value="{{ state.id }}">{{ state }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="idobj">Дата звонка</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input id="call_date_from" name="call_date_from" type="text" placeholder="От">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input id="call_date_to" name="call_date_to" type="text" placeholder="До">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="phone">Телефон</label>
+                                        <input class="allownumericwithoutdecimal" id="phone_n" name="phone_n" type="text" placeholder="-----">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="search-item">
+                                        <label for="phone">Под что?</label>
+                                        <select id="under_that" name="under_that" class="multiple" multiple="multiple" placeholder="-----">
+                                            {% for under_that in list_under_that %}
+                                                <option value="{{under_that}}">{{under_that}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="extended-search" style="height: 0px">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="typeobj">Тип объекта</label>
+                                            <select id="type_facility" name="type_facility" class="multiple" multiple="multiple" placeholder="-----">
+                                                {% for tp in type_facility %}
+                                                    <option value="{{tp.id}}">{{tp}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="typeobj">Этажность</label>
+                                            <select id="storeys" name="storeys" class="multiple" multiple="multiple" placeholder="-----">
+                                                {% for storeys in list_storeys %}
+                                                    <option value="{{ storeys }}">{{ storeys }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="state">Этап</label>
+                                            <select id="stage_a" name="stage_a" class="multiple" multiple="multiple" placeholder="-----">
+                                                {% for stage in list_stage %}
+                                                    <option value="{{ stage.id }}">{{ stage }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="tarea">Тип клиента</label>
+                                        <select id="type_client" name="type_client" class="multiple" multiple="multiple"  placeholder="-----">
+                                            {% for client in list_client %}
+                                                <option value="{{ client.id }}">{{ client }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="">Комнат</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input class="allownumericwithoutdecimal" id="rooms_from" name="rooms_from" type="text" placeholder="От">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input class="allownumericwithoutdecimal" id="rooms_to" name="rooms_to" type="text" placeholder="До">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="stat">E-mail</label>
+                                            <input class="filter_space" id="email_a" name="email_a" type="email" placeholder="  -----">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="">Имя</label>
+                                            <input class="filter_space" id="name_a" name="name_a" type="text" placeholder="-----">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="phone">Торговый зал</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input class="allownumericwithoutdecimal" id="shopping_room_from" name="shopping_room_from" type="text" placeholder="От">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input class="allownumericwithoutdecimal" id="shopping_room_to" name="shopping_room_to" type="text" placeholder="До">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="">Вход</label>
+                                            <select id="entrance" name="entrance" class="multiple" multiple="multiple" placeholder="-----">
+                                                {% for entrance in list_entrance %}
+                                                    <option value="{{ entrance }}">{{ entrance }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="">ID клиента</label>
+                                            <input class="allownumericwithoutdecimal" id="id_arendator" name="arendator" type="text" placeholder="-----">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="">Ремонт</label>
+                                            <select id="repair" name="repair" class="multiple" multiple="multiple" placeholder="-----">
+                                                {% for repair in list_repair %}
+                                                    <option value="{{ repair.id }}">{{ repair }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="search-item">
+                                            <label for="">Расположение</label>
+                                            <select id="location" name="location" class="multiple" multiple="multiple" placeholder="-----">
+                                                {% for location in list_location %}
+                                                    <option value="{{ location }}">{{ location }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 btn-search">
+                                    <a href="{% url 'arendators' %}" class="btn btn-red">Очистить</a>
+                                    <a id="search_arendator" href="#" class="btn btn-blue">Применить</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row search-object">
+                <div class="col-md-12">
+                    <h1 class="section-head">Ваши <span>Арендаторы </span> <i class="label label-default">{{ count_arendator }}</i></h1>
+                    <div class="section-sort">
+                        <a href="{% url "add_arendator" %}" class="btn btn-green">Добавить</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="tabs">
+                         <ul class="object-filter">
+                            {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=id{% if order_by == 'id' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'id' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'id' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Артикул
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=call_date{% if order_by == 'call_date' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'call_date' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'call_date' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата звонка
+                                </a></li>
+                                <li><a href="{% url request.path|cut:'/' %}?order_by=review_date{% if order_by == 'review_date' and reverse != '1' %}&amp;reverse=1{% endif %}">
+                                    {% if order_by == 'review_date' and reverse == '1' %}&darr;
+                                    {% elif order_by == 'review_date' %}
+                                            &uarr;
+                                    {% endif %}
+                                    Дата обновления
+                                </a></li>
+                            {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+
+                {% for arendator in arendator_list %}
+                    {% if arendator.trash == 0 %}
+                        {% if arendator.loyality.get.id == '' %}
+                            {% include 'homes/obj_arendator.html' %}
+                        {% elif user.is_superuser or user.myuser.type_user.id == 1 %}
+                            {% include 'homes/obj_arendator.html' %}
+                        {% elif arendator.loyality.all %}
+                            {% for name in arendator.loyality.all %}
+                                {% if name.id ==  user.id %}
+                                    {% include 'homes/obj_arendator.html' %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if  is_paginated %}
+                    <div class="col-md-12 section-pagination">
+                        <ul class="pagination">
+                        <li><a href="?page=1">&laquo;&laquo;</a></li>
+                            <!--Если есть предыдущая страница - то делаю ссылку "назад"-->
+                    {% if  page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+                            {% for p in paginator.page_range %}
+                                <li
+                                    {% if page_obj.number == p %}
+                                        class="active"
+                                    {% endif %}>
+                                    <a href="{% url request.path|cut:'/' %}?page={{ p }}">{{ p }}</a>
+                                </li>
+                            {% endfor %}
+                    {% if  page_obj.has_next %}
+                              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% endif %}
+                        <li><a href="?page={{ paginator.num_pages}}">&raquo;&raquo;</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <div class="messageServer"></div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#typeobj").selectmenu();
+        $(".tarea-multiple").select2();
+        $("#idobj").selectmenu();
+        $("#actual").selectmenu();
+        $("#stat").selectmenu();
+        $("#stat").selectmenu();
+        $("#street").selectmenu();
+        $("#typebuild").selectmenu();
+        
+        $("#terms").datepicker({monthNames: ['Январь', 'Февраль', 'Март', 'Апрель','Май', 'Июнь', 'Июль', 'Август', 'Сентябрь','Октябрь', 'Ноябрь', 'Декабрь'], dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], firstDay: 1}).datepicker();
+        $("#call_date_from").datepicker({monthNames: ['Январь', 'Февраль', 'Март', 'Апрель','Май', 'Июнь', 'Июль', 'Август', 'Сентябрь','Октябрь', 'Ноябрь', 'Декабрь'], dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], firstDay: 1}).datepicker();
+        $("#call_date_to").datepicker({monthNames: ['Январь', 'Февраль', 'Март', 'Апрель','Май', 'Июнь', 'Июль', 'Август', 'Сентябрь','Октябрь', 'Ноябрь', 'Декабрь'], dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'], firstDay: 1}).datepicker();
+        $(".multiple").select2();
+        $(".extend-block").click(function() {
+            var x = $(".extended-search").css('height');
+            console.log(x);
+            if (x == '0px') {
+                $(".extended-search").css('height', '');
+            } else {
+                $(".extended-search").css('height', '0px');
+            }
+
+        });
+
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+    $('.popup-gallery').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        tLoading: 'Loading image #%curr%...',
+        mainClass: 'mfp-img-mobile',
+        gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+        },
+        image: {
+            tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+        }
+    });
+    $('.prop').on('change', '.call_date', function(event) {
+        event.preventDefault();
+        $.get('arendators/change_call_date', {"id": $(this).attr('id'), "date": $(this).val()}, function(data) {});
+    });
+    $('#search_arendator').on('click',function(event) {
+        event.preventDefault();
+        var data   = $('#search_form').serialize();
+        $.get('arendators/search_arendator', data, function(data) {
+            $('.search-object').html(data)
+        });
+    });
+    $('.filter_space').on('keyup', function () {
+        $(this).val($.trim($(this).val()));
+    });
+     $(".allownumericwithoutdecimal").on('keyup', function () {
+         $(this).val($.trim($(this).val()));
+         if ($.isNumeric($(this).val())){
+
+         }else{
+             var numbs = $(this).val();
+             numbs = numbs.slice(0, numbs.length-1);
+             $(this).val(numbs)
+
+         }
+        });
+     $('.object-edit').on('click', '.fa-times', function(event) {
+                event.preventDefault();
+                var idobj_trash = $(this).attr('id-obj');
+                $(this).parents('.wrap-buyers').fadeOut('slow');
+                $.post('arendators/trash_arendator', {"trash": idobj_trash, "iduser":{{ user.id }}}, messageServer);
+            });
+            function messageServer(data) {
+                if (data==='Ошибка'){
+                    $('.messageServer').css('backgroundColor', '#c9302c');
+                }else {
+                    $('.messageServer').css('backgroundColor', '#5bc0de');
+                }
+                $('.messageServer').text(data).fadeIn(1000).delay(2000).fadeOut(500);
+            }
+});
+    </script>
+{% endblock extra_js %}

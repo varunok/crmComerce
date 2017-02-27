@@ -1,0 +1,517 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Объект ID{{single_object.id}}</title>{% endblock title %}
+
+{% load static from staticfiles %}
+{% load sity_franshise %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static "css/modal_form.css" %}">
+<link rel="stylesheet" href="{% static "css/jquery-ui-timepicker-addon.css" %}">
+{% endblock extra_css %}
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "objects" %}">Объекты</a></li>
+                        <li class="active">ID obj{{ single_object.id }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="content">
+        <div class="container">
+            <div class="row search-object">
+                <div class="col-md-12">
+                    {% if single_object.title %}
+                        <h1 class="section-head">{{ single_object.title }}<span></span></h1>
+                    {% else %}
+                        <h1 class="section-head">{{ single_object.list_operations.all|first }}<span></span></h1>
+                    {% endif %}
+{#                    <h1 class="section-head">Сдам <span>квартиру посуточно </span>{{ single_object.list_operations.all|first }}</h1>#}
+                    <div class="section-sort">
+                        {# <a data-clipboard-text="{{request.get_host}}{% url 'databases' single_object.id %}" href="{% url 'databases' single_object.id %}" id="clip_link"><i class="fa fa-link"></i> Ссылка</a> #}
+                        <a href="{% url 'databases' single_object.id %}" target="blank"><i class="fa fa-link"></i> Ссылка</a>
+                        <input id="text_email_so" type="text" placeholder="E-mail">
+                        <a id="send_email_so" href="#" class="btn btn-green">Отправить</a>
+                    </div>
+                </div>
+                <div class="wrap-obj">
+                    <div class="col-md-12">
+                        <div class="col-md-12 object-card">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-3 object-img popup-gallery-{{ single_object.id }}">
+                                        {% for image in images %}
+                                                {% if single_object.id == image.album_id %}
+                                                        <a href="{{ MEDIA_URL }}{{ image.image }}">
+                                                            {% if image.cover %}
+                                                                <img src="{{ MEDIA_URL }}{{ image.image }}" alt=""></a>
+                                                            {% endif %}
+                                                    {% endif %}
+                                                <span class="label label-default img-count">{{ single_object.images_count }}</span>
+                                            {% empty %}
+                                                NO PHOTO
+                                        {% endfor %}
+                                        </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('.popup-gallery-{{ single_object.id }}').magnificPopup({
+                                                delegate: 'a',
+                                                type: 'image',
+                                                tLoading: 'Loading image #%curr%...',
+                                                mainClass: 'mfp-img-mobile',
+                                                gallery: {
+                                                    enabled: true,
+                                                    navigateByImgClick: true,
+                                                    preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+                                                },
+                                                image: {
+                                                    tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                    <div class="col-md-9 object-info">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h2 class="object-id">
+                                                    <a id="sisingle_obj_id" sisingle_obj_id="{{ single_object.id }}" href="#">ID {{ single_object.id }}</a>
+                                                    {% if  single_object.public %}
+                                                    	<i class="fa fa-globe"></i>
+                                                    {% endif %}
+                                                    {% if single_object.vip_owner %}
+                                                    	<i class="fa fa-star"></i>
+                                                    {% endif %}
+                                                    <span class="object-price-buy">
+                                                    	{{ single_object.price_bay }}$
+                                                    </span>
+                                                    <span class="object-price-arend">
+                                                    	{{ single_object.price_month }}
+                                                    	{{ nac_carrency }}
+                                                    </span>
+                                                </h2>
+                                                <p class="object-type">
+                                                	<span title="Тип объекта">
+                                                            {{ single_object.type_facilit }}
+                                                        </span>
+                                                        {% if single_object.repairs %}
+                                                            <span title="Ремонт">
+                                                                / {{ single_object.repairs }}
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if single_object.location %}
+                                                            <span title="Расположение">
+                                                                / {{ single_object.location }}
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if single_object.entrance %}
+                                                            <span title="Вход">
+                                                                / {{ single_object.entrance }}
+                                                            </span>
+                                                        {% endif %}
+                                                </p>
+                                                <p class="object-more-info">
+                                                        <i class="fa fa-building-o"></i>
+                                                        <span title="Этажность">
+                                                            {{ single_object.number_of_storeys|default:'--' }}
+                                                        </span>
+                                                        <!--<i class="fa fa-expand"></i>-->/
+                                                        <span title="Комнат">
+                                                            {{ single_object.rooms|default:'--' }}
+                                                        </span>
+                                                        <i class="fa fa-shopping-basket"></i>
+                                                        <span title="Метраж общий">
+                                                            {{ single_object.footage|default:'0' }} кв.
+                                                        </span>
+                                                        <span title="Торговый зал">
+                                                            {{ single_object.shopping_room|default:'0' }} кв.
+                                                        </span>
+
+                                                    </p>
+                                                	<p class="object-local">
+                                                        <i class="fa fa-map-marker"></i>
+                                                        {{ single_object.street_obj }},
+                                                        <span>
+                                                            г.{% sity_franshise %}
+                                                            {% if single_object.district_obj  %}
+                                                                ,{{ single_object.district_obj }} район
+                                                            {% endif %}
+                                                        </span>
+
+                                                    </p>
+                                                <p class="object-comment">
+                                                    <span>Комментарий:</span>
+                                                    {{ single_object.comment }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 col-sm-6 prop">
+                                                <p class="object-prop">
+                                                    <i class="fa fa-user"></i>
+                                                    {{ single_object.name_owner }} 
+                                                </p>
+                                                <p class="object-prop-phone">
+                                                    {{ single_object.phone_owner }}
+                                                </p>
+                                                <p class="object-data-call">
+                                                    Дата звонка
+                                                    <br>
+                                                    <input value="{{ single_object.call_date|date:'m/d/Y' }}" id="call-phone" type="text">
+                                                </p>
+                                                <p class="object-commission">
+                                                    Комиссия: 
+                                                    <span>
+														{% if single_object.commission %}
+                                                            {{ single_object.commission }}
+                                                            {{ single_object.currency }}
+                                                        {% endif %}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2 col-sm-6 edit">
+                                                <p class="object-edit">
+                                                    <a href="{% url "edit_facility" single_object.id %}"><i class="fa fa-pencil"></i> </a>
+                                                    <a href="#"><i class="fa fa-repeat"></i> </a>
+                                                    <a href="#"><i class="fa fa-times"></i> </a>
+                                                </p>
+                                                <p class="object-stat">
+                                                    <select id="actuality">
+                                                        {% for actuality in type_actuality %}
+                                                        	<option value="{{ actuality.id }}" {% if actuality.id == single_object.actuality.id %}
+                                                        	    selected="selected"
+                                                        	{% endif %} >{{ actuality.type_actuality }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </p>
+                                                <p class="object-data-view">
+                                                    Дата пересмотра
+                                                    <br>
+                                                    <input value="{{ single_object.review_date|date:'m/d/Y' }}" id="peresmotr" type="text">
+                                                </p>
+                                                <p class="object-data-update" style="margin-right: 10px;">
+                                                    Дата обновления
+                                                    <br>
+                                                    <i class="fa fa-calendar"></i>
+                                                    <i id="new_repeat">
+                                                        {{ single_object.date_of_renovation|date:'d E Y' }}
+                                                    </i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="tabs">
+                        <ul class="main-tabs">
+                            <li class="tabs-active"><a class="btna" id="get_comment" href="">Комментарии <span class="label label-default">{{ single_obj_comments|length }}</span></a></li>
+                            {# {% for type_operation in single_object.list_operations.all %} #}
+                                {# {% if type_operation.id == 2 or type_operation.id == 3 %} #}
+                            <li ><a class="btna" id="get_arendator" href="">Арендаторы <span class="label label-default">{{ count_arendator }}</span></a></li>
+                                {# {% else %} #}
+                            <li><a class="btna" id="get_buyer" href="">Покупатели <span class="label label-default">{{ count_buyer }}</span></a></li>
+                                {# {% endif %} #}
+                            {# {% endfor %} #}
+
+                            <li><a class="btna" id="get_publication" href="#">Публикации</a></li>
+                            <li><a class="btna" id="get_meetings" href="">Встречи <span class="label label-default">{{count_meet}}</span></a></li>
+                            <li><a class="btna" id="get_tasks" href="">Задачи <span class="label label-default">{{ count_task }}</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Комментарии-->
+                <div class="col-md-12 tabs-rule">
+					{% include 'single_object/comments.html' %}
+                </div>
+        </div>
+        </div>
+    </section>
+       <div id="test-popup" class="white-popup mfp-with-anim mfp-hide">{{previu_sms}}</div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#typeobj").selectmenu();
+        $(".tarea-multiple").select2();
+        $("#idobj").selectmenu();
+        $("#actual").selectmenu();
+        $("#stat").selectmenu();
+        $("#speed").selectmenu();
+        $("#street").selectmenu();
+        $("#typebuild").selectmenu();
+        $("#peresmotr").datepicker();
+        $("#call-phone").datepicker();
+        $(".multiple").select2();
+        $(".extend-block").click(function() {
+            var x = $(".extended-search").css('height');
+            console.log(x);
+            if (x == '0px') {
+                $(".extended-search").css('height', '');
+            } else {
+                $(".extended-search").css('height', '0px');
+            }
+
+        });
+
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+
+
+
+        $('.popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1]
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+                        }
+                    });
+
+                    $('.delivery-pre').magnificPopup({
+              delegate: 'a',
+              removalDelay: 500, //delay removal by X to allow out-animation
+              callbacks: {
+                beforeOpen: function() {
+                   this.st.mainClass = this.st.el.attr('data-effect');
+                }
+              },
+              midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+            });
+
+
+		$('#call-phone').on('change', function() {
+			$.get('change_call_date', {"id": {{ single_object.id }}, "data": $(this).val()})
+            .success( function(data){
+                        $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                        $('.messageServer').text('Обект обновлен').fadeIn(1000).delay(2000).fadeOut(500);
+                        $('#new_repeat').text(data);
+                    })
+                    .error(function(){
+                        $('.messageServer').animate({backgroundColor: '#c9302c'}, 1000);
+                        $('.messageServer').text('Ошибка').fadeIn(1000).delay(2000).fadeOut(500);
+                    })
+		});
+		$('#peresmotr').on('change', function() {
+			$.get('change_review_date', {"id": {{ single_object.id }}, "data": $(this).val()})
+            .success( function(data){
+                        $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                        $('.messageServer').text('Обект обновлен').fadeIn(1000).delay(2000).fadeOut(500);
+                        $('#new_repeat').text(data);
+                    })
+                    .error(function(){
+                        $('.messageServer').animate({backgroundColor: '#c9302c'}, 1000);
+                        $('.messageServer').text('Ошибка').fadeIn(1000).delay(2000).fadeOut(500);
+                    })
+		});
+		$('#actuality').on('change', function() {
+			$.get('change_actuality', {"id": {{ single_object.id }}, "data": $(this).val()})
+            .success( function(data){
+                        $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                        $('.messageServer').text('Обект обновлен').fadeIn(1000).delay(2000).fadeOut(500);
+                        $('#new_repeat').text(data);
+                    })
+                    .error(function(){
+                        $('.messageServer').animate({backgroundColor: '#c9302c'}, 1000);
+                        $('.messageServer').text('Ошибка').fadeIn(1000).delay(2000).fadeOut(500);
+                    })
+		});
+		$('.tabs-rule').on('click', '#send_comment', function(event) {
+			event.preventDefault();
+			var text_comment = $('#text_comment').val();
+			var data_comment = {
+				"text_comment": text_comment,
+				"id_user": {{ user.id }},
+				"id_single_obj": {{ single_object.id }},
+                "type_tabs": $('.tabs-rule').children().attr('type-tabs')
+			};
+			$.post('add_obj_comment', data_comment, function(data) {
+				var data = jQuery.parseJSON(data);
+				$('.comment_add').children().last().removeClass('last-comments');
+				$('.comment_add').prepend('<div style="display: none;" class="comments-item last-comments"><div class="col-md-1"><div class="comments-avatar"><img src="/media/'+data.image+'" alt="" width="50px;"></div></div><div class="col-md-11"><h4 class="comments-name">'+data.author+'</h4><p class="comments-text">'+data.text+'</p><div class="comments-edit"><a class="a" id="del_comment_'+data.id_comment+'" href="#"><i class="fa fa-times"></i></a></div><div class="comments-time"><i class="fa fa-clock-o"></i>'+data.date+'</div></div></div>')
+                $('.comments-item').fadeIn('slow');
+                if ($('.tabs-rule').children().attr('type-tabs') == 'comments'){
+                    var count_comment = parseInt($('#get_comment').children('span').text())+1;
+                    $('#get_comment').children('span').text(count_comment);
+                }
+			});
+
+		});
+		$('.tabs-rule').on('click', '.a', function(event) {
+			event.preventDefault();
+			var hide_del_comment = $(this).parents('.comments-item');
+			$.post('del_comment', {"id_comment": $(this).attr('id')}).success( function (data) {
+                hide_del_comment.fadeOut('slow', function () {
+                    this.remove();
+                    if ($('.tabs-rule').children().attr('type-tabs') == 'comments'){
+                        var count_comment = parseInt($('#get_comment').children('span').text())-1;
+                        $('#get_comment').children('span').text(count_comment);
+                    }
+                });
+            })
+		});
+		$('ul').on('click', '.btna', function(event) {
+			event.preventDefault();
+			$(this).parents('ul').children('li').removeClass('tabs-active');
+			$(this).parent('li').addClass('tabs-active');
+			var get_id = $(this).attr('id');
+			$.get(get_id, {"id_so":{{ single_object.id }}}, function(data) {
+				$('.tabs-rule').fadeOut('200', function() {
+					$(this).html('');
+					$(this).html(data);
+					$(this).fadeIn('200');
+				});
+			});
+		});
+
+
+        // START BLOCK TASKING
+        $(document).on('click', '#tasks_active', function(event) {
+            event.preventDefault();
+            $.get('get_tasks_active', {"id_so":{{ single_object.id }}}, function(data) {
+				$('.tabs-rule').fadeOut('200', function() {
+					$(this).html('');
+					$(this).html(data);
+					$(this).fadeIn('200');
+				});
+			});
+        });
+
+        $(document).on('click', '#tasks_archive', function(event) {
+            event.preventDefault();
+            $.get('get_tasks_archive', {"id_so":{{ single_object.id }}}, function(data) {
+				$('.tabs-rule').fadeOut('200', function() {
+					$(this).html('');
+					$(this).html(data);
+					$(this).fadeIn('200');
+				});
+			});
+        });
+
+        $(document).on('click', '#tasks_all', function(event) {
+            event.preventDefault();
+            $.get('get_tasks', {"id_so":{{ single_object.id }}}, function(data) {
+				$('.tabs-rule').fadeOut('200', function() {
+					$(this).html('');
+					$(this).html(data);
+					$(this).fadeIn('200');
+				});
+			});
+        });
+
+        // END BLOCK TASKING
+
+        // START BLOCK MEETING
+        $(document).on('click', '#meets_active', function(event) {
+            event.preventDefault();
+            $.get('get_meetings_active', {"id_so":{{ single_object.id }}}, function(data) {
+                $('.tabs-rule').fadeOut('200', function() {
+                    $(this).html('');
+                    $(this).html(data);
+                    $(this).fadeIn('200');
+                });
+            });
+        });
+
+        $(document).on('click', '#meets_archive', function(event) {
+            event.preventDefault();
+            $.get('get_meetings_archive', {"id_so":{{ single_object.id }}}, function(data) {
+                $('.tabs-rule').fadeOut('200', function() {
+                    $(this).html('');
+                    $(this).html(data);
+                    $(this).fadeIn('200');
+                });
+            });
+        });
+
+        $(document).on('click', '#meets_all', function(event) {
+            event.preventDefault();
+            $.get('get_meetings', {"id_so":{{ single_object.id }}}, function(data) {
+                $('.tabs-rule').fadeOut('200', function() {
+                    $(this).html('');
+                    $(this).html(data);
+                    $(this).fadeIn('200');
+                });
+            });
+        });
+
+        // END BLOCK MEETING
+
+        // sleep function
+        function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+        }
+
+
+        //trash object
+        $('.object-edit').on('click', '.fa-times', function(event) {
+            event.preventDefault();
+            var idobj_trash = $('#sisingle_obj_id').attr('sisingle_obj_id');
+{#            $(this).parents('.wrap-obj').fadeOut('slow');#}
+            $.post('trash_obj', {"trash": idobj_trash, "iduser":{{ user.id }}})
+            .success( function (data) {
+                $('.messageServer').animate({backgroundColor: '#c9302c'}, 1000);
+                // $('.messageServer').css('backgroundColor', '#5bc0de');
+                $('.messageServer').text('Обект перемещен в корзину. Ви будете перенаправлени на страницу обектов.').fadeIn(1000).delay(2000).fadeOut(500, function(){
+                    var url = document.location.href.split('/', 4);
+                    url[1]='/';
+                    url[3] += '/';
+                    url = url.join('/');
+                    window.location.replace(url);
+                });
+            })
+            .error(function(data) {
+                $('.messageServer').animate({backgroundColor: '#c9302c'}, 1000);
+{#                $('.messageServer').css('backgroundColor', '#c9302c');#}
+                $('.messageServer').text(data.responseText).fadeIn(1000).delay(2000).fadeOut(500);
+        })
+        });
+
+        // repeat object
+        $('.object-edit').on('click', '.fa-repeat', function(event) {
+            event.preventDefault();
+            var id_so = $('#sisingle_obj_id').attr('sisingle_obj_id');
+            $.get('repeat_obj', {'id_so': id_so})
+                    .success( function(data){
+                        $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+                        $('.messageServer').text('Обект обновлен').fadeIn(1000).delay(2000).fadeOut(500);
+                        $('#new_repeat').text(data);
+                    })
+                    .error(function(){
+                        $('.messageServer').animate({backgroundColor: '#c9302c'}, 1000);
+                        $('.messageServer').text('Ошибка').fadeIn(1000).delay(2000).fadeOut(500);
+                    })
+        });
+
+        // cliplink
+        // var clip_link = document.getElementById('clip_link');
+        // var clipboard = new Clipboard(clip_link);
+        // $(document).on('click', '#clip_link',function(event){event.preventDefault()});
+        //     clipboard.on('success', function(e) {
+        //         $('.messageServer').animate({backgroundColor: '#5bc0de'}, 1000);
+        //         $('.messageServer').text('Ссилка на обект скопирована в буфер').fadeIn(1000).delay(2000).fadeOut(500);
+        //     });
+    });
+    </script>
+    <script src="{% static "js/jquery-ui-timepicker-addon.js" %}"></script>
+    <script src="{% static "js/single_obj.js" %}"></script>
+{% endblock extra_js %}

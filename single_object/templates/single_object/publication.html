@@ -1,0 +1,63 @@
+                            <div class="public">
+                                <div class="row">
+                                    <div class="public-head">
+                                        <h3>Публикации</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <table class="table table table-striped table-bordered table-hover default">
+                                            <thead>
+                                                <tr>
+                                                    <th> </th>
+                                                    <th>Торговая площадка</th>
+                                                    <th>Просмотров</th>
+                                                    <th>Статус</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="edit">
+                                                        <a id="post_obj" href="#" class="status-label 
+                                                        {% if status.public %}
+                                                            sl-grey" status="true"> Снять с публикации 
+                                                        {% else %}
+                                                            sl-green" status="false">Опубликовать
+                                                        {% endif %}
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        {{ franshise }}
+                                                    </td>
+                                                    <td>
+                                                        {% if len_shows %}
+                                                            {{ len_shows }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="info_status">
+                                                        {% if status.public %}
+                                                        Публикуется
+                                                        {% else %}
+                                                            Не публикуется
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            
+{#                                                <td class="edit">#}
+{#                                                    <a href="#" class="status-label sl-green">Опубликовать</a>#}
+{#                                                </td>#}
+{#                                                <td>#}
+{#                                                    gek.volyn.ua#}
+{#                                                </td>#}
+{#                                                <td>#}
+{#                                                    12#}
+{#                                                </td>#}
+{#                                                <td>#}
+{#                                                    Публикуется#}
+{#                                                </td>#}
+{#                                            </tr>#}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>

@@ -1,0 +1,54 @@
+<div class="head-dropmessage">CООБЩЕНИЯ</div>
+{% for message in messages %}
+	{% if message.read == False %}	
+		<li>
+			<a id="message-{{message.id}}" class="read_message" href="#single_messeg"><img src="{{ MEDIA_URL }}{{ message.from_user.image }}"  alt="" width="50px;" height="50px;">
+				<span class="message-user-name">
+					{{ message.from_user.user.first_name }} 
+					{{ message.from_user.user.last_name }}
+					<span style="font-weight:normal; float:right;">{{ message.time_message }}</span>
+				</span>
+				<span>
+					{{ message.message|truncatechars:50 }}
+				</span>
+			</a>
+		</li>
+		<li role="separator" class="divider"></li>
+	{% endif %}
+{% endfor %}
+<script>
+	$(document).ready(function() {
+		$('.read_message').magnificPopup({
+			// type: 'inline',
+			// preloader: false,
+			// focus: '#username',
+			modal: true,
+			callbacks: {
+			            beforeOpen: function() {
+			               this.st.mainClass = this.st.el.attr('data-effect');
+			            }
+			        },
+			midClick: true
+		});
+		$('.read_message').on('click', function(event) {
+			event.preventDefault();
+			$.get('get_text_message', {"id_mes": $(this).attr('id')}, function(data) {
+				var data = jQuery.parseJSON(data);
+				$('#name_sender').text(data.from_fn+' '+data.from_ln);
+				var today = new Date;
+				today = today.setTime(Date.parse(data.time));
+				$('#time_send').text(data.time);
+				$('#text_new_message').text(data.text_message);
+                $('#reading').attr('id-message', data.id_message)
+			});
+		});			
+		$('#reading').click(function(event) {
+			event.preventDefault();
+			$.magnificPopup.close();
+            var id_message = $(this).attr('id-message');
+		    $.post('reading_message', {'id': id_message});
+			$(this).off('click');
+		});
+		
+	})
+</script>

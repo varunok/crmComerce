@@ -1,0 +1,75 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Настройки Улицы и районы</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class="active">Улицы и районы</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Настройки <span>Улицы и районы</span></h1>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'setting_street' %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-street-view "></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Улицы</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'setting_district' %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-share-alt"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Районы</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'setting_subway' %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-subway"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Метро</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+
+{% endblock content %}
+{% block extra_js %}
+{% endblock extra_js %}

@@ -1,0 +1,95 @@
+{% load franshise %}
+{% load video_tag %}
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+</head>
+
+<body style="font-family: 'PT Sans', sans-serif; background-color: #f6f6f6; color: #333">
+    <div>
+        <div>
+            <div>
+                <img>
+                <table cellpadding="0" cellspacing="5" width="620" style="color:#bbbab8; background-color: #34393d; padding: 10px;">
+                    <tr>
+                        <td style="text-align: center;font-size: 30px;"><b><span style="color: #fccd1b">{% franshise_first %}</span>.{% franshise_second %}</b></td>
+                    </tr>
+                </table>
+                {% for single_object in objects %}
+                <h1>Объект недвижимости (ID: {{single_object.id}})</h1>
+                <h2>АДРЕС <span style="color: #767676">И ТИП ОБЪЕКТА</span></h2>
+                <h3><a href="{{request}}/{{single_object.id}}">ПРОСМОТР ОБЪЕКТА</a></h3>
+                <table cellpadding="0" cellspacing="5" width="620" style="background: #edf1f2; border: 1px solid #e8e8e8;">
+                    <tbody>
+                        <tr>
+                            <td width="300" valign="top">
+                                <b>Район:</b> {{single_object.district_obj|default:''}}
+                                <br> <b>Улица:</b> {{single_object.street_obj|default:''}}
+                                <br> <b>Ориентир:</b> {{single_object.landmark|default:''}}
+                                <br>
+                            </td>
+                            <td width="300" valign="top">
+                                {# <b>№ дома:</b> {{single_object.number_home|default:''}} #}
+                                {# <br> <b>№квартиры/офиса:</b> {{single_object.number_apartment|default:''}} #}
+                                <br> <b>Тип помещения:</b> {{single_object.type_facilit|default:''}}
+                                <br> <b>Ремонт:</b> {{single_object.repairs|default:''}}
+                                <br> <b>Расположение:</b> {{single_object.location|default:''}}
+                                <br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>ОПИСАНИЕ <span style="color: #767676">ОБЪЕКТА</span></h2>
+                <table cellpadding="0" cellspacing="5" width="620" style="background: #edf1f2; border: 1px solid #e8e8e8;">
+                    <tbody>
+                        <tr>
+                            <td width="300" valign="top">
+                                <b>Метраж общий, м<sup>2</sup>:</b> {{single_object.footage|default:''}}
+                                <br> <b>Торговый зал, м<sup>2</sup>:</b> {{single_object.shopping_room|default:''}}
+                                <br> <b>Этажность:</b> {{single_object.number_of_storeys|default:''}}
+                                <br>
+                            </td>
+                            <td width="300" valign="top">
+                                <b>Цена, в месяц:</b> {{single_object.price_month|default:'0'}}
+                                <br> <b>Цена, выкуп:</b> {{single_object.price_bay|default:'0'}}
+                                <br> <b>Комнат:</b> {{single_object.rooms|default:''}}
+                                <br> <b>Под что?:</b>
+                                {% for under_that in single_object.under_that.all %}
+                                    {{ under_that }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                                {# <br> <b>Комментарий:</b> {{single_object.comment|truncatechars:50|default:''}} #}
+                                <br> <b>Видео:</b> <a href="http://youtu.be/lZMwoU075xQ" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=ru&amp;q=http://youtu.be/lZMwoU075xQ&amp;source=gmail&amp;ust=1465368829274000&amp;usg=AFQjCNHtaeTq3_D0A-FuEN9N8hxtdoPQsw">{{single_object.youtube|convert_frame}}</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>КОММЕНТАРИЙ:<span style="color: #767676"></span></h2>
+                <table cellpadding="0" cellspacing="5" width="620" style="background: #edf1f2; border: 1px solid #e8e8e8; word-break: break-all;">
+                    <tbody style="width: 100%;">
+                        <tr >
+                            <td >
+                                <b>Комментарий:</b><p>{{single_object.comment|default:''}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endfor %}
+                <br>
+                <table cellpadding="0" cellspacing="5" width="620" style="color:#a5a4a4; background-color: #34393d; padding: 15px; font-size: 14px;">
+                    <tr>
+                        <td>
+                            <span>{{temp_email.text}}<br>
+                                        {{temp_email.signature}}<br>
+                                        097 244 37 90 (Киевстар) &nbsp;&nbsp; 063 654 51 83 (Life :)<br>
+                                        E-mail : <a style="color: #767676;" href="mailto:{{temp_email.sender_address}}" target="_blank">{{temp_email.sender_address}}</a> &nbsp;&nbsp; web : <a style="color: #767676;" href="http://www.{% franshise_first %}.{% franshise_second %}" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=ru&amp;q=http://www.gek.od.ua&amp;source=gmail&amp;ust=1465368829274000&amp;usg=AFQjCNHTDbUQKXV8t3K6mhq8GDZRnhbykA">www.{% franshise_first %}.{% franshise_second %}</a><br></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

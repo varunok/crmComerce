@@ -1,0 +1,91 @@
+                                    {% if error %}
+                                        <tr id="show_tr-{{ arendator.id }}" class="show_tr color
+                                                    {% for show in type_shows %}
+                                                    {% for sh in shows_arendator %}
+                                                        {% if singl_obj.id|floatformat == sh.array_cont_ower|floatformat %}
+                                                            {% if arendator.id|floatformat == sh.array_arendator|floatformat %}
+                                                                {% if show == sh.type_shows_arendator %}
+                                                                    {% if show.id|floatformat == '1' %}
+                                                                        info
+                                                                    {% elif show.id|floatformat == '2' %}
+                                                                       warning
+                                                                    {% elif show.id|floatformat == '3' %}
+                                                                        danger
+                                                                    {% elif show.id|floatformat == '4' %}
+                                                                       success
+                                                                    {% endif %} 
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                    "
+                                            {% if display %}
+                                                style="">
+                                            {% else %}
+                                                style="display: none">
+                                            {% endif %}
+
+                                            <td>{{ arendator.id }}</td>
+                                            <td class="f-clr-green">
+                                                {% if arendator.type_state %}
+                                                    <i class="fa fa-check-circle-o"></i>
+                                                    {{ arendator.type_state }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey edit">
+                                                <select name="" class="id_shows" id-arendator-sin="{{ arendator.id }}">
+                                                    <option value="0">-----</option>
+                                                    {% for show in type_shows %}
+                                                        <option
+                                                    {% for sh in shows_arendator %}
+                                                        {% if singl_obj.id|floatformat == sh.array_cont_ower|floatformat %}
+                                                            {% if arendator.id|floatformat == sh.array_arendator|floatformat %}
+                                                                {% if show == sh.type_shows_arendator %}
+                                                                    selected="selected"
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    value="{{ show.id }}">{{ show }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                <i class="fa fa-user"></i>
+                                                {{ arendator.name }}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                            {% if arendator.phone_first %}
+                                                {{ arendator.phone_first }}
+                                            {% elif arendator.phone_second %}
+                                                {{ arendator.phone_second }}
+                                             {% else %}
+                                                нет телефона
+                                            {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                {% if arendator.price_from %}
+                                                    {{ arendator.price_from }}{{ nac_carrency }}
+                                                {% endif %}
+                                                {% if arendator.price_to %}
+                                                    - {{ arendator.price_to }}{{ nac_carrency }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                {% if arendator.area_from %}
+                                                    {{ arendator.area_from }}
+                                                {% endif %}
+                                                {% if arendator.area_to %}
+                                                    - {{ arendator.area_to }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="edit">
+                                                <input value="{{ arendator.id }}" type="checkbox">
+                                                <a href="{% url "edit_arendator" arendator.id %}"> <i class="fa fa-pencil"></i></a>
+                                                <a href="#"><i del-arendator-id="{{ arendator.id }}" class="fa delete_arendator_tr fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                    {{ count_arendator }}
+                                    {% endif %}

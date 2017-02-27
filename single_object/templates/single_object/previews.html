@@ -1,0 +1,190 @@
+{% load static from staticfiles %}
+{% load video_tag %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    {% block title %}<title>{{single_object.street_obj}} </title>{% endblock title %}
+    <script src="{% static "js/jquery-2.2.4.min.js" %}"></script>
+    <script src="{% static "js/slider.js" %}"></script>
+    <script type="text/javascript" src="//api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/preview.css" %}">
+    <script>
+        function mn(obj) {
+        x=document.getElementById(obj);
+        if(x.style.display == "none") x.style.display = "block";
+        else x.style.display = "none"
+        }
+    </script>
+</head>
+<body>
+    <section class="heder" id="all-offers">
+        <div class="container">
+            <div class="row head-text">
+                <div class="col-md-12 col-xs-12">
+                
+                <h1>
+                <p>
+                    {% if single_object.title %}
+                        {{single_object.title}} 
+                    {% endif %}
+                    </p>
+                </h1>
+                </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <h2 class="head-title">
+                        <span>ID {{single_object.id}}, </span>
+                        {% if single_object.list_operations %}
+                            {% for operation in single_object.list_operations.all %}
+                                {% if operation.id|floatformat == "2" or operation.id|floatformat == "3" %} 
+                                    <span class="">{{ single_object.price_month|default:'' }} {{nac_carrency}}, </span>
+                                {% endif %}
+                                {% if operation.id|floatformat == "1" or operation.id|floatformat == "4" %} 
+                                    <span class="">{{ single_object.price_bay|default:'' }} грн, </span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {# <span class="">{{ single_object.price_bay }} грн</span> #}
+                        <span> {{single_object.type_facilit|default:''}},</span>
+                        <span> {{single_object.street_obj|default:''}}</span>
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12"> 
+                    <div class="bc-slider-wrapp">
+                            <div class="fotorama" data-nav="thumbs">
+                                {% for image in images %}
+                                    {% if single_object.id == image.album_id %}
+                                        <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
+                                    {% endif %}
+                                {% empty %}
+                                    NO PHOTO
+                                {% endfor %}
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12 col-sm-4">
+                    <h2>Информация</h2>
+                    <ol class="list-unstyled textinfo">
+                        <li><b>Тип: </b> {{ single_object.type_facilit }}</li>
+                        <li><b>Район:</b> {{single_object.district_obj}}</li>
+                        <li><b>Улица:</b> {{single_object.street_obj}}</li>
+                        <li><b>Расположение:</b> {{ single_object.location|default:'' }}</li>
+                        <li><b>Метраж общий, м2:</b> {{ single_object.footage|default:'' }}</li>
+                        <li><b>Торговый зал, м2:</b> {{ single_object.shopping_room|default:'' }}</li>
+                        <li><b>Этажность:</b> {{ single_object.number_of_storeys|default:'' }}</li>
+                        <li><b>Вход:</b> {{ single_object.entrance|default:'' }}</li>
+                        <li><b>Документы:</b> {{ single_object.documentation|default:'' }}</li>
+                        <li><b>ID:</b> O{{ single_object.id|default:'' }}</li>
+                    </ol>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-4">
+                    <h2>Дополнительное описание</h2>
+                    <ol class="list-unstyled textinfo">
+                        <li><b>Станция метро:</b><span> {{single_object.subway_obj|default:''}}</span></li>
+                        <li><b>Под что?:</b>
+                            <span>
+                                {% for under_that in single_object.under_that.all %}
+                                    {{ under_that }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        </li>
+                        <li><b>Наличие:</b>
+                            <span>
+                                {% for availability in single_object.availability.all %}
+                                    {{ availability }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        </li>
+                        <li><b>Ремонт:</b><span> {{single_object.repairs|default:''}}</span></li>
+                        <li><b>Комнат:</b><span> {{single_object.rooms|default:''}}</span></li>
+                        <li><b>Отопление:</b><span> {{single_object.heating|default:''}}</span></li>
+                    </ol>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-4">
+                    <h2>Контакты</h2>
+                        <ol class="list-unstyled textinfo">
+                            <li><b>Телефон:</b> <span class="text_contact">{{subscribe.phone}}</span></li>
+                            <li><b>Имя:</b><span class="text_contact">{{subscribe.name}}</span>
+                            </li>
+                        </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Описание объекта</h2>
+                    <div class="comment" style="word-wrap: break-word;">
+                        <p >{{single_object.comment}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row bc-map">
+                <h4>Карта</h4>
+                <div class="col-md-6 col-xs-12 col-sm-12 top">
+                    <div class="ya-map">
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 col-sm-12 top">
+                    <div class="goog-pan">
+                        {{single_object.panorama|panorama_code|safe}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 off-video">
+                    {% if single_object.youtube %}
+                        <h4>Видео</h4>
+                        <div>
+                            {{single_object.youtube|youtube_code|safe}}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+                    ymaps.ready(init);
+
+                function init() {
+                    var myMap = new ymaps.Map('map', {
+                        center: [55.753994, 37.622093],
+                        zoom: 9
+                    });
+
+                    ymaps.geocode('{{sity.sity}}, {{ single_object.street_obj }}, {{single_object.number_home}}', {
+                        results: 1
+                    }).then(function (res) {
+                        var firstGeoObject = res.geoObjects.get(0),
+                        coords = firstGeoObject.geometry.getCoordinates(),
+                        bounds = firstGeoObject.properties.get('boundedBy');
+
+                        myMap.geoObjects.add(firstGeoObject);
+                        myMap.setBounds(bounds, {
+                            checkZoomRange: true
+                        });
+                    });
+                }
+    });
+</script>

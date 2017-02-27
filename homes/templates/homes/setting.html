@@ -1,0 +1,188 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Настройки</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><a href="{% url "homes" %}">Главная</a></li>
+                            <li class="active">Настройки</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                        <h1 class="section-head">Настройки</h1>
+                </div>
+                {% if user.myuser.type_user.id == 2 %}
+                    <div class="col-md-6">
+                        <a href="{% url 'list_setting_superadmin' %}" class="setting-link">
+                            <div class="setting-section">
+                                    <div class="setting-icon col-md-4">
+                                        <i class="fa fa-magic"></i>
+                                    </div>
+                                    <div class="setting-text col-md-8">
+                                        <h3>Настройки для суперадминистратора</h3>
+                                        <p></p>
+                                    </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1%}
+                    <div class="col-md-6">
+                        <a href="{% url 'setting_globall' %}" class="setting-link">
+                            <div class="setting-section">
+                                    <div class="setting-icon col-md-4">
+                                        <i class="fa fa-cog"></i>
+                                    </div>
+                                    <div class="setting-text col-md-8">
+                                        <h3>Глобальние настройки</h3>
+                                        <p></p>
+                                    </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1%}
+                    <div class="col-md-6">
+                        <a href="{% url "setting_user" %}" class="setting-link"><div class="setting-section">
+                                    <div class="setting-icon col-md-4">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                    <div class="setting-text col-md-8">
+                                        <h3>ПОЛЬЗОВАТЕЛИ</h3>
+                                        <p></p>
+                                    </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1%}
+                    <div class="col-md-6">
+                        <a href="{% url "access" %}" class="setting-link"><div class="setting-section">
+                                    <div class="setting-icon col-md-4">
+                                        <i class="fa fa-universal-access"></i>
+                                    </div>
+                                    <div class="setting-text col-md-8">
+                                        <h3>ДОСТУПы</h3>
+                                        <p></p>
+                                    </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+                    <div class="col-md-6">
+                        <a href="{% url "setting_list_street" %}" class="setting-link"><div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-map-marker"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Улицы и районы</h3>
+                                    <p></p>
+                                </div>
+                            </div></a>
+                    </div>
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1%}
+                    <div class="col-md-6">
+                        <a href="{% url "list_trash" %}" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-trash"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Корзина</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1 %}
+                    <div class="col-md-6">
+                        <a href="{% url "setting_watermark" %}" class="setting-link">
+                            <div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-object-ungroup"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Водяной знак</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1 %}
+                    <div class="col-md-6">
+                        <a href="{% url "list_backup" %}" class="setting-link"><div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-tasks"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Backup</h3>
+                                    <p></p>
+                                </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+                    <div class="col-md-6">
+                        <a href="{% url "get_learn_list" %}" class="setting-link"><div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Обучение</h3>
+                                    <p></p>
+                                </div>
+                            </div></a>
+                    </div>
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1 %}
+                    <div class="col-md-6">
+                        <a href="setting_mail_delivery" class="setting-link"><div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-mail-reply"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Рассылка</h3>
+                                    <p></p>
+                                </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+                {% if user.myuser.type_user.id == 2 or user.myuser.type_user.id == 1 %}
+                    <div class="col-md-6">
+                        <a href="{% url "get_subscribe" %}" class="setting-link"><div class="setting-section">
+                                <div class="setting-icon col-md-4">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="setting-text col-md-8">
+                                    <h3>Данние подписи</h3>
+                                    <p></p>
+                                </div>
+                            </div></a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    $(function() {
+        $("#speed").selectmenu();
+        $("#dateto").datepicker();
+        $("#datefrom").datepicker();
+        $('.grid').masonry({
+		  columnWidth: 0,
+		  itemSelector: '.grid-item'
+		});
+    });
+    </script>
+{% endblock extra_js %}

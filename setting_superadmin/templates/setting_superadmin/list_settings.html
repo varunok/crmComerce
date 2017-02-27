@@ -1,0 +1,64 @@
+{% extends "homes/base.html" %}
+
+{% block title %}<title>Настройки для суперадминистратора</title>{% endblock title %}
+
+{% block extra_css %}{% endblock extra_css %}
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="{% url "homes" %}">Главная</a></li>
+                        <li><a href="{% url "setting" %}">Настройки</a></li>
+                        <li class="active">Настройки для суперадминистратора</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="section-head">Настройки <span>для суперадминистратора</span></h1>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'all_to_call' %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-comment"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Всегда на связи</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'all_to_connect' %}" class="setting-link">
+                        <div class="setting-section">
+                            <div class="setting-icon col-md-4">
+                                <i class="fa fa-envelope"></i>
+                            </div>
+                            <div class="setting-text col-md-8">
+                                <h3>Написать сообщение</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock content %}
+{% block extra_js %}
+    <script>
+    </script>
+{% endblock extra_js %}

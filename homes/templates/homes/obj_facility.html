@@ -48,14 +48,19 @@
                                                         {% if object_data.vip_owner %} {# if object vip show star#}
                                                             <i class="fa fa-star"></i>
                                                         {% endif %}
-                                                        <span class="object-price-buy"> {# object price #}
-                                                            {{ object_data.price_bay }}$
+                                                        {% if object_data.price_bay %}
+                                                            <span class="object-price-buy"> {# object price #}
+                                                                {{ object_data.price_bay }}$
                                                             {#{{ object_data.currency }}#}
-                                                        </span>
-                                                        <span class="object-price-arend">
-                                                            {{ object_data.price_month }} {# object price arend #}
-                                                            {{ nac_carrency }}
-                                                        </span>
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if object_data.price_month %}
+                                                            <span class="object-price-arend">
+                                                                {{ object_data.price_month }} {# object price arend #}
+                                                                {{ nac_carrency }}
+                                                            </span>
+                                                        {% endif %}
+                                                        <span>{{ object_data.contact_owner|default:'' }}</span>
                                                     </h2>
                                                     <p class="object-type">
                                                         <span title="Тип объекта">

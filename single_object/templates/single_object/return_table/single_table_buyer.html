@@ -25,7 +25,11 @@
                                             {% else %}
                                                 style="display: none">
                                             {% endif %}
-                                            <td>{{ buyer.id }}</td>
+                                            <td>
+                                                <a href="{% url "single_buyer" buyer.id %}">
+                                                    {{ buyer.id }}
+                                                </a>
+                                            </td>
                                             <td class="f-clr-green">
                                                 {% if buyer.type_state %}
                                                     <i class="fa fa-check-circle-o"></i>
@@ -77,6 +81,9 @@
                                                 {% if buyer.area_to %}
                                                     - {{ buyer.area_to }}
                                                 {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                {{ buyer.review_date|date:'d/m/Y' }}
                                             </td>
                                             <td class="edit">
                                                 <input value="{{ buyer.id }}" type="checkbox">

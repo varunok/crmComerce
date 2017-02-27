@@ -82,6 +82,8 @@
                                                 <th>Комнат</th>
                                                 <th>Тип</th>
                                                 <th>Состояние</th>
+                                                <th>Актуальность</th>
+                                                <th>Дата обновления</th>
                                                 <th> </th>
                                             </tr>
                                         </thead>
@@ -109,19 +111,21 @@
                                                     {% endfor %}
                                                         <td>{{tie.tie_cont_owner.id}}</td>
                                                         <td class="f-clr-grey">
-                                                            {{tie.tie_cont_owner.district_obj}}<br>
-                                                            {{tie.tie_cont_owner.street_obj}}
-                                                            {% if tie.tie_cont_owner.number_home %}
-                                                                {{tie.tie_cont_owner.number_home}}
-                                                             {% endif %} 
-                                                            {% if tie.tie_cont_owner.number_apartment %}
-                                                                / {{tie.tie_cont_owner.number_apartment}}
-                                                            {% endif %}
+                                                            <a href="{% url "single_obj" tie.tie_cont_owner.id %}">
+                                                                {{tie.tie_cont_owner.district_obj}}<br>
+                                                                {{tie.tie_cont_owner.street_obj}}
+                                                                {% if tie.tie_cont_owner.number_home %}
+                                                                    {{tie.tie_cont_owner.number_home}}
+                                                                 {% endif %}
+                                                                {% if tie.tie_cont_owner.number_apartment %}
+                                                                    / {{tie.tie_cont_owner.number_apartment}}
+                                                                {% endif %}
+                                                            </a>
                                                         </td>
                                                         <td class="f-clr-grey edit">
                                                             <input type="hidden" class="id_buyer" value="{{id_buyer}}">
                                                             
-                                                            <select name="" class="show_cont_owner">
+                                                            <select name="" class="show_cont_owner" style="min-width: 100px; ">
                                                                 {% for show in shows %}
                                                                     <option
                                                                     {% for sh in id_show.all %}
@@ -159,9 +163,15 @@
                                                                 {{tie.tie_cont_owner.condition}}
                                                             {% endif %}
                                                         </td>
+                                                        <td class="f-clr-grey">
+                                                            {{tie.tie_cont_owner.actuality|default:''}}
+                                                        </td>
+                                                        <td class="f-clr-grey" style="width: 80px; ">
+                                                            {{tie.tie_cont_owner.date_of_renovation|date:'d/m/Y'}}
+                                                        </td>
                                                         <td class="edit">
                                                             <input value="{{ tie.tie_cont_owner.id }}" type="checkbox">
-                                                            {# <a href="{% url "edit_facility" tie.tie_cont_owner.id %}"> <i class="fa fa-pencil"></i></a>  #}
+                                                             <a href="{% url "edit_facility" tie.tie_cont_owner.id %}"> <i class="fa fa-pencil"></i></a>
                                                             <input type="hidden" class="id_buyer" value="{{id_buyer}}">
                                                             <a id="del_cont_owner" href="#"><i class="fa fa-times"></i></a>
                                                             <input type="hidden" class="id_cont_owner" value="{{tie.tie_cont_owner.id}}">

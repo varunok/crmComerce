@@ -26,7 +26,11 @@
                                                 style="display: none">
                                             {% endif %}
 
-                                            <td>{{ arendator.id }}</td>
+                                            <td>
+                                                <a href="{% url "single_arendator" arendator.id %}">
+                                                    {{ arendator.id }}
+                                                </a>
+                                            </td>
                                             <td class="f-clr-green">
                                                 {% if arendator.type_state %}
                                                     <i class="fa fa-check-circle-o"></i>
@@ -79,6 +83,9 @@
                                                 {% if arendator.area_to %}
                                                     - {{ arendator.area_to }}
                                                 {% endif %}
+                                            </td>
+                                            <td class="f-clr-grey">
+                                                {{ arendator.review_date|date:'d/m/Y' }}
                                             </td>
                                             <td class="edit">
                                                 <input value="{{ arendator.id }}" type="checkbox">

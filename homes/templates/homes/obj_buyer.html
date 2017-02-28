@@ -69,9 +69,83 @@
                                                         <span>E-mail:</span>
                                                         {{ buyer.email }}<br>
                                                     {% endif %}
-                                                    {% if buyer.type_stage %}
-                                                        <span>Этап:</span> {{buyer.type_stage}}
+                                                    {% with buyer.type_stage.all  as type_stage  %}
+                                                        {% if type_stage %}
+                                                            <span>Этап:</span>
+                                                            {% for stage in type_stage %}
+                                                                 {{ stage }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% with buyer.repairs.all  as repairs  %}
+                                                        {% if repairs %}
+                                                            <span>Ремонт:</span>
+                                                            {% for repair in repairs %}
+                                                                 {{ repair }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% with buyer.type_building_data.all  as type_building_data  %}
+                                                        {% if type_building_data %}
+                                                            <span>Тип объекта:</span>
+                                                            {% for building_data in type_building_data %}
+                                                                 {{ building_data }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% with buyer.under_that.all  as under_that  %}
+                                                        {% if under_that %}
+                                                            <span>Под что?:</span>
+                                                            {% for under in under_that %}
+                                                                 {{ under }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% with buyer.number_of_storeys.all  as number_of_storeys  %}
+                                                        {% if number_of_storeys %}
+                                                            <span>Этажность:</span>
+                                                            {% for storeys in number_of_storeys %}
+                                                                 {{ storeys }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% with buyer.entrance.all  as entrance  %}
+                                                        {% if entrance %}
+                                                            <span>Вход:</span>
+                                                            {% for entr in entrance %}
+                                                                 {{ entr }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% with buyer.location.all  as location  %}
+                                                        {% if location %}
+                                                            <span>Расположение:</span>
+                                                            {% for loc in location %}
+                                                                 {{ loc }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    {% if buyer.area_from or buyer.area_to%}
+                                                        <span>Площадь:</span> {{ buyer.area_from|default:'--' }}
+                                                        {% if buyer.area_to %}
+                                                            - {{ buyer.area_to }}
+                                                        {% endif %}
                                                     {% endif %}
+
                                                     <div class="object-comment-short" style="margin-top:-2.4%;">
                                                         <div class="object-comment-long">
                                                             <p >

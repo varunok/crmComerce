@@ -18,6 +18,8 @@ def searh(request):
     try:
         if list_req.getlist('type_facility'):
             contact_owner = contact_owner.filter(type_facilit__in=list_req.getlist('type_facility'))
+        if list_req.getlist('list_operations'):
+            contact_owner = contact_owner.filter(list_operations__in=list_req.getlist('list_operations'))
         if int(list_req.get('currency')) == 1:
             if list_req.get('price_on'):
                 contact_owner = contact_owner.filter(price_month__gte=int(list_req.get('price_on')))

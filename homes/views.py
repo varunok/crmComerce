@@ -19,7 +19,7 @@ from arendator.models import Arendator, TypeState, TypeClient, TypeStage
 from buyer.models import Buyer
 from facility.models import AddressFacilityData, ContactOwner, ImagesFacility, TypeFacility, \
     TypeActuality, TypeCondition, TypeRepairs, TypeHeating, TypeLocations, TypeStoreys, TypeEntrance, \
-    TypeDocumentation, TypeUnderThat, TypeAvailability
+    TypeDocumentation, TypeUnderThat, TypeAvailability, TypeOperations
 from setting_globall.models import NationalCarrency
 from search_home import searh
 from extuser.models import MyUser
@@ -138,6 +138,7 @@ class ObjectList(ListView):
         self.context['list_under_that'] = TypeUnderThat.objects.all()
         self.context['list_availability'] = TypeAvailability.objects.all()
         self.context['type_heating'] = TypeHeating.objects.all()
+        self.context['list_operations'] = TypeOperations.objects.all()
         self.context['users'] = UserFullName.objects.filter(is_active=True)
         return self.context
 

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.fa-search').on('click keypress', function(event) {
+    $('.fa-search.base').on('click keypress', function(event) {
         event.preventDefault();
         SendSearch();
     });
@@ -8,11 +8,12 @@ $(document).ready(function() {
     });
 
     function SendSearch(){
-        var search_text = $('#searching').val();
+        // var search_text = $('#searching').val();
+        var search_text = $('#searching').serialize();
         $('.messageServer').animate({backgroundColor: '#FCCD1B'}, 1000);
         $('.messageServer').html('<div><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>Поиск</div').fadeIn(1000).delay(2000);
         // $('.messageServer').text('Поиск').fadeIn(1000).delay(2000).fadeOut(500);
-        $.get('searching', {"search_text": search_text})
+        $.get('searching', search_text)
         .success( function (data) {
             $('#search_results').html(data);
             $('.messageServer').fadeOut(500);

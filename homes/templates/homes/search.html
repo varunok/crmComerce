@@ -60,7 +60,7 @@
                         </ul>
                     </div>
                 </div>
-
+                {% spaceless %}
                 {% for object_data in contact_owner %}
                     {% if object_data.trash == 0 %}
                         {% if object_data.loyality.get.id == '' %}
@@ -77,7 +77,7 @@
                         {% endif %}
                     {% endif %}
                 {% endfor %}
-
+                {% endspaceless %}
 
                 {% if  is_paginated %}
                     <div class="col-md-12 section-pagination">

@@ -1,6 +1,7 @@
 {% load static from staticfiles %}
 {% load sity_franshise %}
 {% load dead_line %}
+{% load thumbnail %}
                     <div class="wrap-obj">
                         <div class="col-md-12">
                             <div class="col-md-12 object-card">
@@ -9,9 +10,9 @@
                                         <div class="col-md-3 object-img popup-gallery-{{ object_data.id }}">
                                             {% for image in images %}
                                                 {% if object_data.id == image.album_id %}
-                                                        <a href="{{ MEDIA_URL }}{{ image.image }}">
+                                                        <a href="{{ image.image.url }}">
                                                             {% if image.cover %}
-                                                                <img src="{{ MEDIA_URL }}{{ image.image }}" alt=""></a>
+                                                                <img src="{{ image.image|thumbnail_url:'image_obj' }}" alt=""></a>
                                                             {% endif %}
                                                     {% endif %}
                                                 <span class="label label-default img-count">{{ object_data.images_count }}</span>

@@ -109,22 +109,21 @@ def show_activity_index(request):
 class ObjectList(ListView):
     """docstring for ObjectList"""
     model = ContactOwner
-    paginate_by = 10
+    paginate_by = 15
     context_object_name = 'contact_owner'
     template_name = 'homes/objects.html'
-    qeryset = ContactOwner.objects.all().filter(trash=False).order_by('-id')
 
     def get_context_data(self, **kwargs):
         self.context = super(ObjectList, self).get_context_data(**kwargs)
         self.context['time'] = timezone.now()
         self.context['images'] = ImagesFacility.objects.all()
-        self.context['addres_facility_data_list'] = AddressFacilityData.objects.all()
-        self.context['nac_carrency'] = NationalCarrency.objects.filter(id=1)[0]
-        self.context['all_contact_owner_se'] = ContactOwner.objects.filter(list_operations__in=[1, 4], trash=False)
-        self.context['all_contact_owner_ad'] = ContactOwner.objects.filter(list_operations__in=[2, 3], trash=False)
-        self.context['all_contact_owner'] = ContactOwner.objects.all().filter(trash=False)
+        # self.context['addres_facility_data_list'] = AddressFacilityData.objects.all()
+        self.context['all_contact_owner_se'] = self.object_list.filter(list_operations__in=[1, 4])
+        self.context['all_contact_owner_ad'] = self.object_list.filter(list_operations__in=[2, 3])
+        self.context['all_contact_owner'] = self.object_list
         self.context['type_facility'] = TypeFacility.objects.all()
         self.context['list_carrency'] = NationalCarrency.objects.all()
+        self.context['nac_carrency'] = self.context['list_carrency'][0]
         self.context['type_actuality'] = TypeActuality.objects.all()
         self.context['list_district'] = District.objects.all()
         self.context['list_street'] = Street.objects.all()
@@ -143,12 +142,13 @@ class ObjectList(ListView):
         return self.context
 
     def get_queryset(self):
+        queryset = ContactOwner.objects.all().filter(trash=False).order_by('-id')
         order_by = self.request.GET.get('order_by', '')
         if order_by in ('id', 'price_bay', 'price_month', 'total_area', 'date_of_renovation', 'review_date'):
-            self.qeryset = self.qeryset.order_by(order_by)
+            queryset = queryset.order_by(order_by)
         if self.request.GET.get('reverse', '') == '1':
-            self.qeryset = self.qeryset.reverse()
-        return self.qeryset
+            queryset = queryset.reverse()
+        return queryset
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -175,7 +175,17 @@ class ObjectListSearch(ObjectList):
 
 
 class ObjectListSelling(ObjectList):
-    qeryset = ContactOwner.objects.filter(list_operations__in=[1, 4], trash=False).order_by('-id')
+
+    def get_queryset(self):
+        self.queryset = super(ObjectListSelling, self).get_queryset()
+        return self.queryset.filter(list_operations__in=[1, 4]).order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        self.context = super(ObjectListSelling, self).get_context_data(**kwargs)
+        self.context['all_contact_owner'] = self.queryset
+        self.context['all_contact_owner_se'] = self.queryset.filter(list_operations__in=[1, 4], trash=False)
+        self.context['all_contact_owner_ad'] = self.queryset.filter(list_operations__in=[2, 3], trash=False)
+        return self.context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -183,7 +193,17 @@ class ObjectListSelling(ObjectList):
 
 
 class ObjectListArend(ObjectList):
-    qeryset = ContactOwner.objects.filter(list_operations__in=[2, 3], trash=False).order_by('-id')
+
+    def get_queryset(self):
+        self.queryset = super(ObjectListArend, self).get_queryset()
+        return self.queryset.filter(list_operations__in=[2, 3]).order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        self.context = super(ObjectListArend, self).get_context_data(**kwargs)
+        self.context['all_contact_owner'] = self.queryset
+        self.context['all_contact_owner_se'] = self.queryset.filter(list_operations__in=[1, 4], trash=False)
+        self.context['all_contact_owner_ad'] = self.queryset.filter(list_operations__in=[2, 3], trash=False)
+        return self.context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

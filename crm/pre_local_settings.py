@@ -1,1 +1,4 @@
-ADD_INSTALLED_APPS = ['watson']
+ADD_INSTALLED_APPS = [
+    'watson',
+    'easy_thumbnails',
+]

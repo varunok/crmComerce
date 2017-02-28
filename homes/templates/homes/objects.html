@@ -505,65 +505,6 @@
             $('#search_obj').on('click', function (event) {
                 event.preventDefault();
                 var msg   = $('#search_form').serialize();
-                // var type_facility = $('#type_facility').val();
-                // var price_on = $('#price_on').val();
-                // var price_for = $('#price_for').val();
-                // var currency = $('#currency').val();
-                // var actuality = $('#actuality').val();
-                // var district = $('#district').val();
-                // var area_for = $('#area_for').val();
-                // var area_to = $('#area_to').val();
-                // var condition = $('#condition').val();
-                // var id_obj = $('#id_obj').val();
-                // var phone_obj = $('#phone_obj').val();
-                // var peresmotr = $('#peresmotr').val();
-                // var floor_for = $('#floor_for').val();
-                // var floor_to = $('#floor_to').val();
-                // var list_rooms = $('#list_rooms').val();
-                // var street_obj = $('#street_obj').val();
-                // var floor_ot = $('#floor_ot').val();
-                // var floor_do = $('#floor_do').val();
-                // var rooms_ot = $('#rooms_ot').val();
-                // var rooms_do = $('#rooms_do').val();
-                // var number_home = $('#number_home').val();
-                // var name_owner = $('#name_owner').val();
-                // var kitchen_ot = $('#kitchen_ot').val();
-                // var kitchen_do = $('#kitchen_do').val();
-                // var type_building = $('#type_building').val();
-                // var comments = $('#comments').val();
-                // var vip_status = $('#vip_status').prop("checked");
-                // var public_status = $('#public_status').prop("checked");
-                // var list_data = {
-                //     "search": true,
-                //     "type_facility": type_facility,
-                //     "price_on": price_on,
-                //     "price_for": price_for,
-                //     "carrency": currency,
-                //     "actuality": actuality,
-                //     "district": district,
-                //     "area_for": area_for,
-                //     "area_to": area_to,
-                //     "condition": condition,
-                //     "id_obj": id_obj,
-                //     "phone_obj": phone_obj,
-                //     "peresmotr": peresmotr,
-                //     "floor_for": floor_for,
-                //     "floor_to" : floor_to,
-                //     "list_rooms": list_rooms,
-                //     "street_obj": street_obj,
-                //     "floor_ot": floor_ot,
-                //     "floor_do": floor_do,
-                //     "rooms_ot": rooms_ot,
-                //     "rooms_do": rooms_do,
-                //     "number_home":number_home,
-                //     "name_owner": name_owner,
-                //     "kitchen_ot": kitchen_ot,
-                //     "kitchen_do": kitchen_do,
-                //     "type_building": type_building,
-                //     "comments": comments,
-                //     "vip_status": vip_status,
-                //     "public_status": public_status
-                // };
                 $.get('search_obj', msg, function (data) {
                     $('.search-object').html(data)
                 })
@@ -577,6 +518,15 @@
                     $('.messageServer').css('backgroundColor', '#c9302c');
                     $('.messageServer').text('Ошибка').fadeIn(1000).delay(2000).fadeOut(500);
                 });
+            });
+
+            $(document).on('click', '.pages-search', function (event) {
+                event.preventDefault();
+                var msg   = $('#search_form').serialize() + '&page=' + $(this).text();
+                $.get('search_obj', msg, function (data) {
+                    $('.search-object').html(data);
+                    $(this).unbind();
+                })
             });
 
             $(".allownumericwithoutdecimal").on('keyup', function () {

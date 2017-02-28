@@ -13,8 +13,9 @@ cd /hsphere/local/home/image2007/$site/$short_site
 source ../data/bin/activate
 #pip install django-watson
 
+pip install easy-thumbnails
 
-python manage.py migrate
+python manage.py migrate easy_thumbnails
 
 #python manage.py buildwatson
 

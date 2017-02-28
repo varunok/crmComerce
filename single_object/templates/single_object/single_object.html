@@ -136,6 +136,14 @@
                                                 	<p class="object-local">
                                                         <i class="fa fa-map-marker"></i>
                                                         {{ single_object.street_obj }},
+                                                        {{ single_object.number_home|default:'' }}
+                                                        {{ single_object.literal|default:'' }}
+                                                        {% if single_object.literal or single_object.number_home %}
+                                                            ,
+                                                        {% endif %}
+                                                        {% if single_object.number_apartment %}
+                                                            {{ single_object.number_apartment }},
+                                                        {% endif %}
                                                         <span>
                                                             г.{% sity_franshise %}
                                                             {% if single_object.district_obj  %}

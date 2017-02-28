@@ -23,7 +23,7 @@ class AddressFacilityForm(ModelForm):
             'payments', 'rooms', 'comment', 'under_that', 'availability',
             'actuality', 'condition', 'commission', 'currency',
             'heating', 'under_that', 'availability',
-            'title', 'youtube', 'panorama', 'rieltor', 'loyality', 'location',
+            'title', 'youtube', 'panorama', 'rieltor', 'loyality', 'location', 'literal',
             'footage', 'shopping_room', 'number_of_storeys', 'entrance', 'documentation')
         widgets = {
             'street_obj': Select(attrs={'class': 'js-example-basic-single'}),
@@ -66,4 +66,5 @@ class AddressFacilityForm(ModelForm):
             'under_that': SelectMultiple(attrs={'class': 'tarea-multiple', 'multiple': 'multiple'}),
             'availability': SelectMultiple(attrs={'class': 'tarea-multiple', 'multiple': 'multiple'}),
             # 'image': ClearableFileInput(attrs={'multiple': 'multiple'}),
+            'literal': TextInput(attrs={'placeholder': 'Буквенный индекс'}),
         }

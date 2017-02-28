@@ -245,6 +245,11 @@ class AddressFacilityData(models.Model):
                                       blank=True,
                                       null=True)
 
+    literal = models.CharField(max_length=10,
+                               verbose_name=u'Буквенный индекс',
+                               blank=True,
+                               null=True)
+
     number_apartment = models.CharField(max_length=10,
                                         verbose_name=u'Номер квартиры',
                                         blank=True,

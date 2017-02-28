@@ -147,7 +147,7 @@
                                             <label for="typeobj">Этажность</label>
                                             <select id="storeys" name="storeys" class="multiple" multiple="multiple" placeholder="-----">
                                                 {% for storeys in list_storeys %}
-                                                    <option value="{{ storeys }}">{{ storeys }}</option>
+                                                    <option value="{{ storeys.id }}">{{ storeys }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -219,7 +219,7 @@
                                             <label for="">Вход</label>
                                             <select id="entrance" name="entrance" class="multiple" multiple="multiple" placeholder="-----">
                                                 {% for entrance in list_entrance %}
-                                                    <option value="{{ entrance }}">{{ entrance }}</option>
+                                                    <option value="{{ entrance.id }}">{{ entrance }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -247,7 +247,7 @@
                                             <label for="">Расположение</label>
                                             <select id="location" name="location" class="multiple" multiple="multiple" placeholder="-----">
                                                 {% for location in list_location %}
-                                                    <option value="{{ location }}">{{ location }}</option>
+                                                    <option value="{{ location.id }}">{{ location }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>

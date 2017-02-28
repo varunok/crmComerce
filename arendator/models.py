@@ -164,10 +164,8 @@ class Arendator(models.Model):
 
     price_to = models.IntegerField(verbose_name=u'Цена До', blank=True, null=True)
 
-    type_stage = models.ForeignKey(TypeStage,
+    type_stage = models.ManyToManyField(TypeStage,
                                    blank=True,
-                                   null=True,
-                                   on_delete=models.PROTECT,
                                    verbose_name=u'Этап')
 
     type_building_data = models.ManyToManyField(TypeFacility,
@@ -176,26 +174,17 @@ class Arendator(models.Model):
 
     date_term = models.DateField(verbose_name=u'Сроки', blank=True, null=True)
 
-    location = models.ForeignKey(TypeLocations,
-                                 to_field='locations',
+    location = models.ManyToManyField(TypeLocations,
                                  verbose_name=u'Расположение',
-                                 blank=True,
-                                 null=True,
-                                 on_delete=models.PROTECT)
+                                 blank=True)
 
-    number_of_storeys = models.ForeignKey(TypeStoreys,
-                                to_field='storeys',
+    number_of_storeys = models.ManyToManyField(TypeStoreys,
                                 verbose_name=u'Этажность',
-                                blank=True,
-                                null=True,
-                                on_delete=models.PROTECT)
+                                blank=True)
 
-    entrance = models.ForeignKey(TypeEntrance,
-                                to_field='entrances',
+    entrance = models.ManyToManyField(TypeEntrance,
                                 verbose_name=u'Вход',
-                                blank=True,
-                                null=True,
-                                on_delete=models.PROTECT)
+                                blank=True)
 
     # ELSE
     review_date = models.DateField(verbose_name=u'Дата обновления',

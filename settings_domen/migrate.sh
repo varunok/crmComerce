@@ -4,7 +4,7 @@ sites="work6.bizofis.kiev.ua work6.gek.od.ua work6.ofis.dp.ua"
 
 for site in $sites
 do
-short_name=${site:4}
+short_name=${site:5s}
 short_name=${short_name//-/}
 short_site=${short_name//./}
 echo $site

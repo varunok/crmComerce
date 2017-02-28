@@ -11,12 +11,12 @@ echo $site
 echo $short_site
 cd /hsphere/local/home/image2007/$site/$short_site
 source ../data/bin/activate
-pip install django-watson
+#pip install django-watson
 
 
 python manage.py migrate
 
-python manage.py buildwatson
+#python manage.py buildwatson
 
 #ln -s /hsphere/local/home/image2007/crm_rieltor/crm/add_settings.py
 

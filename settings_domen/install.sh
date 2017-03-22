@@ -64,7 +64,7 @@ mkdir $short_name/media/restore
 mkdir $short_name/media/temp_email_logo
 mkdir $short_name/media/tmpimg
 mkdir $short_name/media/watermark
-cp ../crm_comerc/settings_domen/admin-photo_HRGFvAo.jpg $short_name/media/avatar/
+cp ../crm_comerc/settings_domen/admin-photo_HRGFvAo.jpg $short_name/media/avatar/admin-photo_HRGFvAo.jpg
 ln -s /hsphere/local/home/image2007/crm_rieltor/settings_domen/phantomjs
 cp -r ../crm_comerc/templates $short_name/templates
 echo 'Created'
@@ -122,7 +122,11 @@ echo 'Created'
 touch $short_name/$short_name/__init__.py
 
 echo 'Create urls.py'
+cd $short_name/$short_name/
 ln -s /hsphere/local/home/image2007/crm_comerc/crm/urls.py
+ln -s /hsphere/local/home/image2007/crm_comerc/crm/pre_local_settings.py
+touch local_settings.py
+cd ../.. 
 echo 'Created'
 
 echo 'Create backup_dropbox_settings.py'

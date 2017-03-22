@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+try:
+    from add_settings import *
+except ImportError:
+    ADD_INSTALLED_APPS = []
+        
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -66,38 +72,7 @@ INSTALLED_APPS = [
     'backupbd_crm',
     'learning',
     'access',
-]
-
-MIGRATION_MODULES = {
-    'homes': 'homes.carma_migrations',
-    'notes': 'notes.carma_migrations',
-    'setting_street': 'setting_street.carma_migrations',
-    'extuser': 'extuser.carma_migrations',
-    'facility': 'facility.carma_migrations',
-    'setting_globall': 'setting_globall.carma_migrations',
-    'trash_object': 'trash_object.carma_migrations',
-    'single_object': 'single_object.carma_migrations',
-    'who_online': 'who_online.carma_migrations',
-    'send_messege_user': 'send_messege_user.carma_migrations',
-    'arendator': 'arendator.carma_migrations',
-    'buyer': 'buyer.carma_migrations',
-    'makler': 'makler.carma_migrations',
-    'setting_superadmin': 'setting_superadmin.carma_migrations',
-    'tasking': 'tasking.carma_migrations',
-    'parsings': 'parsings.carma_migrations',
-    'posting': 'posting.carma_migrations',
-    'watermark': 'watermark.carma_migrations',
-    'sender_email': 'sender_email.carma_migrations',
-    'setting_mail_delivery': 'setting_mail_delivery.carma_migrations',
-    'meeting': 'meeting.carma_migrations',
-    'searching': 'searching.carma_migrations',
-    'single_arendator': 'single_arendator.carma_migrations',
-    'single_buyer': 'single_buyer.carma_migrations',
-    'dbbackup': 'dbbackup.carma_migrations',
-    'django_cron': 'django_cron.carma_migrations',
-    'backupbd_carma': 'backupbd_carma.carma_migrations',
-    'learning': 'learning.carma_migrations',
-}
+] + ADD_INSTALLED_APPS
 
 
 MIDDLEWARE_CLASSES = [
@@ -161,7 +136,7 @@ DATE_INPUT_FORMATS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'image20_dom6carma',
+        'NAME': 'image20_work6carma',
         'USER': 'image20_rieltor',
         'PASSWORD': 'Mongo2nips',
         'HOST': 'pgsql17.hosting.ua',
@@ -213,7 +188,11 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 MEDIA_ROOT = (os.path.join(BASE_DIR, 'media/'))
 STATIC_ROOT = (os.path.join(BASE_DIR, 'static/'))
-
-# print(BASE_DIR, MEDIA_ROOT)
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
+
+try:
+    from local_settings import *
+except ImportError:
+        pass
+        

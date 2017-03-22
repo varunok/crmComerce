@@ -9,7 +9,35 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: image20_rieltor
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO image20_rieltor;
+
 SET search_path = public, pg_catalog;
+
+--
+-- Name: watson_searchentry_trigger_handler(); Type: FUNCTION; Schema: public; Owner: image20_rieltor
+--
+
+CREATE FUNCTION watson_searchentry_trigger_handler() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+            begin
+                new.search_tsv :=
+                    setweight(to_tsvector('pg_catalog.english', coalesce(new.title, '')), 'A') ||
+                    setweight(to_tsvector('pg_catalog.english', coalesce(new.description, '')), 'C') ||
+                    setweight(to_tsvector('pg_catalog.english', coalesce(new.content, '')), 'D');
+                return new;
+            end
+            $$;
+
+
+ALTER FUNCTION public.watson_searchentry_trigger_handler() OWNER TO image20_rieltor;
 
 SET default_tablespace = '';
 
@@ -41,11 +69,7 @@ CREATE TABLE arendator_arendator (
     trash boolean NOT NULL,
     add_date timestamp with time zone NOT NULL,
     type_client_id integer,
-    type_stage_id integer,
     type_state_id integer,
-    entrance_id character varying(50),
-    location_id character varying(50),
-    number_of_storeys_id character varying(50),
     shopping_room_from integer,
     shopping_room_to integer
 );
@@ -91,7 +115,48 @@ ALTER SEQUENCE arendator_arendator_district_obj_id_seq OWNED BY arendator_arenda
 -- Name: arendator_arendator_district_obj_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('arendator_arendator_district_obj_id_seq', 1, true);
+SELECT pg_catalog.setval('arendator_arendator_district_obj_id_seq', 29, true);
+
+
+--
+-- Name: arendator_arendator_entrance; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE arendator_arendator_entrance (
+    id integer NOT NULL,
+    arendator_id integer NOT NULL,
+    typeentrance_id integer NOT NULL
+);
+
+
+ALTER TABLE public.arendator_arendator_entrance OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_entrance_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE arendator_arendator_entrance_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.arendator_arendator_entrance_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_entrance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE arendator_arendator_entrance_id_seq OWNED BY arendator_arendator_entrance.id;
+
+
+--
+-- Name: arendator_arendator_entrance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('arendator_arendator_entrance_id_seq', 6, true);
 
 
 --
@@ -119,7 +184,48 @@ ALTER SEQUENCE arendator_arendator_id_seq OWNED BY arendator_arendator.id;
 -- Name: arendator_arendator_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('arendator_arendator_id_seq', 1, true);
+SELECT pg_catalog.setval('arendator_arendator_id_seq', 12, true);
+
+
+--
+-- Name: arendator_arendator_location; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE arendator_arendator_location (
+    id integer NOT NULL,
+    arendator_id integer NOT NULL,
+    typelocations_id integer NOT NULL
+);
+
+
+ALTER TABLE public.arendator_arendator_location OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_location_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE arendator_arendator_location_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.arendator_arendator_location_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE arendator_arendator_location_id_seq OWNED BY arendator_arendator_location.id;
+
+
+--
+-- Name: arendator_arendator_location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('arendator_arendator_location_id_seq', 4, true);
 
 
 --
@@ -164,6 +270,47 @@ SELECT pg_catalog.setval('arendator_arendator_loyality_id_seq', 1, false);
 
 
 --
+-- Name: arendator_arendator_number_of_storeys; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE arendator_arendator_number_of_storeys (
+    id integer NOT NULL,
+    arendator_id integer NOT NULL,
+    typestoreys_id integer NOT NULL
+);
+
+
+ALTER TABLE public.arendator_arendator_number_of_storeys OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_number_of_storeys_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE arendator_arendator_number_of_storeys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.arendator_arendator_number_of_storeys_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_number_of_storeys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE arendator_arendator_number_of_storeys_id_seq OWNED BY arendator_arendator_number_of_storeys.id;
+
+
+--
+-- Name: arendator_arendator_number_of_storeys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('arendator_arendator_number_of_storeys_id_seq', 6, true);
+
+
+--
 -- Name: arendator_arendator_repairs; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
@@ -201,7 +348,7 @@ ALTER SEQUENCE arendator_arendator_repairs_id_seq OWNED BY arendator_arendator_r
 -- Name: arendator_arendator_repairs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('arendator_arendator_repairs_id_seq', 2, true);
+SELECT pg_catalog.setval('arendator_arendator_repairs_id_seq', 26, true);
 
 
 --
@@ -242,7 +389,7 @@ ALTER SEQUENCE arendator_arendator_rieltor_id_seq OWNED BY arendator_arendator_r
 -- Name: arendator_arendator_rieltor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('arendator_arendator_rieltor_id_seq', 1, true);
+SELECT pg_catalog.setval('arendator_arendator_rieltor_id_seq', 25, true);
 
 
 --
@@ -283,7 +430,48 @@ ALTER SEQUENCE arendator_arendator_type_building_data_id_seq OWNED BY arendator_
 -- Name: arendator_arendator_type_building_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('arendator_arendator_type_building_data_id_seq', 2, true);
+SELECT pg_catalog.setval('arendator_arendator_type_building_data_id_seq', 26, true);
+
+
+--
+-- Name: arendator_arendator_type_stage; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE arendator_arendator_type_stage (
+    id integer NOT NULL,
+    arendator_id integer NOT NULL,
+    typestage_id integer NOT NULL
+);
+
+
+ALTER TABLE public.arendator_arendator_type_stage OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_type_stage_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE arendator_arendator_type_stage_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.arendator_arendator_type_stage_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: arendator_arendator_type_stage_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE arendator_arendator_type_stage_id_seq OWNED BY arendator_arendator_type_stage.id;
+
+
+--
+-- Name: arendator_arendator_type_stage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('arendator_arendator_type_stage_id_seq', 2, true);
 
 
 --
@@ -324,7 +512,7 @@ ALTER SEQUENCE arendator_arendator_under_that_id_seq OWNED BY arendator_arendato
 -- Name: arendator_arendator_under_that_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('arendator_arendator_under_that_id_seq', 2, true);
+SELECT pg_catalog.setval('arendator_arendator_under_that_id_seq', 26, true);
 
 
 --
@@ -567,7 +755,7 @@ ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 237, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 249, true);
 
 
 --
@@ -657,7 +845,7 @@ ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
 -- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('auth_user_id_seq', 3, true);
+SELECT pg_catalog.setval('auth_user_id_seq', 4, true);
 
 
 --
@@ -727,11 +915,7 @@ CREATE TABLE buyer_buyer (
     trash boolean NOT NULL,
     add_date timestamp with time zone NOT NULL,
     type_client_id integer,
-    type_stage_id integer,
     type_state_id integer,
-    entrance_id character varying(50),
-    location_id character varying(50),
-    number_of_storeys_id character varying(50),
     shopping_room_from integer,
     shopping_room_to integer
 );
@@ -781,6 +965,47 @@ SELECT pg_catalog.setval('buyer_buyer_district_obj_id_seq', 1, false);
 
 
 --
+-- Name: buyer_buyer_entrance; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE buyer_buyer_entrance (
+    id integer NOT NULL,
+    buyer_id integer NOT NULL,
+    typeentrance_id integer NOT NULL
+);
+
+
+ALTER TABLE public.buyer_buyer_entrance OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_entrance_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE buyer_buyer_entrance_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.buyer_buyer_entrance_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_entrance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE buyer_buyer_entrance_id_seq OWNED BY buyer_buyer_entrance.id;
+
+
+--
+-- Name: buyer_buyer_entrance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('buyer_buyer_entrance_id_seq', 1, false);
+
+
+--
 -- Name: buyer_buyer_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
 --
 
@@ -805,7 +1030,48 @@ ALTER SEQUENCE buyer_buyer_id_seq OWNED BY buyer_buyer.id;
 -- Name: buyer_buyer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('buyer_buyer_id_seq', 1, false);
+SELECT pg_catalog.setval('buyer_buyer_id_seq', 1, true);
+
+
+--
+-- Name: buyer_buyer_location; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE buyer_buyer_location (
+    id integer NOT NULL,
+    buyer_id integer NOT NULL,
+    typelocations_id integer NOT NULL
+);
+
+
+ALTER TABLE public.buyer_buyer_location OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_location_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE buyer_buyer_location_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.buyer_buyer_location_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE buyer_buyer_location_id_seq OWNED BY buyer_buyer_location.id;
+
+
+--
+-- Name: buyer_buyer_location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('buyer_buyer_location_id_seq', 1, false);
 
 
 --
@@ -847,6 +1113,47 @@ ALTER SEQUENCE buyer_buyer_loyality_id_seq OWNED BY buyer_buyer_loyality.id;
 --
 
 SELECT pg_catalog.setval('buyer_buyer_loyality_id_seq', 1, false);
+
+
+--
+-- Name: buyer_buyer_number_of_storeys; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE buyer_buyer_number_of_storeys (
+    id integer NOT NULL,
+    buyer_id integer NOT NULL,
+    typestoreys_id integer NOT NULL
+);
+
+
+ALTER TABLE public.buyer_buyer_number_of_storeys OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_number_of_storeys_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE buyer_buyer_number_of_storeys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.buyer_buyer_number_of_storeys_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_number_of_storeys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE buyer_buyer_number_of_storeys_id_seq OWNED BY buyer_buyer_number_of_storeys.id;
+
+
+--
+-- Name: buyer_buyer_number_of_storeys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('buyer_buyer_number_of_storeys_id_seq', 1, false);
 
 
 --
@@ -928,7 +1235,7 @@ ALTER SEQUENCE buyer_buyer_rieltor_id_seq OWNED BY buyer_buyer_rieltor.id;
 -- Name: buyer_buyer_rieltor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('buyer_buyer_rieltor_id_seq', 1, false);
+SELECT pg_catalog.setval('buyer_buyer_rieltor_id_seq', 1, true);
 
 
 --
@@ -970,6 +1277,47 @@ ALTER SEQUENCE buyer_buyer_type_building_data_id_seq OWNED BY buyer_buyer_type_b
 --
 
 SELECT pg_catalog.setval('buyer_buyer_type_building_data_id_seq', 1, false);
+
+
+--
+-- Name: buyer_buyer_type_stage; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE buyer_buyer_type_stage (
+    id integer NOT NULL,
+    buyer_id integer NOT NULL,
+    typestage_id integer NOT NULL
+);
+
+
+ALTER TABLE public.buyer_buyer_type_stage OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_type_stage_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE buyer_buyer_type_stage_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.buyer_buyer_type_stage_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: buyer_buyer_type_stage_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE buyer_buyer_type_stage_id_seq OWNED BY buyer_buyer_type_stage.id;
+
+
+--
+-- Name: buyer_buyer_type_stage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('buyer_buyer_type_stage_id_seq', 1, false);
 
 
 --
@@ -1057,7 +1405,7 @@ ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 103, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 147, true);
 
 
 --
@@ -1098,7 +1446,7 @@ ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 84, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 88, true);
 
 
 --
@@ -1185,7 +1533,7 @@ ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 40, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 46, true);
 
 
 --
@@ -1200,6 +1548,135 @@ CREATE TABLE django_session (
 
 
 ALTER TABLE public.django_session OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_source; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE easy_thumbnails_source (
+    id integer NOT NULL,
+    storage_hash character varying(40) NOT NULL,
+    name character varying(255) NOT NULL,
+    modified timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.easy_thumbnails_source OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_source_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE easy_thumbnails_source_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.easy_thumbnails_source_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_source_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE easy_thumbnails_source_id_seq OWNED BY easy_thumbnails_source.id;
+
+
+--
+-- Name: easy_thumbnails_source_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('easy_thumbnails_source_id_seq', 14, true);
+
+
+--
+-- Name: easy_thumbnails_thumbnail; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE easy_thumbnails_thumbnail (
+    id integer NOT NULL,
+    storage_hash character varying(40) NOT NULL,
+    name character varying(255) NOT NULL,
+    modified timestamp with time zone NOT NULL,
+    source_id integer NOT NULL
+);
+
+
+ALTER TABLE public.easy_thumbnails_thumbnail OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_thumbnail_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE easy_thumbnails_thumbnail_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.easy_thumbnails_thumbnail_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_thumbnail_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE easy_thumbnails_thumbnail_id_seq OWNED BY easy_thumbnails_thumbnail.id;
+
+
+--
+-- Name: easy_thumbnails_thumbnail_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('easy_thumbnails_thumbnail_id_seq', 14, true);
+
+
+--
+-- Name: easy_thumbnails_thumbnaildimensions; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE easy_thumbnails_thumbnaildimensions (
+    id integer NOT NULL,
+    thumbnail_id integer NOT NULL,
+    width integer,
+    height integer,
+    CONSTRAINT easy_thumbnails_thumbnaildimensions_height_check CHECK ((height >= 0)),
+    CONSTRAINT easy_thumbnails_thumbnaildimensions_width_check CHECK ((width >= 0))
+);
+
+
+ALTER TABLE public.easy_thumbnails_thumbnaildimensions OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_thumbnaildimensions_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE easy_thumbnails_thumbnaildimensions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.easy_thumbnails_thumbnaildimensions_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: easy_thumbnails_thumbnaildimensions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE easy_thumbnails_thumbnaildimensions_id_seq OWNED BY easy_thumbnails_thumbnaildimensions.id;
+
+
+--
+-- Name: easy_thumbnails_thumbnaildimensions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('easy_thumbnails_thumbnaildimensions_id_seq', 1, false);
+
 
 --
 -- Name: extuser_myuser; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
@@ -1281,7 +1758,7 @@ ALTER SEQUENCE extuser_recoverypass_id_seq OWNED BY extuser_recoverypass.id;
 -- Name: extuser_recoverypass_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('extuser_recoverypass_id_seq', 1, true);
+SELECT pg_catalog.setval('extuser_recoverypass_id_seq', 2, true);
 
 
 --
@@ -1361,6 +1838,7 @@ CREATE TABLE facility_addressfacilitydata (
     number_of_storeys_id character varying(50),
     entrance_id character varying(50),
     documentation_id character varying(50),
+    literal character varying(10),
     CONSTRAINT facility_addressfacilitydata_footage_check CHECK ((footage >= 0)),
     CONSTRAINT facility_addressfacilitydata_shopping_room_check CHECK ((shopping_room >= 0))
 );
@@ -1406,7 +1884,7 @@ ALTER SEQUENCE facility_addressfacilitydata_availability_id_seq OWNED BY facilit
 -- Name: facility_addressfacilitydata_availability_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_addressfacilitydata_availability_id_seq', 4, true);
+SELECT pg_catalog.setval('facility_addressfacilitydata_availability_id_seq', 39, true);
 
 
 --
@@ -1434,7 +1912,7 @@ ALTER SEQUENCE facility_addressfacilitydata_id_seq OWNED BY facility_addressfaci
 -- Name: facility_addressfacilitydata_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_addressfacilitydata_id_seq', 1, true);
+SELECT pg_catalog.setval('facility_addressfacilitydata_id_seq', 26, true);
 
 
 --
@@ -1475,7 +1953,7 @@ ALTER SEQUENCE facility_addressfacilitydata_list_operations_id_seq OWNED BY faci
 -- Name: facility_addressfacilitydata_list_operations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_addressfacilitydata_list_operations_id_seq', 2, true);
+SELECT pg_catalog.setval('facility_addressfacilitydata_list_operations_id_seq', 52, true);
 
 
 --
@@ -1516,7 +1994,7 @@ ALTER SEQUENCE facility_addressfacilitydata_loyality_id_seq OWNED BY facility_ad
 -- Name: facility_addressfacilitydata_loyality_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_addressfacilitydata_loyality_id_seq', 2, true);
+SELECT pg_catalog.setval('facility_addressfacilitydata_loyality_id_seq', 20, true);
 
 
 --
@@ -1557,7 +2035,7 @@ ALTER SEQUENCE facility_addressfacilitydata_rieltor_id_seq OWNED BY facility_add
 -- Name: facility_addressfacilitydata_rieltor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_addressfacilitydata_rieltor_id_seq', 2, true);
+SELECT pg_catalog.setval('facility_addressfacilitydata_rieltor_id_seq', 49, true);
 
 
 --
@@ -1598,7 +2076,7 @@ ALTER SEQUENCE facility_addressfacilitydata_under_that_id_seq OWNED BY facility_
 -- Name: facility_addressfacilitydata_under_that_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_addressfacilitydata_under_that_id_seq', 4, true);
+SELECT pg_catalog.setval('facility_addressfacilitydata_under_that_id_seq', 147, true);
 
 
 --
@@ -1664,7 +2142,7 @@ ALTER SEQUENCE facility_databasephoneowner_id_seq OWNED BY facility_databasephon
 -- Name: facility_databasephoneowner_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_databasephoneowner_id_seq', 4, true);
+SELECT pg_catalog.setval('facility_databasephoneowner_id_seq', 100, true);
 
 
 --
@@ -1706,7 +2184,7 @@ ALTER SEQUENCE facility_imagesfacility_id_seq OWNED BY facility_imagesfacility.i
 -- Name: facility_imagesfacility_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_imagesfacility_id_seq', 1, false);
+SELECT pg_catalog.setval('facility_imagesfacility_id_seq', 47, true);
 
 
 --
@@ -1746,7 +2224,7 @@ ALTER SEQUENCE facility_phoneowner_id_seq OWNED BY facility_phoneowner.id;
 -- Name: facility_phoneowner_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('facility_phoneowner_id_seq', 2, true);
+SELECT pg_catalog.setval('facility_phoneowner_id_seq', 50, true);
 
 
 --
@@ -2307,7 +2785,7 @@ ALTER SEQUENCE learning_learn_id_seq OWNED BY learning_learn.id;
 -- Name: learning_learn_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('learning_learn_id_seq', 1, false);
+SELECT pg_catalog.setval('learning_learn_id_seq', 1, true);
 
 
 --
@@ -2397,7 +2875,7 @@ ALTER SEQUENCE makler_typecooperations_id_seq OWNED BY makler_typecooperations.i
 -- Name: makler_typecooperations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('makler_typecooperations_id_seq', 1, false);
+SELECT pg_catalog.setval('makler_typecooperations_id_seq', 3, true);
 
 
 --
@@ -2437,7 +2915,7 @@ ALTER SEQUENCE makler_typewhiteblack_id_seq OWNED BY makler_typewhiteblack.id;
 -- Name: makler_typewhiteblack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('makler_typewhiteblack_id_seq', 1, false);
+SELECT pg_catalog.setval('makler_typewhiteblack_id_seq', 2, true);
 
 
 --
@@ -2701,7 +3179,7 @@ ALTER SEQUENCE send_messege_user_usermessage_id_seq OWNED BY send_messege_user_u
 -- Name: send_messege_user_usermessage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('send_messege_user_usermessage_id_seq', 1, false);
+SELECT pg_catalog.setval('send_messege_user_usermessage_id_seq', 2, true);
 
 
 --
@@ -3113,7 +3591,7 @@ ALTER SEQUENCE setting_street_district_id_seq OWNED BY setting_street_district.i
 -- Name: setting_street_district_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('setting_street_district_id_seq', 1, true);
+SELECT pg_catalog.setval('setting_street_district_id_seq', 5, true);
 
 
 --
@@ -3155,7 +3633,7 @@ ALTER SEQUENCE setting_street_street_id_seq OWNED BY setting_street_street.id;
 -- Name: setting_street_street_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('setting_street_street_id_seq', 1, true);
+SELECT pg_catalog.setval('setting_street_street_id_seq', 40, true);
 
 
 --
@@ -3320,7 +3798,7 @@ ALTER SEQUENCE setting_superadmin_alltoconnect_id_seq OWNED BY setting_superadmi
 -- Name: setting_superadmin_alltoconnect_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('setting_superadmin_alltoconnect_id_seq', 1, false);
+SELECT pg_catalog.setval('setting_superadmin_alltoconnect_id_seq', 1, true);
 
 
 --
@@ -3579,7 +4057,7 @@ ALTER SEQUENCE single_object_tie_id_seq OWNED BY single_object_tie.id;
 -- Name: single_object_tie_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('single_object_tie_id_seq', 1, true);
+SELECT pg_catalog.setval('single_object_tie_id_seq', 5, true);
 
 
 --
@@ -3620,7 +4098,7 @@ ALTER SEQUENCE single_object_tie_tie_arenda_id_seq OWNED BY single_object_tie_ti
 -- Name: single_object_tie_tie_arenda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('single_object_tie_tie_arenda_id_seq', 7, true);
+SELECT pg_catalog.setval('single_object_tie_tie_arenda_id_seq', 12, true);
 
 
 --
@@ -3660,7 +4138,7 @@ ALTER SEQUENCE single_object_tiebuyer_id_seq OWNED BY single_object_tiebuyer.id;
 -- Name: single_object_tiebuyer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('single_object_tiebuyer_id_seq', 1, false);
+SELECT pg_catalog.setval('single_object_tiebuyer_id_seq', 1, true);
 
 
 --
@@ -3701,7 +4179,7 @@ ALTER SEQUENCE single_object_tiebuyer_tie_buye_id_seq OWNED BY single_object_tie
 -- Name: single_object_tiebuyer_tie_buye_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
 --
 
-SELECT pg_catalog.setval('single_object_tiebuyer_tie_buye_id_seq', 1, false);
+SELECT pg_catalog.setval('single_object_tiebuyer_tie_buye_id_seq', 1, true);
 
 
 --
@@ -3917,6 +4395,55 @@ SELECT pg_catalog.setval('watermark_watermark_id_seq', 1, false);
 
 
 --
+-- Name: watson_searchentry; Type: TABLE; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE TABLE watson_searchentry (
+    id integer NOT NULL,
+    engine_slug character varying(200) NOT NULL,
+    object_id text NOT NULL,
+    object_id_int integer,
+    title character varying(1000) NOT NULL,
+    description text NOT NULL,
+    content text NOT NULL,
+    url character varying(1000) NOT NULL,
+    meta_encoded text NOT NULL,
+    content_type_id integer NOT NULL,
+    search_tsv tsvector NOT NULL
+);
+
+
+ALTER TABLE public.watson_searchentry OWNER TO image20_rieltor;
+
+--
+-- Name: watson_searchentry_id_seq; Type: SEQUENCE; Schema: public; Owner: image20_rieltor
+--
+
+CREATE SEQUENCE watson_searchentry_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.watson_searchentry_id_seq OWNER TO image20_rieltor;
+
+--
+-- Name: watson_searchentry_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: image20_rieltor
+--
+
+ALTER SEQUENCE watson_searchentry_id_seq OWNED BY watson_searchentry.id;
+
+
+--
+-- Name: watson_searchentry_id_seq; Type: SEQUENCE SET; Schema: public; Owner: image20_rieltor
+--
+
+SELECT pg_catalog.setval('watson_searchentry_id_seq', 52, true);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
 --
 
@@ -3934,7 +4461,28 @@ ALTER TABLE ONLY arendator_arendator_district_obj ALTER COLUMN id SET DEFAULT ne
 -- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
 --
 
+ALTER TABLE ONLY arendator_arendator_entrance ALTER COLUMN id SET DEFAULT nextval('arendator_arendator_entrance_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_location ALTER COLUMN id SET DEFAULT nextval('arendator_arendator_location_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
 ALTER TABLE ONLY arendator_arendator_loyality ALTER COLUMN id SET DEFAULT nextval('arendator_arendator_loyality_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_number_of_storeys ALTER COLUMN id SET DEFAULT nextval('arendator_arendator_number_of_storeys_id_seq'::regclass);
 
 
 --
@@ -3956,6 +4504,13 @@ ALTER TABLE ONLY arendator_arendator_rieltor ALTER COLUMN id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY arendator_arendator_type_building_data ALTER COLUMN id SET DEFAULT nextval('arendator_arendator_type_building_data_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_type_stage ALTER COLUMN id SET DEFAULT nextval('arendator_arendator_type_stage_id_seq'::regclass);
 
 
 --
@@ -4046,7 +4601,28 @@ ALTER TABLE ONLY buyer_buyer_district_obj ALTER COLUMN id SET DEFAULT nextval('b
 -- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
 --
 
+ALTER TABLE ONLY buyer_buyer_entrance ALTER COLUMN id SET DEFAULT nextval('buyer_buyer_entrance_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_location ALTER COLUMN id SET DEFAULT nextval('buyer_buyer_location_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
 ALTER TABLE ONLY buyer_buyer_loyality ALTER COLUMN id SET DEFAULT nextval('buyer_buyer_loyality_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_number_of_storeys ALTER COLUMN id SET DEFAULT nextval('buyer_buyer_number_of_storeys_id_seq'::regclass);
 
 
 --
@@ -4068,6 +4644,13 @@ ALTER TABLE ONLY buyer_buyer_rieltor ALTER COLUMN id SET DEFAULT nextval('buyer_
 --
 
 ALTER TABLE ONLY buyer_buyer_type_building_data ALTER COLUMN id SET DEFAULT nextval('buyer_buyer_type_building_data_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_type_stage ALTER COLUMN id SET DEFAULT nextval('buyer_buyer_type_stage_id_seq'::regclass);
 
 
 --
@@ -4103,6 +4686,27 @@ ALTER TABLE ONLY django_cron_cronjoblog ALTER COLUMN id SET DEFAULT nextval('dja
 --
 
 ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY easy_thumbnails_source ALTER COLUMN id SET DEFAULT nextval('easy_thumbnails_source_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnail ALTER COLUMN id SET DEFAULT nextval('easy_thumbnails_thumbnail_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnaildimensions ALTER COLUMN id SET DEFAULT nextval('easy_thumbnails_thumbnaildimensions_id_seq'::regclass);
 
 
 --
@@ -4554,10 +5158,17 @@ ALTER TABLE ONLY watermark_watermark ALTER COLUMN id SET DEFAULT nextval('waterm
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY watson_searchentry ALTER COLUMN id SET DEFAULT nextval('watson_searchentry_id_seq'::regclass);
+
+
+--
 -- Data for Name: arendator_arendator; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
 --
 
-COPY arendator_arendator (id, commission, name, phone_first, phone_second, comment, email, rooms_from, rooms_to, area_from, area_to, price_from, price_to, date_term, review_date, call_date, time_trash, name_user_trash, trash, add_date, type_client_id, type_stage_id, type_state_id, entrance_id, location_id, number_of_storeys_id, shopping_room_from, shopping_room_to) FROM stdin;
+COPY arendator_arendator (id, commission, name, phone_first, phone_second, comment, email, rooms_from, rooms_to, area_from, area_to, price_from, price_to, date_term, review_date, call_date, time_trash, name_user_trash, trash, add_date, type_client_id, type_state_id, shopping_room_from, shopping_room_to) FROM stdin;
 \.
 
 
@@ -4570,10 +5181,34 @@ COPY arendator_arendator_district_obj (id, arendator_id, district_id) FROM stdin
 
 
 --
+-- Data for Name: arendator_arendator_entrance; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY arendator_arendator_entrance (id, arendator_id, typeentrance_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: arendator_arendator_location; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY arendator_arendator_location (id, arendator_id, typelocations_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: arendator_arendator_loyality; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
 --
 
 COPY arendator_arendator_loyality (id, arendator_id, userfullname_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: arendator_arendator_number_of_storeys; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY arendator_arendator_number_of_storeys (id, arendator_id, typestoreys_id) FROM stdin;
 \.
 
 
@@ -4598,6 +5233,14 @@ COPY arendator_arendator_rieltor (id, arendator_id, userfullname_id) FROM stdin;
 --
 
 COPY arendator_arendator_type_building_data (id, arendator_id, typefacility_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: arendator_arendator_type_stage; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY arendator_arendator_type_stage (id, arendator_id, typestage_id) FROM stdin;
 \.
 
 
@@ -4872,6 +5515,18 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 235	Can add Тип Наличие	84	add_typeavailability
 236	Can change Тип Наличие	84	change_typeavailability
 237	Can delete Тип Наличие	84	delete_typeavailability
+238	Can add search entry	85	add_searchentry
+239	Can change search entry	85	change_searchentry
+240	Can delete search entry	85	delete_searchentry
+241	Can add source	86	add_source
+242	Can change source	86	change_source
+243	Can delete source	86	delete_source
+244	Can add thumbnail	87	add_thumbnail
+245	Can change thumbnail	87	change_thumbnail
+246	Can delete thumbnail	87	delete_thumbnail
+247	Can add thumbnail dimensions	88	add_thumbnaildimensions
+248	Can change thumbnail dimensions	88	change_thumbnaildimensions
+249	Can delete thumbnail dimensions	88	delete_thumbnaildimensions
 \.
 
 
@@ -4880,8 +5535,8 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 --
 
 COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
-3	pbkdf2_sha256$20000$G7Fb4BiaE1c6$QHZN9yy5txXBoaSEYBYd2JaSWGlloOfgTXA5Tvwpe4c=	2017-01-03 18:44:30+02	t	image2007@bk.ru	Вячеслав	Рекечинский	image2007@bk.ru	f	t	2017-01-03 18:44:30+02
-1	pbkdf2_sha256$20000$iyUCbaIFna4j$IJstvyTmb9vSHMj6gPKMEt4OzZgq1Ix3NH7L19WYu/E=	2017-01-05 01:07:07+02	t	varunok13@gmail.com	Andrii	Varunok	varunok13@gmail.com	t	t	2016-12-15 21:28:26+02
+3	pbkdf2_sha256$20000$G7Fb4BiaE1c6$QHZN9yy5txXBoaSEYBYd2JaSWGlloOfgTXA5Tvwpe4c=	2017-03-18 14:48:40+02	t	image2007@bk.ru	Вячеслав	Рекечинский	image2007@bk.ru	f	t	2017-01-03 18:44:30+02
+1	pbkdf2_sha256$20000$iyUCbaIFna4j$IJstvyTmb9vSHMj6gPKMEt4OzZgq1Ix3NH7L19WYu/E=	2017-03-22 02:51:07+02	t	varunok13@gmail.com	Andrii	Varunok	varunok13@gmail.com	t	t	2016-12-15 21:28:26+02
 \.
 
 
@@ -4905,7 +5560,7 @@ COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
 -- Data for Name: buyer_buyer; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
 --
 
-COPY buyer_buyer (id, commission, name, phone_first, phone_second, comment, email, rooms_from, rooms_to, area_from, area_to, price_from, price_to, date_term, review_date, call_date, time_trash, name_user_trash, trash, add_date, type_client_id, type_stage_id, type_state_id, entrance_id, location_id, number_of_storeys_id, shopping_room_from, shopping_room_to) FROM stdin;
+COPY buyer_buyer (id, commission, name, phone_first, phone_second, comment, email, rooms_from, rooms_to, area_from, area_to, price_from, price_to, date_term, review_date, call_date, time_trash, name_user_trash, trash, add_date, type_client_id, type_state_id, shopping_room_from, shopping_room_to) FROM stdin;
 \.
 
 
@@ -4918,10 +5573,34 @@ COPY buyer_buyer_district_obj (id, buyer_id, district_id) FROM stdin;
 
 
 --
+-- Data for Name: buyer_buyer_entrance; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY buyer_buyer_entrance (id, buyer_id, typeentrance_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: buyer_buyer_location; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY buyer_buyer_location (id, buyer_id, typelocations_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: buyer_buyer_loyality; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
 --
 
 COPY buyer_buyer_loyality (id, buyer_id, userfullname_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: buyer_buyer_number_of_storeys; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY buyer_buyer_number_of_storeys (id, buyer_id, typestoreys_id) FROM stdin;
 \.
 
 
@@ -4946,6 +5625,14 @@ COPY buyer_buyer_rieltor (id, buyer_id, userfullname_id) FROM stdin;
 --
 
 COPY buyer_buyer_type_building_data (id, buyer_id, typefacility_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: buyer_buyer_type_stage; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY buyer_buyer_type_stage (id, buyer_id, typestage_id) FROM stdin;
 \.
 
 
@@ -5065,6 +5752,50 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 101	2017-01-05 00:59:15.433311+02	1	Сложная	1		63	1
 102	2017-01-05 00:59:28.522232+02	2	Простая	1		63	1
 103	2017-01-05 00:59:38.699876+02	3	Средняя	1		63	1
+104	2017-02-20 10:56:43.808931+02	1	Белый	1		58	1
+105	2017-02-20 10:56:52.511926+02	2	Черный	1		58	1
+106	2017-02-20 10:57:11.672897+02	1	Постоянно	1		57	1
+107	2017-02-20 10:57:20.159025+02	2	Иногда	1		57	1
+108	2017-02-20 10:57:29.972338+02	3	Редко	1		57	1
+109	2017-03-22 02:44:20.073079+02	12	12	3		53	1
+110	2017-03-22 02:44:20.079008+02	11	11	3		53	1
+111	2017-03-22 02:44:20.082114+02	10	10	3		53	1
+112	2017-03-22 02:44:20.085208+02	9	9	3		53	1
+113	2017-03-22 02:44:20.089184+02	8	8	3		53	1
+114	2017-03-22 02:44:20.093115+02	7	7	3		53	1
+115	2017-03-22 02:44:20.096308+02	6	6	3		53	1
+116	2017-03-22 02:44:20.099503+02	5	5	3		53	1
+117	2017-03-22 02:44:20.102645+02	4	4	3		53	1
+118	2017-03-22 02:44:20.10713+02	3	3	3		53	1
+119	2017-03-22 02:44:20.110463+02	2	2	3		53	1
+120	2017-03-22 02:44:43.218208+02	26	26	3		33	1
+121	2017-03-22 02:44:43.223011+02	25	25	3		33	1
+122	2017-03-22 02:44:43.225716+02	24	24	3		33	1
+123	2017-03-22 02:44:43.228206+02	23	23	3		33	1
+124	2017-03-22 02:44:43.230638+02	22	22	3		33	1
+125	2017-03-22 02:44:43.233092+02	21	21	3		33	1
+126	2017-03-22 02:44:43.235542+02	20	20	3		33	1
+127	2017-03-22 02:44:43.238109+02	19	19	3		33	1
+128	2017-03-22 02:44:43.240646+02	18	18	3		33	1
+129	2017-03-22 02:44:43.243103+02	17	17	3		33	1
+130	2017-03-22 02:44:43.245546+02	16	16	3		33	1
+131	2017-03-22 02:44:43.248005+02	15	15	3		33	1
+132	2017-03-22 02:44:43.250785+02	14	14	3		33	1
+133	2017-03-22 02:44:43.25358+02	13	13	3		33	1
+134	2017-03-22 02:44:43.256082+02	12	12	3		33	1
+135	2017-03-22 02:44:43.25853+02	11	11	3		33	1
+136	2017-03-22 02:44:43.261138+02	10	10	3		33	1
+137	2017-03-22 02:44:43.26392+02	9	9	3		33	1
+138	2017-03-22 02:44:43.266447+02	8	8	3		33	1
+139	2017-03-22 02:44:43.269012+02	7	7	3		33	1
+140	2017-03-22 02:44:43.271427+02	6	6	3		33	1
+141	2017-03-22 02:44:43.273967+02	5	5	3		33	1
+142	2017-03-22 02:44:43.278061+02	4	4	3		33	1
+143	2017-03-22 02:44:43.281516+02	3	3	3		33	1
+144	2017-03-22 02:44:43.285237+02	2	2	3		33	1
+145	2017-03-22 02:46:08.108528+02	2	Я в вк тебе...	3		49	1
+146	2017-03-22 02:46:08.113938+02	1	Я в вк тебе...	3		49	1
+147	2017-03-22 02:46:33.582656+02	4	ofis@gek.od.ua	3		4	1
 \.
 
 
@@ -5147,6 +5878,10 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 82	facility	typedocumentation
 83	facility	typeunderthat
 84	facility	typeavailability
+85	watson	searchentry
+86	easy_thumbnails	source
+87	easy_thumbnails	thumbnail
+88	easy_thumbnails	thumbnaildimensions
 \.
 
 
@@ -5203,6 +5938,12 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 38	facility	0009_auto_20161216_0353	2016-12-16 03:54:10.609671+02
 39	arendator	0005_auto_20161216_0435	2016-12-16 04:35:39.42285+02
 40	buyer	0005_auto_20161216_0455	2016-12-16 04:55:29.231085+02
+41	facility	0010_addressfacilitydata_literal	2017-02-28 02:42:38.27457+02
+42	watson	0001_initial	2017-02-28 02:42:40.428386+02
+43	arendator	0006_auto_20170228_0313	2017-02-28 04:10:35.783376+02
+44	buyer	0006_auto_20170228_0320	2017-02-28 04:10:42.708531+02
+45	easy_thumbnails	0001_initial	2017-02-28 18:56:06.308528+02
+46	easy_thumbnails	0002_thumbnaildimensions	2017-02-28 18:56:06.630511+02
 \.
 
 
@@ -5217,6 +5958,100 @@ qg9rgxeovsgs5mzdqyro2f5mjp49ztz9	ODg4NGU2ZTU0ZjljMWQ0MWExMTE5MDI0NmZlNTIxMTUyZTY
 z1xidqkbp7w4o1whodod8ly0ogofcszg	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-01-11 01:33:54.986085+02
 056u83b8h15xeat5f3xpte5akl0zqv4q	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-01-17 18:43:19.097535+02
 pmbyvvddsvw2qrg75ztpyzudpio2ys1w	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-01-18 23:19:32.444706+02
+jmw49wsnyyzeckyo8a1819q4gk4qgv0p	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-03-07 00:08:09.974661+02
+nkex2vzcslsm7xtvvn2bh5va2jm8nw03	MzY5YzMxMjE4YjEyMzhjZDViZWZlMjMyY2FiZThlOGVhMmIyYTVjMDp7Il9hdXRoX3VzZXJfaGFzaCI6ImI3M2MyMGVkOTAxYWUyYzNiNGI2ZGZiNmE1Y2VhNTIxM2I2NjBjNTkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIzIn0=	2017-01-19 13:52:03.991051+02
+zzp9ssazpwwx0r6crb0xtfaj3u4pcl72	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-03-29 13:10:35.603171+03
+mqftyzzugmbtvlo7kfcot6fpv2evpsln	MzY5YzMxMjE4YjEyMzhjZDViZWZlMjMyY2FiZThlOGVhMmIyYTVjMDp7Il9hdXRoX3VzZXJfaGFzaCI6ImI3M2MyMGVkOTAxYWUyYzNiNGI2ZGZiNmE1Y2VhNTIxM2I2NjBjNTkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIzIn0=	2017-01-24 21:40:33.326956+02
+ljczdvtqqqyeqr40mha0kyasjvyj22ex	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-01-24 21:44:22.873453+02
+4c28lgag1ln9pu0aulr6457a1lwtw39h	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-01-24 23:01:18.62715+02
+n6x4s3eet39vdi1lff3vxy7olf4fhss4	OWU0Njg1ZDRhMDY3MWEwMjA4MWEyMjQ3ZDE5NGZmYjkzOTc2NzY3NDp7ImRpcl9pbWciOiI3NGFjYWZkZS1kN2Q2LTExZTYtYjIwNi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-01-25 10:17:56.3482+02
+5bf7zf23xe66nsmmuqty8upkwh81n8la	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-01-26 11:37:10.03499+02
+ob9wo4xrlrpiz2v5cgq6xj9i1dwynhd0	NDE2ZDQ4YTA3ZWExZTk1MmUxMDk4NjBkYjY2YWZkN2RkYjE2Yzg1Yjp7ImRpcl9pbWciOiJmNTExYzA1Mi1kYmVhLTExZTYtYjlkZi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2lkIjoiNCJ9	2017-01-30 14:54:46.339511+02
+zti9j5uo2k7b07bgsnkhsoj9k7xwgc98	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-01-31 09:28:11.663966+02
+ilq1s6jmehuhdcxmu6wzuu5rx39xndi0	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-01-31 11:15:13.763622+02
+wgbcwnd2rdel5zn9lx6ht872cg5mk835	MTE3MGIzNjM3MDU0OWViOWY2NWVjMTlmYTI0MTk5NGVlOTI3YTg3NDp7ImRpcl9pbWciOiJhNmUxOGRkYy1kZDgzLTExZTYtOTY1NS0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-02-01 15:40:19.475054+02
+kh0rh2xdm263mql94o4u4239k7v222p7	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-02-01 22:54:20.932636+02
+2e371e5pur677hjxfiubepe2nyypcjba	YzUyOGZmZjk2OTYxZGRhZjExYmU3ZTFmODIzMGQ0ZWJjYThhYzBiMTp7ImRpcl9pbWciOiIwMzhjMDczNi1kZTJiLTExZTYtYjYzZC0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-02-02 11:38:20.744693+02
+vknie6xod3nzgcdp69v7ss8pnpfdbqye	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-02-03 08:56:34.948394+02
+yfzkjy8qlo6h3x8w17ogoqptn4vaupkr	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-02-06 12:58:32.332716+02
+74lwttsspwsqp3yyz66ns8z57enp83ix	M2JmOTJiMDg3ZTI0MjlhNmVhMTcyOGFlMjEzOWNjNWEwN2E2NTY0MDp7ImRpcl9pbWciOiJmOTg4NTZhMC1lM2U3LTExZTYtOTNhOC0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiIwZTE0ZDQ2ODA5YjU0ZTdiZGM4NWMzOGFjZTJlYzc3YTAxMTI4ZjZjIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-02-09 18:53:34.672342+02
+ymqz4ltd0zdh8wqiuha8ab8s78xqfox9	MTZiYjRhNGJmZTlkM2E5NWRlNTZmNjMwNWFlMjA2OWJjNzExODQ3Zjp7ImRpcl9pbWciOiI0NTY0ZDEzNC1mN2I2LTExZTYtYWQwNi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiIwZTE0ZDQ2ODA5YjU0ZTdiZGM4NWMzOGFjZTJlYzc3YTAxMTI4ZjZjIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-06 23:48:10.322673+02
+1zhtsh1s7ow8vk4w1sg18tu95hph3zwb	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-03-09 11:07:41.66829+02
+ule3e475cqng7bmgbew22ss7b4wc3dn9	NWJhOTk1MWFjZmY0NTBjYjJlMDU1NTNjNjUwZmRmNTQ0YzgzYzAwMTp7ImRpcl9pbWciOiI1ODFlYzg1NC1lYWNiLTExZTYtYWJjMC0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJiNzNjMjBlZDkwMWFlMmMzYjRiNmRmYjZhNWNlYTUyMTNiNjYwYzU5IiwiX2F1dGhfdXNlcl9pZCI6IjMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-02-18 13:16:16.171529+02
+whfgpbf4e9o1ygksk8ebr03ozlz5pemp	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-02-20 09:49:52.877112+02
+eikrqppr52911rfz6v0a4hg39bgpxygi	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-02-20 18:15:34.158284+02
+yq128klywet6n47ziuyhltpm67sqtnnk	YWIxYmM5NTcwODJhZDBhMDg2N2E0M2EwZjJhOWY5MGE1YjJiNDM2Yzp7ImRpcl9pbWciOiJlNjFmOGY3MC1mOWIzLTExZTYtYTg1YS0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJiNzNjMjBlZDkwMWFlMmMzYjRiNmRmYjZhNWNlYTUyMTNiNjYwYzU5IiwiX2F1dGhfdXNlcl9pZCI6IjMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-09 12:36:13.825432+02
+kkpalvjdik69l8k7i9s3nohlhl1ntubz	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-03-06 10:53:03.491134+02
+iag1i2rlfusl6yszhcstaymbw0uinenv	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-03-06 17:26:48.420103+02
+ydr6gybiidahxn14paofcc39eufu4kcr	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-03-10 16:15:17.385745+02
+lqtzrgcnzk17l2fgztftxfwprqmgtikq	NmY1NDgxZTMzZDAzZmE4OWE2MjlkZGI3NGJmM2YzOTk1YTE4NmMwYjp7ImRpcl9pbWciOiI5MTE1ZmRhYS0wODA2LTExZTctODdmMi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-27 18:03:15.659855+03
+eyawjcepm6kkut3tr7w61ydkhhi97q6w	YzdhZTRlMWI2NmMyNDg3NDFkYzcwZWJmZWRkODAyZDVjNGNjZTM2Mjp7ImRpcl9pbWciOiIzZTZkNDkwOC1mZGE0LTExZTYtODYwOS0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-14 12:54:14.688585+02
+aulaca88iio3vgcsqg2g93tx8d540omq	OTVjZDVmZjAwMDExYTMwMThjNDE4YTZjNDQ3MTYwNWE5ZjU4NGU0Mjp7ImRpcl9pbWciOiJjOTUwYzIxOC0wOGQ4LTExZTctOThkMy0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-28 19:08:04.950536+03
+wshn0ln8d7b1phgttnofjho7cgc4mg8p	YmYzYTZmZDQ3ODI4YmY5YzdjMjI4Y2Y5MzBkZDExMGFhZjBjNTczYjp7ImRpcl9pbWciOiJhMGMxMWQxZS1mZThhLTExZTYtOTgxMy0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-15 16:23:24.011326+02
+rt4uvnhsbz7zutgshmq8xvhlmjzqx1jp	ZjE2YWVkZGYyNjhlMjQxNjJlNzMyZTE3OWQwNjQ0N2Y1MmI3YWVkOTp7ImRpcl9pbWciOiJhMjk3ZjViMC0wMDA0LTExZTctYWY2YS0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2lkIjoiNCJ9	2017-03-17 13:29:16.750156+02
+e5hhhuysjv4zryzizcc3nr31cn9de57g	NTk5MTBiMTNlMmNkOWQyNmVkNDZlYWZmNTBhZDRiMzU1MGQxMGNiMjp7ImRpcl9pbWciOiI0MmI2NjQxYS0wYTRmLTExZTctOGJlNi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-30 15:48:39.857259+03
+nvyiktzwbdzhxx5sidjeici0l54zt2t9	YTY4MzMwNWRlMTMyY2Y1NTViMzU0OWIyOTY3N2U2NDFkMTc0MzAzZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImRlOWZkOTUxODIxYWZmZDZiYjA3MGMxNDAxZGQxNTIyYTVjMTVkMjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiI0In0=	2017-04-01 09:49:04.848446+03
+n0zcbls095p9pbx679kpp52hwl7u163g	MzY5YzMxMjE4YjEyMzhjZDViZWZlMjMyY2FiZThlOGVhMmIyYTVjMDp7Il9hdXRoX3VzZXJfaGFzaCI6ImI3M2MyMGVkOTAxYWUyYzNiNGI2ZGZiNmE1Y2VhNTIxM2I2NjBjNTkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIzIn0=	2017-04-01 14:36:11.725383+03
+huxddo20tocvdgb2cxwxtcv3p9hw5o4q	NWI0MjE1NTk4NWNhYjE4NWZhN2MzZTM5ZWNiOTU2NTZiMWVhMTUzZTp7ImRpcl9pbWciOiIxNWY0N2U1ZS0wMjRjLTExZTctODhlYy0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJiNzNjMjBlZDkwMWFlMmMzYjRiNmRmYjZhNWNlYTUyMTNiNjYwYzU5IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2lkIjoiMyJ9	2017-03-20 11:05:46.938194+02
+6dw2advf735a3p300kpb6naomh7s5m19	MzM5MTc0YTZlMWUyZTMzODIxNjUyZDZkZGVkYWZmMWVkNmZlZmQ2MDp7ImRpcl9pbWciOiJmOWUxYjU0YS0wMjcwLTExZTctOGQ3NS0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-20 15:29:51.221754+02
+2kej21eb0z0rk6thqgphn9fp54uj40r8	M2RjZGUzMWMwNzcwODk0NTk5NjViMmMwZGE2ZDk5MmY2ZjMyMGRjZjp7ImRpcl9pbWciOiIwYWNkNzU5Mi0wMjk5LTExZTctOTQ1NS0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiIwZTE0ZDQ2ODA5YjU0ZTdiZGM4NWMzOGFjZTJlYzc3YTAxMTI4ZjZjIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-03-20 20:16:39.404526+02
+7ihkjcssfoervei9bsy6nu9hoyobyv1x	ZThhNWI2YzlkODJhZmViYWY3YjljNWVlOTBhODhjODA3ZDNlOTFlNzp7ImRpcl9pbWciOiI1OGFiODIxZS0wNGE1LTExZTctOGNmZi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2lkIjoiNCJ9	2017-03-23 10:49:46.400618+02
+34ay79boeau2ia696as77ur6n6o21uxs	ZGE1ZTk4YzRlZTc2MTczYzNiYTY5YWE3NjQ1MmFjYTJjNjc5NDNmYjp7ImRpcl9pbWciOiJiOWZmYWZjMC0wZDY3LTExZTctOGNiMi0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2lkIjoiNCJ9	2017-04-03 14:21:21.621127+03
+tad2ar2dnj5onrr6cojdimdaaho8u1ky	MzA4ZTUzYjFlOTNlMjNkZjJjNzBmYzIxMzRkOGYwOGRhMTM1YTk1Yzp7ImRpcl9pbWciOiI1N2UwMGRlZS0wZTNlLTExZTctYTkyYy0wMDExNDNkNDA5N2IiLCJfYXV0aF91c2VyX2hhc2giOiJkZTlmZDk1MTgyMWFmZmQ2YmIwNzBjMTQwMWRkMTUyMmE1YzE1ZDI2IiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCJ9	2017-04-04 15:57:38.495862+03
+8w289xkvlptht6nbux563smlor5bsuud	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-04-05 01:29:49.198735+03
+emxas749ehulmi7sxwcviq8in3w0beuz	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk2ZmJhODp7Il9hdXRoX3VzZXJfaGFzaCI6IjBlMTRkNDY4MDliNTRlN2JkYzg1YzM4YWNlMmVjNzdhMDExMjhmNmMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2017-04-05 02:42:36.509061+03
+\.
+
+
+--
+-- Data for Name: easy_thumbnails_source; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY easy_thumbnails_source (id, storage_hash, name, modified) FROM stdin;
+1	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/02/28/12/53/148_1396272314_2.jpg	2017-02-28 18:56:16.476816+02
+2	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/01/16/14/37/1744_1355420392_3.jpg	2017-02-28 18:56:17.20925+02
+3	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/01/16/13/56/2273_1414661606_0.jpg	2017-02-28 18:56:17.629773+02
+4	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/01/16/13/00/1147_1324080970_5.jpg	2017-02-28 18:56:17.895172+02
+5	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/03/13/37/1558942662812105.jpg	2017-03-03 13:37:04.619587+02
+6	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/06/20/18/index.jpeg	2017-03-06 20:18:18.031039+02
+7	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/13/17/54/1630_1342100629_0.jpg	2017-03-13 17:54:11.316595+02
+8	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/13/18/01/1675_1349298759_2.jpg	2017-03-13 18:01:03.628446+02
+9	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/13/18/01/1675_1349298759_0_gVliCkq.jpg	2017-03-13 18:01:52.278685+02
+10	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/16/14/06/485_1320399255_1.jpg	2017-03-16 14:06:51.11577+02
+11	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/21/10/32/DSC_1153.JPG	2017-03-21 10:32:18.85519+02
+12	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/21/11/17/IMG_20170317_104755.jpg	2017-03-21 11:17:51.472053+02
+13	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/21/15/31/IMG_20170321_131016.jpg	2017-03-21 15:31:46.207662+02
+14	f9bde26a1556cd667f742bd34ec7c55e	img_obj/2017/03/21/15/58/IMG_20170321_134533.jpg	2017-03-21 15:58:16.297043+02
+\.
+
+
+--
+-- Data for Name: easy_thumbnails_thumbnail; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY easy_thumbnails_thumbnail (id, storage_hash, name, modified, source_id) FROM stdin;
+1	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/02/28/12/53/148_1396272314_2.jpg.225x225_q85_crop.jpg	2017-02-28 18:56:16.552393+02	1
+2	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/01/16/14/37/1744_1355420392_3.jpg.225x225_q85_crop.jpg	2017-02-28 18:56:17.218061+02	2
+3	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/01/16/13/56/2273_1414661606_0.jpg.225x225_q85_crop.jpg	2017-02-28 18:56:17.641341+02	3
+4	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/01/16/13/00/1147_1324080970_5.jpg.225x225_q85_crop.jpg	2017-02-28 18:56:17.92201+02	4
+5	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/03/13/37/1558942662812105.jpg.225x225_q85_crop.jpg	2017-03-03 13:37:04.654871+02	5
+6	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/06/20/18/index.jpeg.225x225_q85_crop.jpg	2017-03-06 20:18:18.142701+02	6
+7	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/13/17/54/1630_1342100629_0.jpg.225x225_q85_crop.jpg	2017-03-13 17:54:11.371807+02	7
+8	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/13/18/01/1675_1349298759_2.jpg.225x225_q85_crop.jpg	2017-03-13 18:01:03.638671+02	8
+9	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/13/18/01/1675_1349298759_0_gVliCkq.jpg.225x225_q85_crop.jpg	2017-03-13 18:01:52.287468+02	9
+10	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/16/14/06/485_1320399255_1.jpg.225x225_q85_crop.jpg	2017-03-16 14:06:51.223857+02	10
+11	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/21/10/32/DSC_1153.JPG.225x225_q85_crop.jpg	2017-03-21 10:32:18.902124+02	11
+12	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/21/11/17/IMG_20170317_104755.jpg.225x225_q85_crop.jpg	2017-03-21 11:17:51.480353+02	12
+13	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/21/15/31/IMG_20170321_131016.jpg.225x225_q85_crop.jpg	2017-03-21 15:31:46.231176+02	13
+14	d26becbf46ac48eda79c7a39a13a02dd	img_obj/2017/03/21/15/58/IMG_20170321_134533.jpg.225x225_q85_crop.jpg	2017-03-21 15:58:16.304977+02	14
+\.
+
+
+--
+-- Data for Name: easy_thumbnails_thumbnaildimensions; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY easy_thumbnails_thumbnaildimensions (id, thumbnail_id, width, height) FROM stdin;
 \.
 
 
@@ -5226,7 +6061,7 @@ pmbyvvddsvw2qrg75ztpyzudpio2ys1w	MDJmZDQwYTQ5ZWNiNTU1NDIzZTYwZTBmMDQ2MTBjMDhmNTk
 
 COPY extuser_myuser (id, image, type_user_id, user_id) FROM stdin;
 1	avatar/apple-logo.jpg	2	1
-2	avatar/admin-photo.jpg	2	3
+3	avatar/admin-photo.jpg	2	3
 \.
 
 
@@ -5236,6 +6071,7 @@ COPY extuser_myuser (id, image, type_user_id, user_id) FROM stdin;
 
 COPY extuser_recoverypass (id, email, password) FROM stdin;
 1	test@test.test	test
+2	ofis@gek.od.ua	123456
 \.
 
 
@@ -5254,7 +6090,7 @@ COPY extuser_usersgroupextuser (id, type_user) FROM stdin;
 -- Data for Name: facility_addressfacilitydata; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
 --
 
-COPY facility_addressfacilitydata (id, number_home, number_apartment, price_bay, price_month, landmark, payments, rooms, comment, commission, images_count, title, youtube, panorama, date_of_renovation, date_added, public, actuality_id, condition_id, currency_id, district_obj_id, heating_id, repairs_id, street_obj_id, subway_obj_id, type_facilit_id, location_id, footage, shopping_room, number_of_storeys_id, entrance_id, documentation_id) FROM stdin;
+COPY facility_addressfacilitydata (id, number_home, number_apartment, price_bay, price_month, landmark, payments, rooms, comment, commission, images_count, title, youtube, panorama, date_of_renovation, date_added, public, actuality_id, condition_id, currency_id, district_obj_id, heating_id, repairs_id, street_obj_id, subway_obj_id, type_facilit_id, location_id, footage, shopping_room, number_of_storeys_id, entrance_id, documentation_id, literal) FROM stdin;
 \.
 
 
@@ -5315,6 +6151,102 @@ COPY facility_databasephoneowner (id, db_id_owner, db_phone_owner) FROM stdin;
 2	1	23232323
 3	1	34343434
 4	1	23232323
+5	2	0634464669
+6	2	0676008282
+7	3	0676008282
+8	3	0634464669
+9	4	0503954337
+10	4	
+11	5	7875009
+12	5	
+13	6	0933777777
+14	6	
+15	4	0503954337
+16	4	
+17	7	0675599200
+18	7	0679234508
+19	7	0675599200
+20	7	0679234508
+21	8	0930917501
+22	8	
+23	8	0930917501
+24	8	
+25	9	0930917501
+26	9	
+27	10	0974692309
+28	10	
+29	11	23423424
+30	11	
+31	12	234234234
+32	12	234234234
+33	10	0974692309
+34	10	
+35	10	0974692309
+36	10	
+37	7	0675599200
+38	7	0679234508
+39	13	0674850426
+40	13	7030608
+41	10	0974692309
+42	10	
+43	8	0930917501
+44	8	
+45	14	0963612454
+46	14	7984548
+47	15	0677057652
+48	15	
+49	16	0677057652
+50	16	
+51	16	0677057652
+52	16	
+53	17	0503362343
+54	17	
+55	7	0675599200
+56	7	0679234508
+57	14	0963612454
+58	14	0487984548
+59	14	0963612454
+60	14	7984548
+61	18	0664015745
+62	18	
+63	19	7870861
+64	19	
+65	20	0503360640
+66	20	0951162529
+67	21	0674849606
+68	21	
+69	16	0677057652
+70	16	
+71	16	0677057652
+72	16	
+73	22	0637445852
+74	22	
+75	23	0677048031
+76	23	
+77	23	0677048031
+78	23	
+79	2	0634464669
+80	2	0676008282
+81	7	0675599200
+82	7	
+83	7	0675599200
+84	7	
+85	19	7870861
+86	19	
+87	24	0676133045
+88	24	0956080087
+89	25	0972856959
+90	25	
+91	19	7870861
+92	19	0933406919
+93	19	7870861
+94	19	0933406919
+95	25	0972856959
+96	25	
+97	26	0933406919
+98	26	7870861
+99	26	0933406919
+100	26	7870861
 \.
 
 
@@ -5492,6 +6424,7 @@ COPY facility_typeunderthat (id, under_thats) FROM stdin;
 --
 
 COPY learning_learn (id, title, youtube) FROM stdin;
+1	1 урок CRM - Настройки 	<iframe width="560" height="315" src="https://www.youtube.com/embed/rREuopsPpeU?list=PL4iIfvYp8DfRO6OaHXmcbgmloDIRgfz5J" frameborder="0" allowfullscreen></iframe>
 \.
 
 
@@ -5508,6 +6441,9 @@ COPY makler_makler (id, name, agency, phone, phone_second, phone_third, site, em
 --
 
 COPY makler_typecooperations (id, type_cooperation) FROM stdin;
+1	Постоянно
+2	Иногда
+3	Редко
 \.
 
 
@@ -5516,6 +6452,8 @@ COPY makler_typecooperations (id, type_cooperation) FROM stdin;
 --
 
 COPY makler_typewhiteblack (id, type_white_black) FROM stdin;
+1	Белый
+2	Черный
 \.
 
 
@@ -5578,7 +6516,7 @@ COPY send_messege_user_usermessage (id, message, time_message, read, from_user_i
 --
 
 COPY setting_globall_franshise (id, franshise) FROM stdin;
-1	ofis.dp.ua
+1	domgomel.by
 \.
 
 
@@ -5587,7 +6525,7 @@ COPY setting_globall_franshise (id, franshise) FROM stdin;
 --
 
 COPY setting_globall_franshisesity (id, sity) FROM stdin;
-1	Львів
+1	Одесса
 \.
 
 
@@ -5607,8 +6545,8 @@ COPY setting_globall_listnationalcarrency (id, currency_glob) FROM stdin;
 --
 
 COPY setting_globall_nationalcarrency (id, currency) FROM stdin;
-1	грн
 2	$
+1	руб
 \.
 
 
@@ -5617,7 +6555,7 @@ COPY setting_globall_nationalcarrency (id, currency) FROM stdin;
 --
 
 COPY setting_globall_subscribe (id, name, phone) FROM stdin;
-1		
+1	Алексей	0679280167
 \.
 
 
@@ -5634,6 +6572,7 @@ COPY setting_mail_delivery_settingemail (id, host, host_user, password, timeout)
 --
 
 COPY setting_mail_delivery_settingsms (id, sender, login, password) FROM stdin;
+1			
 \.
 
 
@@ -5651,7 +6590,7 @@ COPY setting_mail_delivery_templateemail (id, title, logo, text, sender_address,
 --
 
 COPY setting_mail_delivery_templatesms (id, title, text, signature) FROM stdin;
-1	Подобрали вам объекты 		InfoNomer2
+1	Подобрали вам объекты	с сайта gek.od.ua	InfoNomer2
 \.
 
 
@@ -5660,7 +6599,10 @@ COPY setting_mail_delivery_templatesms (id, title, text, signature) FROM stdin;
 --
 
 COPY setting_street_district (id, district) FROM stdin;
-1	Кравский
+2	Киевский
+3	Приморский
+4	Суворовский
+5	Малиновский
 \.
 
 
@@ -5669,7 +6611,44 @@ COPY setting_street_district (id, district) FROM stdin;
 --
 
 COPY setting_street_street (id, street, full_street, type_street_group_id) FROM stdin;
-1	Шевченка	ул.Шевченка	2
+2	Заславского	ул.Заславского	2
+3	Успенская	ул.Успенская	2
+4	Базарная	ул.Базарная	2
+5	Малая Арнаутская	ул.Малая Арнаутская	2
+6	Большая Арнаутская	ул.Большая Арнаутская	2
+7	Старопортофранковская	ул.Старопортофранковская	2
+8	Преображенская	ул.Преображенская	2
+9	Краснова	ул.Краснова	2
+10	Академика Королева	ул.Академика Королева	2
+11	Пушкинская	ул.Пушкинская	2
+12	Ришельевская	ул.Ришельевская	2
+13	Троицкая	ул.Троицкая	2
+14	Еврейская	ул.Еврейская	2
+15	Пантейлемоновская	ул.Пантейлемоновская	2
+16	Дерибасовская	ул.Дерибасовская	2
+17	Греческая	ул.Греческая	2
+18	Садовая	ул.Садовая	2
+19	Коблевская	ул.Коблевская	2
+20	Конная	ул.Конная	2
+21	Нежинская	ул.Нежинская	2
+22	Льва Толстого	ул.Льва Толстого	2
+23	Торговая	ул.Торговая	2
+24	Дидрихсона	ул.Дидрихсона	2
+25	Богдана Хмельницкого	ул.Богдана Хмельницкого	2
+26	Прохоровская	ул.Прохоровская	2
+27	Мясоедовская	ул.Мясоедовская	2
+28	Софиевская	ул.Софиевская	2
+29	Чайковского	пер.Чайковского	10
+30	Канатная	ул.Канатная	2
+31	Генерала Петрова	ул.Генерала Петрова	2
+32	Академика Глушко	ул.Академика Глушко	2
+33	Фонтанская	дор.Фонтанская	9
+35	Массив Радужный	ул.Массив Радужный	2
+36	Среднефонтанская	ул.Среднефонтанская	2
+37	Шмидта	ул.Шмидта	2
+38	Маршала Бабаджаняна	ул.Маршала Бабаджаняна	2
+39	Дальницкая	ул.Дальницкая	2
+40	Разумовская	ул.Разумовская	2
 \.
 
 
@@ -5706,6 +6685,7 @@ COPY setting_street_typesstreet (id, type_street, short_name) FROM stdin;
 --
 
 COPY setting_superadmin_alltocall (id, phone, email, skype, group_vk, image) FROM stdin;
+1	0972443790	image2007@bk.ru	gekodua	vk.com\\sin84	admin_futer_avatar/1_XGyRWb5.png
 \.
 
 
@@ -5714,6 +6694,7 @@ COPY setting_superadmin_alltocall (id, phone, email, skype, group_vk, image) FRO
 --
 
 COPY setting_superadmin_alltoconnect (id, email) FROM stdin;
+1	image2007@bk.ru
 \.
 
 
@@ -5833,6 +6814,15 @@ COPY tasking_typecomplexity (id, complexity) FROM stdin;
 --
 
 COPY watermark_watermark (id, text, watermark_img, on_off) FROM stdin;
+1	gek.od.ua	watermark/watermark.png	f
+\.
+
+
+--
+-- Data for Name: watson_searchentry; Type: TABLE DATA; Schema: public; Owner: image20_rieltor
+--
+
+COPY watson_searchentry (id, engine_slug, object_id, object_id_int, title, description, content, url, meta_encoded, content_type_id, search_tsv) FROM stdin;
 \.
 
 
@@ -5850,6 +6840,38 @@ ALTER TABLE ONLY arendator_arendator_district_obj
 
 ALTER TABLE ONLY arendator_arendator_district_obj
     ADD CONSTRAINT arendator_arendator_district_obj_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: arendator_arendator_entrance_arendator_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_entrance
+    ADD CONSTRAINT arendator_arendator_entrance_arendator_id_key UNIQUE (arendator_id, typeentrance_id);
+
+
+--
+-- Name: arendator_arendator_entrance_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_entrance
+    ADD CONSTRAINT arendator_arendator_entrance_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: arendator_arendator_location_arendator_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_location
+    ADD CONSTRAINT arendator_arendator_location_arendator_id_key UNIQUE (arendator_id, typelocations_id);
+
+
+--
+-- Name: arendator_arendator_location_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_location
+    ADD CONSTRAINT arendator_arendator_location_pkey PRIMARY KEY (id);
 
 
 --
@@ -5874,6 +6896,22 @@ ALTER TABLE ONLY arendator_arendator_loyality
 
 ALTER TABLE ONLY arendator_arendator
     ADD CONSTRAINT arendator_arendator_name_49e6bc4f_uniq UNIQUE (name, phone_first);
+
+
+--
+-- Name: arendator_arendator_number_of_storeys_arendator_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_number_of_storeys
+    ADD CONSTRAINT arendator_arendator_number_of_storeys_arendator_id_key UNIQUE (arendator_id, typestoreys_id);
+
+
+--
+-- Name: arendator_arendator_number_of_storeys_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_number_of_storeys
+    ADD CONSTRAINT arendator_arendator_number_of_storeys_pkey PRIMARY KEY (id);
 
 
 --
@@ -5930,6 +6968,22 @@ ALTER TABLE ONLY arendator_arendator_type_building_data
 
 ALTER TABLE ONLY arendator_arendator_type_building_data
     ADD CONSTRAINT arendator_arendator_type_building_data_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: arendator_arendator_type_stage_arendator_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_type_stage
+    ADD CONSTRAINT arendator_arendator_type_stage_arendator_id_key UNIQUE (arendator_id, typestage_id);
+
+
+--
+-- Name: arendator_arendator_type_stage_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY arendator_arendator_type_stage
+    ADD CONSTRAINT arendator_arendator_type_stage_pkey PRIMARY KEY (id);
 
 
 --
@@ -6085,6 +7139,38 @@ ALTER TABLE ONLY buyer_buyer_district_obj
 
 
 --
+-- Name: buyer_buyer_entrance_buyer_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_entrance
+    ADD CONSTRAINT buyer_buyer_entrance_buyer_id_key UNIQUE (buyer_id, typeentrance_id);
+
+
+--
+-- Name: buyer_buyer_entrance_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_entrance
+    ADD CONSTRAINT buyer_buyer_entrance_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: buyer_buyer_location_buyer_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_location
+    ADD CONSTRAINT buyer_buyer_location_buyer_id_key UNIQUE (buyer_id, typelocations_id);
+
+
+--
+-- Name: buyer_buyer_location_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_location
+    ADD CONSTRAINT buyer_buyer_location_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: buyer_buyer_loyality_buyer_id_userfullname_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
@@ -6106,6 +7192,22 @@ ALTER TABLE ONLY buyer_buyer_loyality
 
 ALTER TABLE ONLY buyer_buyer
     ADD CONSTRAINT buyer_buyer_name_4c548505_uniq UNIQUE (name, phone_first);
+
+
+--
+-- Name: buyer_buyer_number_of_storeys_buyer_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_number_of_storeys
+    ADD CONSTRAINT buyer_buyer_number_of_storeys_buyer_id_key UNIQUE (buyer_id, typestoreys_id);
+
+
+--
+-- Name: buyer_buyer_number_of_storeys_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_number_of_storeys
+    ADD CONSTRAINT buyer_buyer_number_of_storeys_pkey PRIMARY KEY (id);
 
 
 --
@@ -6162,6 +7264,22 @@ ALTER TABLE ONLY buyer_buyer_type_building_data
 
 ALTER TABLE ONLY buyer_buyer_type_building_data
     ADD CONSTRAINT buyer_buyer_type_building_data_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: buyer_buyer_type_stage_buyer_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_type_stage
+    ADD CONSTRAINT buyer_buyer_type_stage_buyer_id_key UNIQUE (buyer_id, typestage_id);
+
+
+--
+-- Name: buyer_buyer_type_stage_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY buyer_buyer_type_stage
+    ADD CONSTRAINT buyer_buyer_type_stage_pkey PRIMARY KEY (id);
 
 
 --
@@ -6226,6 +7344,54 @@ ALTER TABLE ONLY django_migrations
 
 ALTER TABLE ONLY django_session
     ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: easy_thumbnails_source_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY easy_thumbnails_source
+    ADD CONSTRAINT easy_thumbnails_source_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: easy_thumbnails_source_storage_hash_3e1b0d13_uniq; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY easy_thumbnails_source
+    ADD CONSTRAINT easy_thumbnails_source_storage_hash_3e1b0d13_uniq UNIQUE (storage_hash, name);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnail
+    ADD CONSTRAINT easy_thumbnails_thumbnail_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_storage_hash_7ef9fce_uniq; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnail
+    ADD CONSTRAINT easy_thumbnails_thumbnail_storage_hash_7ef9fce_uniq UNIQUE (storage_hash, name, source_id);
+
+
+--
+-- Name: easy_thumbnails_thumbnaildimensions_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnaildimensions
+    ADD CONSTRAINT easy_thumbnails_thumbnaildimensions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: easy_thumbnails_thumbnaildimensions_thumbnail_id_key; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnaildimensions
+    ADD CONSTRAINT easy_thumbnails_thumbnaildimensions_thumbnail_id_key UNIQUE (thumbnail_id);
 
 
 --
@@ -6981,10 +8147,11 @@ ALTER TABLE ONLY watermark_watermark
 
 
 --
--- Name: arendator_arendator_1424b023; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+-- Name: watson_searchentry_pkey; Type: CONSTRAINT; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
-CREATE INDEX arendator_arendator_1424b023 ON arendator_arendator USING btree (type_stage_id);
+ALTER TABLE ONLY watson_searchentry
+    ADD CONSTRAINT watson_searchentry_pkey PRIMARY KEY (id);
 
 
 --
@@ -7002,13 +8169,6 @@ CREATE INDEX arendator_arendator_91f3a6d5 ON arendator_arendator USING btree (ty
 
 
 --
--- Name: arendator_arendator_dcc051af; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
---
-
-CREATE INDEX arendator_arendator_dcc051af ON arendator_arendator USING btree (entrance_id);
-
-
---
 -- Name: arendator_arendator_district_obj_3d1689ba; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
@@ -7023,17 +8183,31 @@ CREATE INDEX arendator_arendator_district_obj_a34a99d3 ON arendator_arendator_di
 
 
 --
--- Name: arendator_arendator_e274a5da; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+-- Name: arendator_arendator_entrance_3d1689ba; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
-CREATE INDEX arendator_arendator_e274a5da ON arendator_arendator USING btree (location_id);
+CREATE INDEX arendator_arendator_entrance_3d1689ba ON arendator_arendator_entrance USING btree (arendator_id);
 
 
 --
--- Name: arendator_arendator_e35813bc; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+-- Name: arendator_arendator_entrance_9497c50f; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
-CREATE INDEX arendator_arendator_e35813bc ON arendator_arendator USING btree (number_of_storeys_id);
+CREATE INDEX arendator_arendator_entrance_9497c50f ON arendator_arendator_entrance USING btree (typeentrance_id);
+
+
+--
+-- Name: arendator_arendator_location_0e70c26e; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX arendator_arendator_location_0e70c26e ON arendator_arendator_location USING btree (typelocations_id);
+
+
+--
+-- Name: arendator_arendator_location_3d1689ba; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX arendator_arendator_location_3d1689ba ON arendator_arendator_location USING btree (arendator_id);
 
 
 --
@@ -7048,6 +8222,20 @@ CREATE INDEX arendator_arendator_loyality_3d1689ba ON arendator_arendator_loyali
 --
 
 CREATE INDEX arendator_arendator_loyality_8e7e63b7 ON arendator_arendator_loyality USING btree (userfullname_id);
+
+
+--
+-- Name: arendator_arendator_number_of_storeys_3d1689ba; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX arendator_arendator_number_of_storeys_3d1689ba ON arendator_arendator_number_of_storeys USING btree (arendator_id);
+
+
+--
+-- Name: arendator_arendator_number_of_storeys_b09d9aa9; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX arendator_arendator_number_of_storeys_b09d9aa9 ON arendator_arendator_number_of_storeys USING btree (typestoreys_id);
 
 
 --
@@ -7090,6 +8278,20 @@ CREATE INDEX arendator_arendator_type_building_data_22d83524 ON arendator_arenda
 --
 
 CREATE INDEX arendator_arendator_type_building_data_3d1689ba ON arendator_arendator_type_building_data USING btree (arendator_id);
+
+
+--
+-- Name: arendator_arendator_type_stage_0f82ec12; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX arendator_arendator_type_stage_0f82ec12 ON arendator_arendator_type_stage USING btree (typestage_id);
+
+
+--
+-- Name: arendator_arendator_type_stage_3d1689ba; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX arendator_arendator_type_stage_3d1689ba ON arendator_arendator_type_stage USING btree (arendator_id);
 
 
 --
@@ -7170,13 +8372,6 @@ CREATE INDEX auth_user_username_94b8aae_like ON auth_user USING btree (username 
 
 
 --
--- Name: buyer_buyer_1424b023; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
---
-
-CREATE INDEX buyer_buyer_1424b023 ON buyer_buyer USING btree (type_stage_id);
-
-
---
 -- Name: buyer_buyer_8aa1fa79; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
@@ -7188,13 +8383,6 @@ CREATE INDEX buyer_buyer_8aa1fa79 ON buyer_buyer USING btree (type_state_id);
 --
 
 CREATE INDEX buyer_buyer_91f3a6d5 ON buyer_buyer USING btree (type_client_id);
-
-
---
--- Name: buyer_buyer_dcc051af; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
---
-
-CREATE INDEX buyer_buyer_dcc051af ON buyer_buyer USING btree (entrance_id);
 
 
 --
@@ -7212,17 +8400,31 @@ CREATE INDEX buyer_buyer_district_obj_a34a99d3 ON buyer_buyer_district_obj USING
 
 
 --
--- Name: buyer_buyer_e274a5da; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+-- Name: buyer_buyer_entrance_2c724d65; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
-CREATE INDEX buyer_buyer_e274a5da ON buyer_buyer USING btree (location_id);
+CREATE INDEX buyer_buyer_entrance_2c724d65 ON buyer_buyer_entrance USING btree (buyer_id);
 
 
 --
--- Name: buyer_buyer_e35813bc; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+-- Name: buyer_buyer_entrance_9497c50f; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
 --
 
-CREATE INDEX buyer_buyer_e35813bc ON buyer_buyer USING btree (number_of_storeys_id);
+CREATE INDEX buyer_buyer_entrance_9497c50f ON buyer_buyer_entrance USING btree (typeentrance_id);
+
+
+--
+-- Name: buyer_buyer_location_0e70c26e; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX buyer_buyer_location_0e70c26e ON buyer_buyer_location USING btree (typelocations_id);
+
+
+--
+-- Name: buyer_buyer_location_2c724d65; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX buyer_buyer_location_2c724d65 ON buyer_buyer_location USING btree (buyer_id);
 
 
 --
@@ -7237,6 +8439,20 @@ CREATE INDEX buyer_buyer_loyality_2c724d65 ON buyer_buyer_loyality USING btree (
 --
 
 CREATE INDEX buyer_buyer_loyality_8e7e63b7 ON buyer_buyer_loyality USING btree (userfullname_id);
+
+
+--
+-- Name: buyer_buyer_number_of_storeys_2c724d65; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX buyer_buyer_number_of_storeys_2c724d65 ON buyer_buyer_number_of_storeys USING btree (buyer_id);
+
+
+--
+-- Name: buyer_buyer_number_of_storeys_b09d9aa9; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX buyer_buyer_number_of_storeys_b09d9aa9 ON buyer_buyer_number_of_storeys USING btree (typestoreys_id);
 
 
 --
@@ -7279,6 +8495,20 @@ CREATE INDEX buyer_buyer_type_building_data_22d83524 ON buyer_buyer_type_buildin
 --
 
 CREATE INDEX buyer_buyer_type_building_data_2c724d65 ON buyer_buyer_type_building_data USING btree (buyer_id);
+
+
+--
+-- Name: buyer_buyer_type_stage_0f82ec12; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX buyer_buyer_type_stage_0f82ec12 ON buyer_buyer_type_stage USING btree (typestage_id);
+
+
+--
+-- Name: buyer_buyer_type_stage_2c724d65; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX buyer_buyer_type_stage_2c724d65 ON buyer_buyer_type_stage USING btree (buyer_id);
 
 
 --
@@ -7377,6 +8607,69 @@ CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date)
 --
 
 CREATE INDEX django_session_session_key_630ca218_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: easy_thumbnails_source_b068931c; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_source_b068931c ON easy_thumbnails_source USING btree (name);
+
+
+--
+-- Name: easy_thumbnails_source_b454e115; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_source_b454e115 ON easy_thumbnails_source USING btree (storage_hash);
+
+
+--
+-- Name: easy_thumbnails_source_name_248dcfc0_like; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_source_name_248dcfc0_like ON easy_thumbnails_source USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: easy_thumbnails_source_storage_hash_7b3a08dd_like; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_source_storage_hash_7b3a08dd_like ON easy_thumbnails_source USING btree (storage_hash varchar_pattern_ops);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_0afd9202; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_thumbnail_0afd9202 ON easy_thumbnails_thumbnail USING btree (source_id);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_b068931c; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_thumbnail_b068931c ON easy_thumbnails_thumbnail USING btree (name);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_b454e115; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_thumbnail_b454e115 ON easy_thumbnails_thumbnail USING btree (storage_hash);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_name_6cfd3956_like; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_thumbnail_name_6cfd3956_like ON easy_thumbnails_thumbnail USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: easy_thumbnails_thumbnail_storage_hash_35a12fad_like; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX easy_thumbnails_thumbnail_storage_hash_35a12fad_like ON easy_thumbnails_thumbnail USING btree (storage_hash varchar_pattern_ops);
 
 
 --
@@ -7919,6 +9212,51 @@ CREATE INDEX tasking_tasking_access_8e7e63b7 ON tasking_tasking_access USING btr
 
 
 --
+-- Name: watson_searchentry_0c9ba3a3; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX watson_searchentry_0c9ba3a3 ON watson_searchentry USING btree (object_id_int);
+
+
+--
+-- Name: watson_searchentry_14f8682a; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX watson_searchentry_14f8682a ON watson_searchentry USING btree (engine_slug);
+
+
+--
+-- Name: watson_searchentry_417f1b1c; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX watson_searchentry_417f1b1c ON watson_searchentry USING btree (content_type_id);
+
+
+--
+-- Name: watson_searchentry_engine_slug_6e94f5d5_like; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX watson_searchentry_engine_slug_6e94f5d5_like ON watson_searchentry USING btree (engine_slug varchar_pattern_ops);
+
+
+--
+-- Name: watson_searchentry_search_tsv; Type: INDEX; Schema: public; Owner: image20_rieltor; Tablespace: 
+--
+
+CREATE INDEX watson_searchentry_search_tsv ON watson_searchentry USING gin (search_tsv);
+
+
+--
+-- Name: watson_searchentry_trigger; Type: TRIGGER; Schema: public; Owner: image20_rieltor
+--
+
+CREATE TRIGGER watson_searchentry_trigger
+    BEFORE INSERT OR UPDATE ON watson_searchentry
+    FOR EACH ROW
+    EXECUTE PROCEDURE watson_searchentry_trigger_handler();
+
+
+--
 -- Name: D158c9a554767e5f1ccdf8dee5eee462; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
@@ -7983,14 +9321,6 @@ ALTER TABLE ONLY facility_addressfacilitydata_loyality
 
 
 --
--- Name: a_number_of_storeys_id_52c2c456_fk_facility_typestoreys_storeys; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
---
-
-ALTER TABLE ONLY arendator_arendator
-    ADD CONSTRAINT a_number_of_storeys_id_52c2c456_fk_facility_typestoreys_storeys FOREIGN KEY (number_of_storeys_id) REFERENCES facility_typestoreys(storeys) DEFERRABLE INITIALLY DEFERRED;
-
-
---
 -- Name: ad614043aaa696d6953927823cef26ac; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
@@ -8007,19 +9337,11 @@ ALTER TABLE ONLY facility_phoneowner
 
 
 --
--- Name: arenda_location_id_3d05aeb3_fk_facility_typelocations_locations; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+-- Name: arendato_typelocations_id_1d68449a_fk_facility_typelocations_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
-ALTER TABLE ONLY arendator_arendator
-    ADD CONSTRAINT arenda_location_id_3d05aeb3_fk_facility_typelocations_locations FOREIGN KEY (location_id) REFERENCES facility_typelocations(locations) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: arendat_entrance_id_1f88ca76_fk_facility_typeentrance_entrances; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
---
-
-ALTER TABLE ONLY arendator_arendator
-    ADD CONSTRAINT arendat_entrance_id_1f88ca76_fk_facility_typeentrance_entrances FOREIGN KEY (entrance_id) REFERENCES facility_typeentrance(entrances) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY arendator_arendator_location
+    ADD CONSTRAINT arendato_typelocations_id_1d68449a_fk_facility_typelocations_id FOREIGN KEY (typelocations_id) REFERENCES facility_typelocations(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8028,6 +9350,14 @@ ALTER TABLE ONLY arendator_arendator
 
 ALTER TABLE ONLY arendator_arendator_under_that
     ADD CONSTRAINT arendato_typeunderthat_id_7188e192_fk_facility_typeunderthat_id FOREIGN KEY (typeunderthat_id) REFERENCES facility_typeunderthat(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: arendator__typeentrance_id_2e69dd76_fk_facility_typeentrance_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_entrance
+    ADD CONSTRAINT arendator__typeentrance_id_2e69dd76_fk_facility_typeentrance_id FOREIGN KEY (typeentrance_id) REFERENCES facility_typeentrance(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8063,11 +9393,11 @@ ALTER TABLE ONLY arendator_arendator
 
 
 --
--- Name: arendator_aren_type_stage_id_7e672efb_fk_arendator_typestage_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+-- Name: arendator_are_typestoreys_id_a791368_fk_facility_typestoreys_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
-ALTER TABLE ONLY arendator_arendator
-    ADD CONSTRAINT arendator_aren_type_stage_id_7e672efb_fk_arendator_typestage_id FOREIGN KEY (type_stage_id) REFERENCES arendator_typestage(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY arendator_arendator_number_of_storeys
+    ADD CONSTRAINT arendator_are_typestoreys_id_a791368_fk_facility_typestoreys_id FOREIGN KEY (typestoreys_id) REFERENCES facility_typestoreys(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8087,6 +9417,14 @@ ALTER TABLE ONLY arendator_arendator_under_that
 
 
 --
+-- Name: arendator_arend_arendator_id_442b459a_fk_arendator_arendator_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_location
+    ADD CONSTRAINT arendator_arend_arendator_id_442b459a_fk_arendator_arendator_id FOREIGN KEY (arendator_id) REFERENCES arendator_arendator(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: arendator_arend_arendator_id_58766c5b_fk_arendator_arendator_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
@@ -8103,11 +9441,43 @@ ALTER TABLE ONLY arendator_arendator_rieltor
 
 
 --
+-- Name: arendator_arend_arendator_id_5f6dc883_fk_arendator_arendator_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_number_of_storeys
+    ADD CONSTRAINT arendator_arend_arendator_id_5f6dc883_fk_arendator_arendator_id FOREIGN KEY (arendator_id) REFERENCES arendator_arendator(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: arendator_arend_arendator_id_681c881a_fk_arendator_arendator_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
 ALTER TABLE ONLY arendator_arendator_repairs
     ADD CONSTRAINT arendator_arend_arendator_id_681c881a_fk_arendator_arendator_id FOREIGN KEY (arendator_id) REFERENCES arendator_arendator(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: arendator_arend_arendator_id_6b8e7bb9_fk_arendator_arendator_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_entrance
+    ADD CONSTRAINT arendator_arend_arendator_id_6b8e7bb9_fk_arendator_arendator_id FOREIGN KEY (arendator_id) REFERENCES arendator_arendator(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: arendator_arend_typestage_id_323e6938_fk_arendator_typestage_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_type_stage
+    ADD CONSTRAINT arendator_arend_typestage_id_323e6938_fk_arendator_typestage_id FOREIGN KEY (typestage_id) REFERENCES arendator_typestage(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: arendator_arenda_arendator_id_643968e_fk_arendator_arendator_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY arendator_arendator_type_stage
+    ADD CONSTRAINT arendator_arenda_arendator_id_643968e_fk_arendator_arendator_id FOREIGN KEY (arendator_id) REFERENCES arendator_arendator(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8207,14 +9577,6 @@ ALTER TABLE ONLY facility_addressfacilitydata_availability
 
 
 --
--- Name: b_number_of_storeys_id_614c3dbe_fk_facility_typestoreys_storeys; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
---
-
-ALTER TABLE ONLY buyer_buyer
-    ADD CONSTRAINT b_number_of_storeys_id_614c3dbe_fk_facility_typestoreys_storeys FOREIGN KEY (number_of_storeys_id) REFERENCES facility_typestoreys(storeys) DEFERRABLE INITIALLY DEFERRED;
-
-
---
 -- Name: ba538a6ea90a186fda0e5dc8df2057d3; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
@@ -8223,19 +9585,11 @@ ALTER TABLE ONLY facility_addressfacilitydata_list_operations
 
 
 --
--- Name: buyer__location_id_29a7b31f_fk_facility_typelocations_locations; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+-- Name: buyer_bu_typelocations_id_50abc1f2_fk_facility_typelocations_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
-ALTER TABLE ONLY buyer_buyer
-    ADD CONSTRAINT buyer__location_id_29a7b31f_fk_facility_typelocations_locations FOREIGN KEY (location_id) REFERENCES facility_typelocations(locations) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: buyer_bu_entrance_id_d015922_fk_facility_typeentrance_entrances; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
---
-
-ALTER TABLE ONLY buyer_buyer
-    ADD CONSTRAINT buyer_bu_entrance_id_d015922_fk_facility_typeentrance_entrances FOREIGN KEY (entrance_id) REFERENCES facility_typeentrance(entrances) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY buyer_buyer_location
+    ADD CONSTRAINT buyer_bu_typelocations_id_50abc1f2_fk_facility_typelocations_id FOREIGN KEY (typelocations_id) REFERENCES facility_typelocations(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8244,6 +9598,14 @@ ALTER TABLE ONLY buyer_buyer
 
 ALTER TABLE ONLY buyer_buyer_under_that
     ADD CONSTRAINT buyer_bu_typeunderthat_id_2c461286_fk_facility_typeunderthat_id FOREIGN KEY (typeunderthat_id) REFERENCES facility_typeunderthat(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: buyer_buye_typeentrance_id_58566c12_fk_facility_typeentrance_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_entrance
+    ADD CONSTRAINT buyer_buye_typeentrance_id_58566c12_fk_facility_typeentrance_id FOREIGN KEY (typeentrance_id) REFERENCES facility_typeentrance(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8279,6 +9641,22 @@ ALTER TABLE ONLY buyer_buyer_district_obj
 
 
 --
+-- Name: buyer_buyer_entrance_buyer_id_25e68664_fk_buyer_buyer_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_entrance
+    ADD CONSTRAINT buyer_buyer_entrance_buyer_id_25e68664_fk_buyer_buyer_id FOREIGN KEY (buyer_id) REFERENCES buyer_buyer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: buyer_buyer_location_buyer_id_73672d27_fk_buyer_buyer_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_location
+    ADD CONSTRAINT buyer_buyer_location_buyer_id_73672d27_fk_buyer_buyer_id FOREIGN KEY (buyer_id) REFERENCES buyer_buyer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: buyer_buyer_loyality_buyer_id_308d2025_fk_buyer_buyer_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
@@ -8292,6 +9670,22 @@ ALTER TABLE ONLY buyer_buyer_loyality
 
 ALTER TABLE ONLY buyer_buyer_loyality
     ADD CONSTRAINT buyer_buyer_loyality_userfullname_id_6fdc4680_fk_auth_user_id FOREIGN KEY (userfullname_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: buyer_buyer_n_typestoreys_id_3c61194_fk_facility_typestoreys_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_number_of_storeys
+    ADD CONSTRAINT buyer_buyer_n_typestoreys_id_3c61194_fk_facility_typestoreys_id FOREIGN KEY (typestoreys_id) REFERENCES facility_typestoreys(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: buyer_buyer_number_of_store_buyer_id_27ebb748_fk_buyer_buyer_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_number_of_storeys
+    ADD CONSTRAINT buyer_buyer_number_of_store_buyer_id_27ebb748_fk_buyer_buyer_id FOREIGN KEY (buyer_id) REFERENCES buyer_buyer(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8319,6 +9713,14 @@ ALTER TABLE ONLY buyer_buyer_rieltor
 
 
 --
+-- Name: buyer_buyer_typ_typestage_id_617a4784_fk_arendator_typestage_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY buyer_buyer_type_stage
+    ADD CONSTRAINT buyer_buyer_typ_typestage_id_617a4784_fk_arendator_typestage_id FOREIGN KEY (typestage_id) REFERENCES arendator_typestage(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: buyer_buyer_type_building_d_buyer_id_24e05aca_fk_buyer_buyer_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
@@ -8335,11 +9737,11 @@ ALTER TABLE ONLY buyer_buyer
 
 
 --
--- Name: buyer_buyer_type_stage_id_4795eda7_fk_arendator_typestage_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+-- Name: buyer_buyer_type_stage_buyer_id_12f3b289_fk_buyer_buyer_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
 --
 
-ALTER TABLE ONLY buyer_buyer
-    ADD CONSTRAINT buyer_buyer_type_stage_id_4795eda7_fk_arendator_typestage_id FOREIGN KEY (type_stage_id) REFERENCES arendator_typestage(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY buyer_buyer_type_stage
+    ADD CONSTRAINT buyer_buyer_type_stage_buyer_id_12f3b289_fk_buyer_buyer_id FOREIGN KEY (buyer_id) REFERENCES buyer_buyer(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8380,6 +9782,22 @@ ALTER TABLE ONLY django_admin_log
 
 ALTER TABLE ONLY django_admin_log
     ADD CONSTRAINT django_admin_log_user_id_1c5f563_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: easy_thum_thumbnail_id_314c3e84_fk_easy_thumbnails_thumbnail_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnaildimensions
+    ADD CONSTRAINT easy_thum_thumbnail_id_314c3e84_fk_easy_thumbnails_thumbnail_id FOREIGN KEY (thumbnail_id) REFERENCES easy_thumbnails_thumbnail(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: easy_thumbnails_source_id_7106e1b7_fk_easy_thumbnails_source_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY easy_thumbnails_thumbnail
+    ADD CONSTRAINT easy_thumbnails_source_id_7106e1b7_fk_easy_thumbnails_source_id FOREIGN KEY (source_id) REFERENCES easy_thumbnails_source(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -8788,6 +10206,14 @@ ALTER TABLE ONLY single_object_showsarendator
 
 ALTER TABLE ONLY setting_street_street
     ADD CONSTRAINT type_street_group_id_5afed51c_fk_setting_street_typesstreet_id FOREIGN KEY (type_street_group_id) REFERENCES setting_street_typesstreet(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: watson_searc_content_type_id_274684cf_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: image20_rieltor
+--
+
+ALTER TABLE ONLY watson_searchentry
+    ADD CONSTRAINT watson_searc_content_type_id_274684cf_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
